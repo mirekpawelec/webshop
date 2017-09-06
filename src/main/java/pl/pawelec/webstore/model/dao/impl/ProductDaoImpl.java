@@ -5,7 +5,7 @@
  */
 package pl.pawelec.webstore.model.dao.impl;
 
-import pl.pawelec.webstore.domain.Product;
+import pl.pawelec.webstore.model.Product;
 import pl.pawelec.webstore.model.dao.AbstrDao;
 import pl.pawelec.webstore.model.dao.ProductDao;
 
