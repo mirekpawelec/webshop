@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.pawelec.webstore.model.dao;
+package pl.pawelec.webshop.model.dao;
 
-import pl.pawelec.webstore.model.Product;
+import java.util.List;
+import pl.pawelec.webshop.model.Product;
 
 /**
  *
@@ -14,5 +15,5 @@ import pl.pawelec.webstore.model.Product;
 public interface ProductDao extends Dao<Product>{
     // specjal method's class ProductDaoImp
     
-    
+    List<Product> getByUnitsPrice(Double minPrice, Double maxPrice);
 }

@@ -6,11 +6,43 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:util="http://www.springframework.org/schema/util"
-
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+          http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 ">
-
+    <context:component-scan base-package="pl.pawelec.webshop" />
+    <context:property-placeholder location="classpath:jdbc.properties" />
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
+        p:driverClassName="${mysql.jdbc.driverClassName}"
+        p:url="${mysql.jdbc.url}"
+        p:username="${mysql.jdbc.username}"
+        p:password="${mysql.jdbc.password}"
+    />
+    
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan">
+            <value>pl.pawelec.webshop.model</value>
+        </property>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties" ref="hibernateProperties" />
+    </bean>
+    
+    <util:properties id="hibernateProperties">
+        <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+        <prop key="hibernate.show_sql">${hibernate.show_sql:false}</prop>
+        <prop key="hibernate.format_sql">${hibernate.format_sql:false}</prop>
+    </util:properties>
+    
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+        p:entityManagerFactory-ref="entityManagerFactory"
+    />
 </beans>

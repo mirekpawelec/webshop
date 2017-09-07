@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.pawelec.webstore.model;
+package pl.pawelec.webshop.model;
+
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +21,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
+import pl.pawelec.webshop.converter.LocalDateTimeConverter;
 
 /**
  *
@@ -27,6 +33,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "product" )
 public class Product implements Serializable{
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "product_id")
     private Long productId;
     @Column(name = "product_no", nullable = false, length = 20, unique = true)
@@ -45,6 +52,7 @@ public class Product implements Serializable{
     private Integer quantityInBox;
     @Column(nullable = true, length = 2)
     private String status;
+    @Convert(converter = LocalDateTimeConverter.class)
     @Column(nullable = true)
     private LocalDateTime createDate;
 
@@ -70,53 +78,57 @@ public class Product implements Serializable{
     public void setProductId(Long productId) {
         this.productId = productId;
     }
-    @NotNull
+    @NotEmpty(message = "{NotNull.Product.productNo.validation}")
+    @Pattern(regexp = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}", message = "{Pattern.Product.productNo.validation}")
     public String getProductNo() {
         return productNo;
     }
     public void setProductNo(String productNo) {
         this.productNo = productNo;
     }
-    //@NotNull
+    @NotEmpty(message = "{NotNull.Product.name.validation}")
+    @Size(max = 50, message = "{Size.Product.name.validation}")
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    //@NotNull
+    @NotEmpty(message = "{NotNull.Product.manufacturer.validation}")
+    @Size(max = 50, message = "{Size.Product.manufacturer.validation}")
     public String getManufacturer() {
         return manufacturer;
     }
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
-    //@NotNull
+    @NotEmpty(message = "{NotNull.Product.category.validation}")
+    @Size(max = 25, message = "{Size.Product.category.validation}")
     public String getCategory() {
         return category;
     }
     public void setCategory(String category) {
         this.category = category;
     }
-    //@NotNull
+    @NotEmpty(message = "{NotNull.Product.description.validation}")
     public String getDescription() {
         return description;
     }
     public void setDescription(String description) {
         this.description = description;
     }
-    //@NotNull
-    //@Min(value = 0)
-    //@Digits(integer = 7, fraction = 2)
+    @NotNull(message = "{NotNull.Product.unitPrice.validation}")
+    @Min(value = 1, message = "{Min.Product.unitPrice.validation}")
+    @Digits(integer = 7, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
-    //@NotNull
-    //@Min(value = 0)
-    //@Digits(integer = 4, fraction = 0)
+    @NotNull(message = "{NotNull.Product.quantityInBox.validation}")
+    @Min(value = 1, message = "{Min.Product.quantityInBox.validation}")
+    @Digits(integer = 4, fraction = 0, message = "{Digits.Product.quantityInBox.validation}")
     public Integer getQuantityInBox() {
         return quantityInBox;
     }

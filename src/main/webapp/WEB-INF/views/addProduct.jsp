@@ -21,8 +21,9 @@
             <form:form modelAttribute="newProduct">
                 <fildset>
                     <form:errors path="*" />
+                    <br/>
                     <label for="productNo"><spring:message code="addProduct.form.productNo.label"/></label>
-                    <form:input type="text" id="productNo" path="productNo" />
+                    <form:input type="text" id="productNo" path="productNo" placeholder="przykład 123.321.12" />
                     <form:errors path="productNo" />
                     <br/>
                     <label for="productName"><spring:message code="addProduct.form.name.label"/></label>

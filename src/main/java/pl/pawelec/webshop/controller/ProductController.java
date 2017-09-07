@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.pawelec.webstore.controller;
+package pl.pawelec.webshop.controller;
 
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pl.pawelec.webstore.model.Product;
+import pl.pawelec.webshop.model.Product;
 
 /**
  *
@@ -40,12 +40,13 @@ public class ProductController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addProductForm(Model model){
         System.out.println("### add new product controller (GET)");
-        model.addAttribute("newProduct", new Product());
+        Product product = new Product();
+        model.addAttribute("newProduct", product);
         return "addProduct";
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String processAddProductForm(@ModelAttribute("newProduct") @Valid Product productToBeAdd, Model model, BindingResult result){
+    public String processAddProductForm(@ModelAttribute("newProduct") @Valid Product productToBeAdd, BindingResult result){
         System.out.println("### process add new product controller (POST)");
         
         System.out.println(result.hasErrors());
