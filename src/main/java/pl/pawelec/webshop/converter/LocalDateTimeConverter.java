@@ -22,13 +22,12 @@ public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime,
 
     @Override
     public Timestamp convertToDatabaseColumn(LocalDateTime attribute) {
-        return attribute==null? null: Timestamp.valueOf(attribute); //Timestamp.from( attribute.toInstant(ZoneOffset.ofHours(0)) );
-        //return new Date ( attribute.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() );
+        return attribute==null? null: Timestamp.valueOf(attribute);
     }
 
     @Override
     public LocalDateTime convertToEntityAttribute(Timestamp dbData) {
-        return dbData==null ? null : dbData.toLocalDateTime(); //LocalDateTime.ofInstant( dbData.toInstant(), ZoneOffset.ofHours(0) );
+        return dbData==null ? null : dbData.toLocalDateTime();
     }
 
     

@@ -4,6 +4,7 @@
     Author     : mirek
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -14,9 +15,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <section>
+        <header>
             <h1>Dodawanie nowego produktu:</h1>
-        </section>
+        </header>>
         <section>
             <form:form modelAttribute="newProduct">
                 <fildset>
@@ -54,5 +55,11 @@
                 </fildset>
             </form:form>
         </section>
+        <footer>
+            @Copyright by Miro
+            <br/>
+            <br/>
+            <a href="<c:url value="/products"/>"><button>Lista produktów</button></a>
+        </footer>
     </body>
 </html>

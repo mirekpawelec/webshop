@@ -5,7 +5,9 @@
  */
 package pl.pawelec.webshop.controller;
 
+import java.util.List;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.pawelec.webshop.model.Product;
+import pl.pawelec.webshop.service.ProductService;
 
 /**
  *
@@ -25,16 +29,31 @@ import pl.pawelec.webshop.model.Product;
 @Controller
 public class ProductController {
     
+    @Autowired
+    private ProductService productService;
+    
     @RequestMapping
     public String allProducts(Model model){
         System.out.println("### show all products controller");
+        List<Product> products = productService.getAll();
+        model.addAttribute("products", products);
         return "products";
     }
     
     @RequestMapping("/product")
-    public String getOneProduct(Model model){
+    public String getProductById(@RequestParam("id") String productId, Model model){
         System.out.println("### show product controller");
+        System.out.println("@@@ id received=" + productId);
+        model.addAttribute("product", productService.getOneById( Long.valueOf(productId) ));
         return "product";
+    }
+    
+    @RequestMapping("/delete")
+    public String deleteProductById(@RequestParam("id") String productId, Model model){
+        System.out.println("### delete product controller");
+        System.out.println("@@@ id received=" + productId);
+        productService.deleteById( Long.valueOf(productId) );
+        return "redirect:/products";
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -55,17 +74,11 @@ public class ProductController {
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         
-        System.out.println(new Product.Builder()
-                                    .withProductNo(productToBeAdd.getProductNo())
-                                    .withName(productToBeAdd.getName())
-                                    .withManufacturer(productToBeAdd.getManufacturer())
-                                    .withCategory(productToBeAdd.getCategory())
-                                    .withDescription(productToBeAdd.getDescription())
-                                    .withUnitPrice(productToBeAdd.getUnitPrice())
-                                    .withQuantityInBox(productToBeAdd.getQuantityInBox())
-                                    .build());
+        System.out.println(new Product.Builder().withProductNo(productToBeAdd.getProductNo()).withName(productToBeAdd.getName()).withManufacturer(productToBeAdd.getManufacturer())
+                .withCategory(productToBeAdd.getCategory()).withDescription(productToBeAdd.getDescription()).withUnitPrice(productToBeAdd.getUnitPrice())
+                .withQuantityInBox(productToBeAdd.getQuantityInBox()).build());
         
-        
+        productService.create(productToBeAdd);
         
         return "redirect:/products";
     }
