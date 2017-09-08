@@ -17,7 +17,7 @@
     <body>
         <header>
             <h1>Dodawanie nowego produktu:</h1>
-        </header>>
+        </header>
         <section>
             <form:form modelAttribute="newProduct">
                 <fildset>
@@ -51,15 +51,20 @@
                     <form:input type="number" id="quantityInBox" path="quantityInBox" />
                     <form:errors path="quantityInBox" />
                     <br/>
-                    <input type="submit" name="Dodaj"
+                    <label for="status"><spring:message code="addProduct.form.status.label"/></label>
+                    <form:select path="status" items="${productStatus}" itemValue="productStatusType" itemLabel="productStatusDescription" />
+                    <form:errors path="status" />
+                    <br/>
+                    <input type="submit" value="Dodaj" />
                 </fildset>
             </form:form>
         </section>
         <footer>
-            @Copyright by Miro
-            <br/>
             <br/>
             <a href="<c:url value="/products"/>"><button>Lista produktów</button></a>
+            <br/>
+            @Copyright by Miro
+            
         </footer>
     </body>
 </html>

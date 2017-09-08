@@ -25,6 +25,7 @@
                 <tr><td>Opis</td><td>${product.description}</td></tr>
                 <tr><td>Cena</td><td>${product.unitPrice}</td></tr>
                 <tr><td>Sztuk</td><td>${product.quantityInBox}</td></tr>
+                <tr><td>Status</td><td>${product.status}</td></tr>
             </table>
             <br/>
             <br/>

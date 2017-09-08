@@ -78,7 +78,7 @@ public class Product implements Serializable{
     public void setProductId(Long productId) {
         this.productId = productId;
     }
-    @NotEmpty(message = "{NotNull.Product.productNo.validation}")
+    @NotEmpty(message = "{NotEmpty.Product.productNo.validation}")
     @Pattern(regexp = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}", message = "{Pattern.Product.productNo.validation}")
     public String getProductNo() {
         return productNo;
@@ -86,7 +86,7 @@ public class Product implements Serializable{
     public void setProductNo(String productNo) {
         this.productNo = productNo;
     }
-    @NotEmpty(message = "{NotNull.Product.name.validation}")
+    @NotEmpty(message = "{NotEmpty.Product.name.validation}")
     @Size(max = 50, message = "{Size.Product.name.validation}")
     public String getName() {
         return name;
@@ -94,7 +94,7 @@ public class Product implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
-    @NotEmpty(message = "{NotNull.Product.manufacturer.validation}")
+    @NotEmpty(message = "{NotEmpty.Product.manufacturer.validation}")
     @Size(max = 50, message = "{Size.Product.manufacturer.validation}")
     public String getManufacturer() {
         return manufacturer;
@@ -102,7 +102,7 @@ public class Product implements Serializable{
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
-    @NotEmpty(message = "{NotNull.Product.category.validation}")
+    @NotEmpty(message = "{NotEmpty.Product.category.validation}")
     @Size(max = 25, message = "{Size.Product.category.validation}")
     public String getCategory() {
         return category;
@@ -110,7 +110,7 @@ public class Product implements Serializable{
     public void setCategory(String category) {
         this.category = category;
     }
-    @NotEmpty(message = "{NotNull.Product.description.validation}")
+    @NotEmpty(message = "{NotEmpty.Product.description.validation}")
     public String getDescription() {
         return description;
     }

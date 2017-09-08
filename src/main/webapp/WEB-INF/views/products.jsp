@@ -21,7 +21,7 @@
         <section>
             <table>
                 <tr>
-                    <th>Numer produktu</th><th>Nazwa produktu</th><th>Producent</th><th>Rodzaj sprzętu</th><th>Opis</th><th>Cena</th><th>Ilość sztuk</th><th>Szczegóły / Usuń</th>
+                    <th>Numer produktu</th><th>Nazwa produktu</th><th>Producent</th><th>Rodzaj sprzętu</th><th>Cena</th><th>Status</th><th>Szczegóły / Usuń</th>
                 </tr>
                 <c:forEach var="item" items="${products}">
                     <tr>
@@ -29,11 +29,11 @@
                         <td>${item.name}</td>
                         <td>${item.manufacturer}</td>
                         <td>${item.category}</td>
-                        <td>${item.description}</td>
                         <td>${item.unitPrice}</td>
-                        <td>${item.quantityInBox}</td>
+                        <td>${item.status}</td>
                         <td>
                             <a href="<spring:url value="/products/product?id=${item.productId}"/>"><button>Pokaż szczegóły</button></a>
+                            <a href="<spring:url value="/products/modify?id=${item.productId}"/>"><button>Zmień</button></a>
                             <a href="<spring:url value="/products/delete?id=${item.productId}"/>"><button>Usuń</button></a>
                         </td>
                     </tr>
@@ -41,10 +41,10 @@
             </table>
         </section>
         <footer>
-            <span>@Copyright by Miro</span>
-            <br/>
             <br/>
             <a href="<spring:url value="/products/add"/>"><button>Dodaj nowy product</button></a> 
+            <br/>
+            <span>@Copyright by Miro</span>
         </footer>
         
         
