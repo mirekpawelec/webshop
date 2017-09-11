@@ -12,59 +12,134 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Add product</title>
+        <link href="<spring:url value="/resource/css/bootstrap.min.css"/>" rel="stylesheet" />
+        <style>
+            footer{
+                font-size: 17px;
+                padding: 25px 0;
+                margin: 10px 0;
+                text-align: center;
+                color: #FFFFFF;
+                background-color: #000000;
+            }
+        </style>
     </head>
     <body>
         <header>
-            <h1>Dodawanie nowego produktu:</h1>
+            <nav class="navbar navbar-inverse navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand">Web Shop</a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="<c:url value="/products"/>">All Products</a></li>
+                        <li><a href="#">Add Products</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </nav>
         </header>
-        <section>
-            <form:form modelAttribute="newProduct">
+
+        <section class="container">
+            <div class="row text-center">
+                <div class="page-header">
+                    <h2>Dodawanie nowego produktu:</h2>
+                </div>
+            </div>
+            
+            <form:form modelAttribute="newProduct" class="form-horizontal">
                 <fildset>
-                    <form:errors path="*" />
-                    <br/>
-                    <label for="productNo"><spring:message code="addProduct.form.productNo.label"/></label>
-                    <form:input type="text" id="productNo" path="productNo" placeholder="przykład 123.321.12" />
-                    <form:errors path="productNo" />
-                    <br/>
-                    <label for="productName"><spring:message code="addProduct.form.name.label"/></label>
-                    <form:input type="text" id="name" path="name" />
-                    <form:errors path="name" />
-                    <br/>
-                    <label for="manufacturer"><spring:message code="addProduct.form.manufacturer.label"/></label>
-                    <form:input type="text" id="manufacturer" path="manufacturer" />
-                    <form:errors path="manufacturer" />
-                    <br/>
-                    <label for="category"><spring:message code="addProduct.form.category.label"/></label>
-                    <form:input type="text" id="category" path="category" />
-                    <form:errors path="category" />
-                    <br/>
-                    <label for="description"><spring:message code="addProduct.form.description.label"/></label>
-                    <form:textarea id="description" path="description" />
-                    <form:errors path="description" />
-                    <br/>
-                    <label for="unitPrice"><spring:message code="addProduct.form.unitPrice.label"/></label>
-                    <form:input type="number" step="any" id="unitPrice" path="unitPrice" />
-                    <form:errors path="unitPrice" />
-                    <br/>
-                    <label for="quantityInBox"><spring:message code="addProduct.form.quantityInBox.label"/></label>
-                    <form:input type="number" id="quantityInBox" path="quantityInBox" />
-                    <form:errors path="quantityInBox" />
-                    <br/>
-                    <label for="status"><spring:message code="addProduct.form.status.label"/></label>
-                    <form:select path="status" items="${productStatus}" itemValue="productStatusType" itemLabel="productStatusDescription" />
-                    <form:errors path="status" />
-                    <br/>
-                    <input type="submit" value="Dodaj" />
+                    <div class="row text-danger">
+                        <form:errors path="*"/>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="productNo" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.productNo.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="text" id="productNo" path="productNo" class="form-control" />
+                                <form:errors path="productNo" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="productName" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.name.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="text" id="productName" path="name" class="form-control"/>
+                                <form:errors path="name" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="manufacturer" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.manufacturer.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="text" id="manufacturer" path="manufacturer" class="form-control" />
+                                <form:errors path="manufacturer" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="category" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.category.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="text" id="category" path="category" class="form-control"/>
+                                <form:errors path="category" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="description" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.description.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:textarea id="description" path="description" rows="5" class="form-control"/>
+                                <form:errors path="description" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="unitPrice" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.unitPrice.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="number" step="any" id="unitPrice" path="unitPrice" class="form-control"/>
+                                <form:errors path="unitPrice" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="quantityInBox" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.quantityInBox.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="number" id="quantityInBox" path="quantityInBox" class="form-control"/>
+                                <form:errors path="quantityInBox" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="status" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.status.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:select path="status" items="${productStatus}" itemValue="productStatusType" itemLabel="productStatusDescription" class="form-control"/>
+                                <form:errors path="status" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-3"></div>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <input type="submit" value="Dodaj" class="btn btn-primary btn-lg pull-right"/>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </fildset>
             </form:form>
         </section>
-        <footer>
-            <br/>
-            <a href="<c:url value="/products"/>"><button>Lista produktów</button></a>
-            <br/>
-            @Copyright by Miro
-            
+        <hr />
+        <footer class="container-fluid">
+            &copy; Copyright 2017 by Miro
         </footer>
     </body>
 </html>

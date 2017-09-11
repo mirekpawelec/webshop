@@ -29,4 +29,5 @@
     
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" p:validationMessageSource-ref="messageSource"/>
     
+    <mvc:resources mapping="/resource/**" location="/resources/" />
 </beans>

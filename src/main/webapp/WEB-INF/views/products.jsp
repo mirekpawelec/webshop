@@ -10,9 +10,9 @@
 <!DOCTYPE html>
 <html lang="pl">
     <head>
-        <meta http-equiv="Content-Type" content="text/html" />
-        <meta charset=UTF-8"/>
-        <title>JSP Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>All products</title>
+        <link href="<spring:url value="/resource/css/bootstrap.min.css"/>" rel="stylesheet" />
     </head>
     <body>
         <header>
