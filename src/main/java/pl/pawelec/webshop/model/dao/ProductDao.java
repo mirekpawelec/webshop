@@ -6,6 +6,8 @@
 package pl.pawelec.webshop.model.dao;
 
 import java.util.List;
+import java.util.Optional;
+import pl.pawelec.webshop.exception.NoProductFoundUnderProductNoException;
 import pl.pawelec.webshop.model.Product;
 
 /**
@@ -13,7 +15,6 @@ import pl.pawelec.webshop.model.Product;
  * @author mirek
  */
 public interface ProductDao extends Dao<Product>{
-    // specjal method's class ProductDaoImp
-    
     List<Product> getByUnitsPrice(Double minPrice, Double maxPrice);
+    Product getOneByProductNo(String productNo);
 }

@@ -2,6 +2,7 @@ package pl.pawelec.webshop.service.impl;
 
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,5 +74,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<Product> getByUnitsPrice(Double minPrice, Double maxPrice) {
         return productDao.getByUnitsPrice(minPrice, maxPrice);
+    }
+
+    @Override
+    public Product getOneByProductNo(String productNo){
+        return productDao.getOneByProductNo(productNo);
     }
 }

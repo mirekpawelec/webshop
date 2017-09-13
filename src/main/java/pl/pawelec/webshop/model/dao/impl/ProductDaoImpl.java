@@ -6,13 +6,11 @@
 package pl.pawelec.webshop.model.dao.impl;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Optional;
 import javax.persistence.EntityManager;
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
-import javax.transaction.UserTransaction;
+import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
+import pl.pawelec.webshop.exception.NoProductFoundUnderProductNoException;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.dao.AbstrDao;
 import pl.pawelec.webshop.model.dao.ProductDao;
@@ -39,5 +37,16 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
         if(product==null) 
            throw new RuntimeException("Operazja zakończyła się niepowodzeniem. Brak danych!");
         em.remove(product);
+    }
+
+    @Override
+    public Product getOneByProductNo(String productNo){
+        Product product = null;
+        try{
+            product = (Product) getEntityManager().createQuery("from Product where product_no = :product_no").setParameter("product_no", productNo).getSingleResult();
+        } catch(NoResultException re){
+            throw new NoProductFoundUnderProductNoException(productNo);
+        }
+        return product;
     }
 }

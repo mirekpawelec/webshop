@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -18,13 +17,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
 import pl.pawelec.webshop.converter.LocalDateTimeConverter;
+import pl.pawelec.webshop.validator.ProductNo;
 
 /**
  *
@@ -33,31 +35,39 @@ import pl.pawelec.webshop.converter.LocalDateTimeConverter;
 @Entity
 @Table(name = "product" )
 public class Product implements Serializable{
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "product_id")
+    
+    public interface addForm{}
+    public interface modifyForm{}
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @Column(name = "product_id")
     private Long productId;
-    @Column(name = "product_no", nullable = false, length = 20, unique = true)
+    @Column(name = "product_no", unique = true)
     private String productNo;
-    @Column(nullable = false, length = 50)
+    @Column //(nullable = false, length = 50)
     private String name;
-    @Column(nullable = false, length = 50)
+    @Column //(nullable = false, length = 50)
     private String manufacturer;
-    @Column(nullable = false, length = 25)
+    @Column //(nullable = false, length = 25)
     private String category;
-    @Column(nullable = false)
+    @Column //(nullable = false)
     private String description;
-    @Column(nullable = false, precision = 7, scale = 2)
+    @Column //(nullable = false, precision = 7, scale = 2)
     private BigDecimal unitPrice;
-    @Column(nullable = false, precision = 4, scale = 0)
+    @Column //(nullable = false, precision = 4, scale = 0)
     private Integer quantityInBox;
-    @Column(nullable = true, length = 2)
+    @Column //(nullable = true, length = 2)
     private String status;
     @Convert(converter = LocalDateTimeConverter.class)
-    @Column(nullable = true)
+    @Column //(nullable = true)
     private LocalDateTime createDate;
-
-    public Product() {
-    }
+    @Transient
+    private MultipartFile productImage;
+    @Transient
+    private MultipartFile productUserManual;
+    
+    public Product(){}
 
     public Product(Builder builder) {
         this.productId = builder.productId;
@@ -75,79 +85,115 @@ public class Product implements Serializable{
     public Long getProductId() {
         return productId;
     }
+    
     public void setProductId(Long productId) {
         this.productId = productId;
     }
-    @NotEmpty(message = "{NotEmpty.Product.productNo.validation}")
-    @Pattern(regexp = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}", message = "{Pattern.Product.productNo.validation}")
+    
+    @NotEmpty(groups = {addForm.class}, message = "{NotEmpty.Product.productNo.validation}")
+    @Pattern(groups = {addForm.class}, regexp = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}", message = "{Pattern.Product.productNo.validation}")
+    @ProductNo(groups = {addForm.class} )
     public String getProductNo() {
         return productNo;
     }
+    
     public void setProductNo(String productNo) {
         this.productNo = productNo;
     }
-    @NotEmpty(message = "{NotEmpty.Product.name.validation}")
-    @Size(max = 50, message = "{Size.Product.name.validation}")
+    
+    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.name.validation}")
+    @Size(groups = {addForm.class, modifyForm.class}, max = 50, message = "{Size.Product.name.validation}")
     public String getName() {
         return name;
     }
+    
     public void setName(String name) {
         this.name = name;
     }
-    @NotEmpty(message = "{NotEmpty.Product.manufacturer.validation}")
-    @Size(max = 50, message = "{Size.Product.manufacturer.validation}")
+    
+    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.manufacturer.validation}")
+    @Size(groups = {addForm.class, modifyForm.class}, max = 50, message = "{Size.Product.manufacturer.validation}")
     public String getManufacturer() {
         return manufacturer;
     }
+    
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
-    @NotEmpty(message = "{NotEmpty.Product.category.validation}")
-    @Size(max = 25, message = "{Size.Product.category.validation}")
+    
+    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.category.validation}")
+    @Size(groups = {addForm.class, modifyForm.class}, max = 25, message = "{Size.Product.category.validation}")
     public String getCategory() {
         return category;
     }
+    
     public void setCategory(String category) {
         this.category = category;
     }
-    @NotEmpty(message = "{NotEmpty.Product.description.validation}")
+    
+    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.description.validation}")
     public String getDescription() {
         return description;
     }
+    
     public void setDescription(String description) {
         this.description = description;
     }
-    @NotNull(message = "{NotNull.Product.unitPrice.validation}")
-    @Min(value = 1, message = "{Min.Product.unitPrice.validation}")
-    @Digits(integer = 7, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
+    
+    @NotNull(groups = {addForm.class, modifyForm.class}, message = "{NotNull.Product.unitPrice.validation}")
+    @Min(groups = {addForm.class, modifyForm.class}, value = 1, message = "{Min.Product.unitPrice.validation}")
+    @Digits(groups = {addForm.class, modifyForm.class}, integer = 7, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
+    
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
-    @NotNull(message = "{NotNull.Product.quantityInBox.validation}")
-    @Min(value = 1, message = "{Min.Product.quantityInBox.validation}")
-    @Digits(integer = 4, fraction = 0, message = "{Digits.Product.quantityInBox.validation}")
+    
+    @NotNull(groups = {addForm.class, modifyForm.class}, message = "{NotNull.Product.quantityInBox.validation}")
+    @Min(groups = {addForm.class, modifyForm.class}, value = 1, message = "{Min.Product.quantityInBox.validation}")
+    @Digits(groups = {addForm.class, modifyForm.class}, integer = 4, fraction = 0, message = "{Digits.Product.quantityInBox.validation}")
     public Integer getQuantityInBox() {
         return quantityInBox;
     }
+    
     public void setQuantityInBox(Integer quantityInBox) {
         this.quantityInBox = quantityInBox;
     }
+    
     public String getStatus() {
         return status;
     }
+    
     public void setStatus(String status) {
         this.status = status;
     }
+    
     public LocalDateTime getCreateDate() {
         return createDate;
     }
+    
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
-
+    
+    public MultipartFile getProductImage() {
+        return productImage;
+    }
+    
+    public void setProductImage(MultipartFile productImage) {
+        this.productImage = productImage;
+    }
+    
+    public MultipartFile getProductUserManual() {
+        return productUserManual;
+    }
+    
+    public void setProductUserManual(MultipartFile productUserManual) {
+        this.productUserManual = productUserManual;
+    }
+            
     @Override
     public int hashCode() {
         int hash = 5;
@@ -155,7 +201,7 @@ public class Product implements Serializable{
         hash = 29 * hash + Objects.hashCode(this.productNo);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -181,6 +227,7 @@ public class Product implements Serializable{
     public String toString() {
         return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name + ", manufacturer=" + manufacturer + ", category=" + category + ", description=" + description + ", unitPrice=" + unitPrice + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" + createDate + '}';
     }
+    
     
         public static class Builder{
             private Long productId;

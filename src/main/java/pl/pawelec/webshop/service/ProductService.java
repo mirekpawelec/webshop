@@ -6,6 +6,7 @@
 package pl.pawelec.webshop.service;
 
 import java.util.List;
+import java.util.Optional;
 import pl.pawelec.webshop.model.Product;
 
 /**
@@ -23,4 +24,5 @@ public interface ProductService {
     Long count();
     boolean exists(Long Id);
     List<Product> getByUnitsPrice(Double minPrice, Double maxPrice);
+    Product getOneByProductNo(String productNo);
 }
