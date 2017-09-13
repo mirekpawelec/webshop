@@ -48,10 +48,10 @@
                 </div>
             </div>
             
-            <form:form modelAttribute="newProduct" class="form-horizontal">
+            <form:form modelAttribute="newProduct" class="form-horizontal" enctype="multipart/form-data">
                 <fildset>
                     <div class="row text-danger">
-                        <form:errors path="*"/>
+                        <form:errors path="*" class="alert alert-danger" element="div" />
                     </div>
                     <div class="row">
                         <div class="form-group">
@@ -122,6 +122,26 @@
                             <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
                                 <form:select path="status" items="${productStatus}" itemValue="productStatusType" itemLabel="productStatusDescription" class="form-control"/>
                                 <form:errors path="status" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="productImage" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.productImage.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="file" id="productImage" path="productImage"/>
+                                <p class="help-block"><spring:message code="addProduct.form.productImageTextInfo.label"/></p>
+                                <form:errors path="productImage" class="text-danger"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="productUserManual" class="col-xs-12 col-sm-3 control-label"><spring:message code="addProduct.form.productUserManual.label"/></label>
+                            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
+                                <form:input type="file" id="productUserManual" path="productUserManual"/>
+                                <p class="help-block"><spring:message code="addProduct.form.productUserManualTextInfo.label"/></p>
+                                <form:errors path="productUserManual" class="text-danger"/>
                             </div>
                         </div>
                     </div>
