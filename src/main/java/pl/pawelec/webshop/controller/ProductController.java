@@ -29,6 +29,8 @@ import pl.pawelec.webshop.model.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
 import pl.pawelec.webshop.model.Product.addForm;
 import pl.pawelec.webshop.model.Product.modifyForm;
+import pl.pawelec.webshop.validator.ProductValidator;
+
 
 /**
  *
@@ -38,9 +40,12 @@ import pl.pawelec.webshop.model.Product.modifyForm;
 @RequestMapping(value = "/products")
 @Controller
 public class ProductController {
-    
+
     @Autowired
     private ProductService productService;
+    
+    @Autowired
+    private ProductValidator productValidator;
     
     @RequestMapping
     public String allProducts(Model model){
@@ -61,7 +66,7 @@ public class ProductController {
         return "product";
     }
     
-    @RequestMapping("/modify")
+    @RequestMapping(value = "/modify", method = RequestMethod.GET)
     public String modyfyProductByIdForm(@RequestParam("id") String productId, Model model, HttpServletRequest request){
         System.out.println("### modify product controller (GET)");
         Product modifyProduct = productService.getOneById(Long.valueOf(productId));
@@ -102,11 +107,20 @@ public class ProductController {
         model.addAttribute("newProduct", product);
         return "addProduct";
     }
-    
+
+            
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String processAddProductForm(@ModelAttribute("newProduct") @Validated({addForm.class}) Product productToBeAdd, 
-                                        BindingResult result, HttpServletRequest request){
-        System.out.println("### process add new product controller (POST)");
+    public String processAddProductForm(@ModelAttribute("newProduct") @Validated({addForm.class}) Product productToBeAdd, BindingResult result, HttpServletRequest request){
+        System.out.println("### process add new product controller (POST)");  
+
+//        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+//        Set<ConstraintViolation<Product>> violations = validatorFactory.getValidator().validate(productToBeAdd, addForm.class);
+//        for (ConstraintViolation<Product> violation : violations) {
+//            String propertyPath = violation.getPropertyPath().toString();
+//            String message = violation.getMessage();
+//            System.out.println("invalid value for: '" + propertyPath + "': " + message);
+//        }
+
         if(result.hasErrors()) return "addProduct";
         
         String[] suppresedFields = result.getSuppressedFields();
@@ -148,6 +162,7 @@ public class ProductController {
     @InitBinder(value = "newProduct")
     public void newProductInitializeBinder(WebDataBinder webDataBinder){
         webDataBinder.setDisallowedFields("productId", "createDate");
+        webDataBinder.setValidator(productValidator);
     }
     
     @InitBinder(value = "modifyProduct")

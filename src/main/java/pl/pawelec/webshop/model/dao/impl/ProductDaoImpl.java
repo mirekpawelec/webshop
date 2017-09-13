@@ -6,10 +6,10 @@
 package pl.pawelec.webshop.model.dao.impl;
 
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pl.pawelec.webshop.exception.NoProductFoundUnderProductNoException;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.dao.AbstrDao;
@@ -21,7 +21,7 @@ import pl.pawelec.webshop.model.dao.ProductDao;
  */
 @Repository
 public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
-
+    
     @Override
     public List<Product> getByUnitsPrice(Double minPrice, Double maxPrice) {
         return getEntityManager().createQuery("from Product where unitPrice between :minPrice and :maxPrice")

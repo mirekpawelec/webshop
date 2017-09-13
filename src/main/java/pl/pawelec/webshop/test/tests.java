@@ -66,29 +66,29 @@ public class tests {
 //                .withStatus("OK")
 //                .build();
 //        Product product3 = new Product.Builder()
-//                //.withProductId(4l)
-//                .withProductNo("123.321.12")
+//                //.withProductId(33l)
+//                .withProductNo("123.321.99")
 //                .withName("Galaxy S8")
 //                .withManufacturer("Samsung")
 //                .withCategory("Smartfon")
-//                .withDescription("Chyba dobry :(")
+//                .withDescription("Chyba dobry ;)")
 //                .withUnitPrice(new BigDecimal(300))
 //                .withQuantityInBox(1)
 //                .withStatus("OK")
 //                .build();
 
-//        ps.create(product);
+//        ps.create(product3);
 //        ps.create(product2);
 //        ps.create(product3);
         
 //        System.out.println( ps.getOneById(1L) );
 //        ps.getAll().stream().filter((t) -> t.getProductNo().contains("456")).forEach(System.out::println);
-//        ps.update(product2);
+//        ps.update(product3);
 //        //ps.delete(product2);
 //        System.out.println( ps.count() );
 //        System.out.println( ps.exists(3l) );
 //        //System.out.println( ps.getOneById(4l) );
-//        ps.deleteById(3l);
+//        ps.deleteById(33l);
 //        System.out.println( ps.exists(3l) );
 //        ps.deleteAll();
 //        ps.getAll().parallelStream().forEach(s->System.out.println(s));

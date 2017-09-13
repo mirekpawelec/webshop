@@ -2,7 +2,6 @@ package pl.pawelec.webshop.service.impl;
 
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,7 @@ import pl.pawelec.webshop.service.ProductService;
 public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductDao productDao;
-    
+
     @Override
     public void create(Product product) {
         productDao.create(product);
