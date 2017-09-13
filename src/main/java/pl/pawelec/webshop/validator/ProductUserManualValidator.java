@@ -9,6 +9,5 @@ package pl.pawelec.webshop.validator;
  *
  * @author mirek
  */
-public class ProductUserManualValidator {
-    
+public class ProductUserManualValidator { 
 }

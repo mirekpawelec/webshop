@@ -45,7 +45,6 @@ public class ProductValidator implements Validator{
             System.out.println("propertyPath="+propertyPath+", message="+message);
             errors.rejectValue(propertyPath, "", message);
         }
-        
         for(Validator validator : springValidators){
             System.out.println( "validator="+validator.toString() );
             validator.validate(validatedClass, errors);

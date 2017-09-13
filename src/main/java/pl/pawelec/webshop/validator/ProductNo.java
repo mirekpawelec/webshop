@@ -25,4 +25,5 @@ public @interface ProductNo {
     String message() default "{pl.pawelec.webshop.validator.ProductNo.message}";
     Class<?>[] groups() default {};
     public abstract Class<? extends Payload>[] payload() default{};
+
 }

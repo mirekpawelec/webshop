@@ -89,7 +89,6 @@ public class ProductController {
         productToBeModify.setProductNo((String) request.getSession().getAttribute("productNumber"));
         System.out.println("### Modify: " + productToBeModify);
         productService.update(productToBeModify);
-        
         return "redirect:/products";
     }
     
@@ -155,7 +154,6 @@ public class ProductController {
         
         System.out.println("Zapisuje: " + productToBeAdd);
         productService.create(productToBeAdd);
-        
         return "redirect:/products";
     }
 

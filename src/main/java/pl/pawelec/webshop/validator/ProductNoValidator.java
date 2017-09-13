@@ -35,5 +35,4 @@ public class ProductNoValidator implements ConstraintValidator<ProductNo, String
         } catch (NullPointerException npe){}
         return product!=null ? false : true;
     }
-    
 }
