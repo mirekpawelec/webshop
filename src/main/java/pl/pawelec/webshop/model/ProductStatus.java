@@ -17,7 +17,7 @@ public enum ProductStatus {
     
     OK("OK", "OK"),
     BL("BL", "Blocked"),
-    FI("FI", "Withdrawn");
+    FI("FI", "Canceled");
     
     private String productStatusType;
     private String productStatusDescription;

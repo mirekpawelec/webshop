@@ -82,6 +82,10 @@ public class Product implements Serializable{
         this.createDate = builder.createDate;
     }
     
+    public boolean isNew(){
+        return (this.productId==null);
+    }
+    
     public Long getProductId() {
         return productId;
     }
