@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
     <footer class="container-fluid">
-        &copy; Copyright 2017 by mirekpawelec
+        <spring:message code="footer.footer.copyright.label"/>
     </footer>
 </div>
 

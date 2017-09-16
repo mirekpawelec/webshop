@@ -32,7 +32,8 @@ public class ProductNoValidator implements ConstraintValidator<ProductNo, String
             product = productService.getOneByProductNo(productNo);
         } catch (NoProductFoundUnderProductNoException e){
             return true;
-        } catch (NullPointerException npe){}
-        return product!=null ? false : true;
+        } catch (NullPointerException ne){}
+
+        return product != null ? false : true;
     }
 }

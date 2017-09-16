@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,17 +19,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pawelec.webshop.model.Product;
+import pl.pawelec.webshop.model.Product.newForm;
+import pl.pawelec.webshop.model.Product.updateForm;
 import pl.pawelec.webshop.model.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
-import pl.pawelec.webshop.model.Product.addForm;
-import pl.pawelec.webshop.model.Product.modifyForm;
 import pl.pawelec.webshop.validator.ProductValidator;
 
 
@@ -36,8 +40,8 @@ import pl.pawelec.webshop.validator.ProductValidator;
  *
  * @author mirek
  */
-@SessionAttributes(names = {"productStatus", "productNumber"})
-@RequestMapping(value = "/products")
+@SessionAttributes(names = {"productStatus", "productId", "productNumber"})
+@RequestMapping(value = "/admin/products")
 @Controller
 public class ProductController {
 
@@ -50,78 +54,93 @@ public class ProductController {
     @RequestMapping
     public String allProducts(Model model){
         System.out.println("### show all products controller");
+        
         List<Product> products = productService.getAll();
         products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getProductStatusDescription()) );
+        
         model.addAttribute("products", products);
+        model.addAttribute("jspFile", "products");
+        
         return "products";
     }
+    
     
     @RequestMapping("/product")
     public String getProductById(@RequestParam("id") String productId, Model model){
         System.out.println("### show product controller");
-        System.out.println("@@@ id received=" + productId);
-        Product product = productService.getOneById(Long.valueOf(productId));
+        
+        Product product;
+        String regex = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}";
+        if(productId.matches(regex)){
+            product = productService.getOneByProductNo(productId); 
+        }
+        else {
+            product = productService.getOneById(Long.valueOf(productId)); 
+        }
         product.setStatus( ProductStatus.valueOf(product.getStatus()).getProductStatusDescription() );
+        
         model.addAttribute("product", product);
+        model.addAttribute("jspFile", "product");
+        
         return "product";
     }
     
-    @RequestMapping(value = "/modify", method = RequestMethod.GET)
-    public String modyfyProductByIdForm(@RequestParam("id") String productId, Model model, HttpServletRequest request){
+    
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    public String updateProductForm(@PathVariable("id") String productId, Model model){
         System.out.println("### modify product controller (GET)");
-        Product modifyProduct = productService.getOneById(Long.valueOf(productId));
-        model.addAttribute("productNumber", modifyProduct.getProductNo());
-        model.addAttribute("modifyProduct", modifyProduct);
-        return "modifyProduct";
+        
+        Product updateProduct = productService.getOneById(Long.valueOf(productId));
+        model.addAttribute("updateProductForm", updateProduct);
+        model.addAttribute("productId", updateProduct.getProductId());
+        model.addAttribute("productNumber", updateProduct.getProductNo());
+        model.addAttribute("jspFile", "updateProductForm");
+        
+        return "updateProductForm";
     }
     
-    @RequestMapping(value = "/modify", method = RequestMethod.POST)
-    public String processModyfyProductByIdForm(@RequestParam("id") String productId, 
-                                               @ModelAttribute("modifyProduct") @Validated({modifyForm.class}) Product productToBeModify, 
-                                               BindingResult result, HttpServletRequest request){
+    
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String processUpdateProductForm(@ModelAttribute("updateProductForm") @Validated({updateForm.class}) Product productToBeUpdate, 
+                                               BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
         System.out.println("### process modify product controller (POST)");
-        if(result.hasErrors()) return "modifyProduct";
+        if(result.hasErrors()) return "updateProductForm";
         
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         
-        productToBeModify.setProductId(Long.valueOf(productId));
-        productToBeModify.setProductNo((String) request.getSession().getAttribute("productNumber"));
-        System.out.println("### Modify: " + productToBeModify);
-        productService.update(productToBeModify);
-        return "redirect:/products";
+        productToBeUpdate.setProductId((Long) request.getSession().getAttribute("productId"));
+        productToBeUpdate.setProductNo((String) request.getSession().getAttribute("productNumber"));
+        
+        System.out.println("### Update: " + productToBeUpdate);
+        productService.update(productToBeUpdate);
+        
+        redirect.addFlashAttribute("typeProcess", "update");
+        redirect.addFlashAttribute("css", "success");
+        
+        return "redirect:/admin/products/product?id=" + productToBeUpdate.getProductNo() ;
     }
     
-    @RequestMapping("/delete")
-    public String deleteProductById(@RequestParam("id") String productId, Model model){
-        System.out.println("### delete product controller");
-        productService.deleteById(Long.valueOf(productId));
-        return "redirect:/products";
-    }
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addProductForm(Model model, HttpServletRequest request){
         System.out.println("### add new product controller (GET)");
+        
         Product product = new Product();
-        model.addAttribute("newProduct", product);
-        return "addProduct";
+        model.addAttribute("newProductForm", product);
+        model.addAttribute("jspFile", "newProductForm");
+        
+        return "newProductForm";
     }
 
             
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String processAddProductForm(@ModelAttribute("newProduct") @Validated({addForm.class}) Product productToBeAdd, BindingResult result, HttpServletRequest request){
+    public String processAddProductForm(@ModelAttribute("newProductForm") @Validated({newForm.class}) Product productToBeAdd, 
+                                                BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
         System.out.println("### process add new product controller (POST)");  
 
-//        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-//        Set<ConstraintViolation<Product>> violations = validatorFactory.getValidator().validate(productToBeAdd, addForm.class);
-//        for (ConstraintViolation<Product> violation : violations) {
-//            String propertyPath = violation.getPropertyPath().toString();
-//            String message = violation.getMessage();
-//            System.out.println("invalid value for: '" + propertyPath + "': " + message);
-//        }
+        if(result.hasErrors()) return "newProductForm";
 
-        if(result.hasErrors()) return "addProduct";
-        
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         
@@ -139,7 +158,7 @@ public class ProductController {
                 throw new RuntimeException("Błąd zapisu obrazka!");
             } 
         }
-        
+
         File createFolderPdf = new File(mainPath+"resources\\pdf\\");
         if(!createFolderPdf.isDirectory())
             createFolderPdf.mkdirs();
@@ -152,21 +171,44 @@ public class ProductController {
             }
         }
         
-        System.out.println("Zapisuje: " + productToBeAdd);
+        System.out.println("Save: " + productToBeAdd);
         productService.create(productToBeAdd);
-        return "redirect:/products";
+        
+        redirect.addFlashAttribute("typeProcess", "create");
+        redirect.addFlashAttribute("css", "success");
+        
+        return "redirect:/admin/products/product?id=" + productToBeAdd.getProductNo() ;
     }
 
-    @InitBinder(value = "newProduct")
-    public void newProductInitializeBinder(WebDataBinder webDataBinder){
+    
+    @InitBinder(value = "newProductForm")
+    public void newProductBinder(WebDataBinder webDataBinder){
         webDataBinder.setDisallowedFields("productId", "createDate");
         webDataBinder.setValidator(productValidator);
     }
     
-    @InitBinder(value = "modifyProduct")
-    public void modyfyProductInitializeBinder(WebDataBinder webDataBinder){
+    
+    @InitBinder(value = "updateProductForm")
+    public void updateProductBinder(WebDataBinder webDataBinder){
         webDataBinder.setDisallowedFields("productId", "productNo", "productImage", "productUserManual", "createDate");
     }
+    
+    
+    @RequestMapping(value = "/{params}/delete")
+    public String deleteProductById(@MatrixVariable(pathVar = "params") Map<String, List<String>> paramList, Model model, final RedirectAttributes redirect){
+        System.out.println("### delete product controller");
+        Long deleteId = Long.parseLong(paramList.get("id").get(0));
+        String deleteProductNo = paramList.get("productNo").get(0);
+        
+        productService.deleteById( deleteId );
+        
+        redirect.addFlashAttribute("css", "success");
+        redirect.addFlashAttribute("success", true);
+        redirect.addFlashAttribute("deletedProductNo", deleteProductNo);
+
+        return "redirect:/admin/products";
+    }
+    
     
     @ModelAttribute("productStatus")
     public List<ProductStatus> getAllProductStatus(){

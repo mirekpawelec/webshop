@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import pl.pawelec.webshop.model.Product;
+import pl.pawelec.webshop.model.Product.newForm;
 
 /**
  *
@@ -24,6 +25,7 @@ public class ProductValidator implements Validator{
     private Set<Validator> springValidators;
      
     public ProductValidator() {
+        System.out.println("### tworzę ProductValidator");
         springValidators = new HashSet<Validator>();
     }
 
@@ -38,7 +40,7 @@ public class ProductValidator implements Validator{
 //
     @Override
     public void validate(Object validatedClass, Errors errors) {            
-        Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(validatedClass, Product.addForm.class);
+        Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(validatedClass, newForm.class);
         for(ConstraintViolation<Object> constraintViolation : constraintViolations){
             String propertyPath = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();

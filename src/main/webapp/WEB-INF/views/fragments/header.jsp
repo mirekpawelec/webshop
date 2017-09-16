@@ -28,6 +28,11 @@
             min-height: 850px;
             text-align: center;
         }
+        hr.gray{
+            margin: 15px;
+            border-top: 1px solid #ccc;
+            width: 100%;
+        }
         footer{
             font-size: 17px;
             padding: 25px 0;
@@ -42,18 +47,18 @@
 <body>
     <header>
         <spring:url value="/home" var="homePage"/>
-        <spring:url value="/admin/products" var="allProduct"/>
+        <spring:url value="/admin/products" var="allProducts"/>
         <spring:url value="" var="contact" />
 
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="${homePage}">Web Shop</a>
+                    <a class="navbar-brand" href="${homePage}">  <spring:message code="header.navi.nameHomePage.label"/> </a>
                 </div>
                 <div class="navbar">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="${allProduct}">Products</a></li>
-                        <li><a href="${contact}">Contact</a></li>
+                        <li class="active"><a href="${allProducts}"> <spring:message code="header.navi.allProducts.label"/> </a></li>
+                        <li><a href="${contact}"> <spring:message code="header.navi.contact.label"/> </a></li>
                     </ul>
                 </div>
             </div>

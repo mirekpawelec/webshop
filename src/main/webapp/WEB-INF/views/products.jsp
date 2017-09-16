@@ -9,12 +9,12 @@
 <!DOCTYPE html>
 <html lang="pl">
 
-    <jsp:include page="./fragments/header.jsp"/>
-        <br/>
-        <spring:url value="/admin/products/add" var="addNewProductUrl"/>
-        <button class="btn btn-default" onclick="location.href='${addNewProductUrl}'"> <spring:message code="products.button.newProduct.label"/> </button> 
+    <jsp:include page="./fragments/header.jsp"/>      
         
         <section class="main">
+            
+            <jsp:include page="./fragments/navi.jsp"/>
+            
             <div class="container">
                 <div class="row">
                     <div class="page-header">
@@ -31,6 +31,8 @@
                             <strong> <spring:message code="products.table.processResult.message" arguments="${deletedProductNo}"/> </strong>
                         </div>                        
                     </c:if>
+                </div>
+                <div class="row">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <tr>
@@ -52,18 +54,25 @@
                                     <td>${item.status}</td>
                                     <td>
                                         <spring:url value="/admin/products/product?id=${item.productId}" var="productUrl"/>
-                                        <spring:url value="/admin/products/${item.productId}/modify" var="updateUrl"/>
-                                        <spring:url value="/admin/products/param;id=${item.productId};productNo=${item.productNo}/delete" var="deleteUrl"/> 
-
-                                        <button class="btn btn-info btn-xs" onclick="location.href='${productUrl}'"> 
+                                        <spring:url value="/admin/products/${item.productId}/update" var="updateUrl"/>
+                                        <spring:url value="/admin/products/param;id=${item.productId};productNo=${item.productNo}/delete" var="deleteUrl"/>   
+                                        
+                                        <a href="${productUrl}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-check"> </span>
                                             <spring:message code="products.button.selectProduct.label"/> 
+                                        </a>
+                                        <a href="${updateUrl}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"> </span>
+                                            <spring:message code="products.button.updateProduct.label"/> 
+                                        </a>
+                                        <a href="${deleteUrl}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"> </span>
+                                            <spring:message code="products.button.deleteProduct.label"/> 
+                                        </a>
+                                        
+<!--                                        <button class="btn btn-primary btn-sm" style="width: 75px;" onclick="location.href='$ {updateUrl}'">
+                                        <spring :message code="products.button.updateProduct.label"/>
                                         </button>
-                                        <button class="btn btn-warning btn-xs" onclick="location.href='${updateUrl}'">
-                                            <spring:message code="products.button.updateProduct.label"/>
-                                        </button>
-                                            <button class="btn btn-danger btn-xs" onclick="location.href='${deleteUrl}'">
-                                            <spring:message code="products.button.deleteProduct.label"/>
-                                        </button>
+                                        <button class="btn btn-danger btn-sm" style="width: 75px;" onclick="location.href='$ {deleteUrl}'">
+                                            <spring :message code="products.button.deleteProduct.label"/>
+                                        </button>-->
                                     </td>
                                 </tr>
                             </c:forEach>

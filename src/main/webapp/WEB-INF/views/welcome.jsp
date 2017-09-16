@@ -11,6 +11,9 @@
     <jsp:include page="./fragments/header.jsp"/>
     
         <section class="main">
+            
+            <jsp:include page="./fragments/navi.jsp"/>
+            
             <h2>Welcome</h2>
             
         </section>

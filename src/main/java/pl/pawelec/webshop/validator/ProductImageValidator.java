@@ -30,11 +30,12 @@ public class ProductImageValidator implements Validator{
 
     @Override
     public void validate(Object validatedClass, Errors errors) {
-        Product product = (Product) validatedClass;
-        
-        if(!product.getProductImage().isEmpty() && product.getProductImage().getSize() > sizeImage ){
-            errors.rejectValue("productImage", "pl.pawelec.webshop.validator.ProductImageValidator.message");
-        }
+        try{
+            Product product = (Product) validatedClass;
+            if(!product.getProductImage().isEmpty() && product.getProductImage().getSize() > sizeImage ){
+                errors.rejectValue("productImage", "pl.pawelec.webshop.validator.ProductImageValidator.message");
+            }
+        } catch(NullPointerException n){}
     }
     
 }

@@ -35,9 +35,8 @@ import pl.pawelec.webshop.validator.ProductNo;
 @Entity
 @Table(name = "product" )
 public class Product implements Serializable{
-    
-    public interface addForm{}
-    public interface modifyForm{}
+    public interface newForm{}
+    public interface updateForm{}
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -94,9 +93,9 @@ public class Product implements Serializable{
         this.productId = productId;
     }
     
-    @NotEmpty(groups = {addForm.class}, message = "{NotEmpty.Product.productNo.validation}")
-    @Pattern(groups = {addForm.class}, regexp = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}", message = "{Pattern.Product.productNo.validation}")
-    @ProductNo(groups = {addForm.class} )
+    @NotEmpty(groups = {newForm.class}, message = "{NotEmpty.Product.productNo.validation}")
+    @Pattern(groups = {newForm.class}, regexp = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}", message = "{Pattern.Product.productNo.validation}")
+    @ProductNo(groups = {newForm.class})
     public String getProductNo() {
         return productNo;
     }
@@ -105,8 +104,8 @@ public class Product implements Serializable{
         this.productNo = productNo;
     }
     
-    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.name.validation}")
-    @Size(groups = {addForm.class, modifyForm.class}, max = 50, message = "{Size.Product.name.validation}")
+    @NotEmpty(groups = {newForm.class, updateForm.class}, message = "{NotEmpty.Product.name.validation}")
+    @Size(groups = {newForm.class, updateForm.class}, max = 50, message = "{Size.Product.name.validation}")
     public String getName() {
         return name;
     }
@@ -115,8 +114,8 @@ public class Product implements Serializable{
         this.name = name;
     }
     
-    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.manufacturer.validation}")
-    @Size(groups = {addForm.class, modifyForm.class}, max = 50, message = "{Size.Product.manufacturer.validation}")
+    @NotEmpty(groups = {newForm.class, updateForm.class}, message = "{NotEmpty.Product.manufacturer.validation}")
+    @Size(groups = {newForm.class, updateForm.class}, max = 50, message = "{Size.Product.manufacturer.validation}")
     public String getManufacturer() {
         return manufacturer;
     }
@@ -125,8 +124,8 @@ public class Product implements Serializable{
         this.manufacturer = manufacturer;
     }
     
-    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.category.validation}")
-    @Size(groups = {addForm.class, modifyForm.class}, max = 25, message = "{Size.Product.category.validation}")
+    @NotEmpty(groups = {newForm.class, updateForm.class}, message = "{NotEmpty.Product.category.validation}")
+    @Size(groups = {newForm.class, updateForm.class}, max = 25, message = "{Size.Product.category.validation}")
     public String getCategory() {
         return category;
     }
@@ -135,7 +134,7 @@ public class Product implements Serializable{
         this.category = category;
     }
     
-    @NotEmpty(groups = {addForm.class, modifyForm.class}, message = "{NotEmpty.Product.description.validation}")
+    @NotEmpty(groups = {newForm.class, updateForm.class}, message = "{NotEmpty.Product.description.validation}")
     public String getDescription() {
         return description;
     }
@@ -144,9 +143,9 @@ public class Product implements Serializable{
         this.description = description;
     }
     
-    @NotNull(groups = {addForm.class, modifyForm.class}, message = "{NotNull.Product.unitPrice.validation}")
-    @Min(groups = {addForm.class, modifyForm.class}, value = 1, message = "{Min.Product.unitPrice.validation}")
-    @Digits(groups = {addForm.class, modifyForm.class}, integer = 7, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
+    @NotNull(groups = {newForm.class, updateForm.class}, message = "{NotNull.Product.unitPrice.validation}")
+    @Min(groups = {newForm.class, updateForm.class}, value = 1, message = "{Min.Product.unitPrice.validation}")
+    @Digits(groups = {newForm.class, updateForm.class}, integer = 7, fraction = 2, message = "{Digits.Product.unitPrice.validation}")
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
@@ -155,9 +154,9 @@ public class Product implements Serializable{
         this.unitPrice = unitPrice;
     }
     
-    @NotNull(groups = {addForm.class, modifyForm.class}, message = "{NotNull.Product.quantityInBox.validation}")
-    @Min(groups = {addForm.class, modifyForm.class}, value = 1, message = "{Min.Product.quantityInBox.validation}")
-    @Digits(groups = {addForm.class, modifyForm.class}, integer = 4, fraction = 0, message = "{Digits.Product.quantityInBox.validation}")
+    @NotNull(groups = {newForm.class, updateForm.class}, message = "{NotNull.Product.quantityInBox.validation}")
+    @Min(groups = {newForm.class, updateForm.class}, value = 1, message = "{Min.Product.quantityInBox.validation}")
+    @Digits(groups = {newForm.class, updateForm.class}, integer = 4, fraction = 0, message = "{Digits.Product.quantityInBox.validation}")
     public Integer getQuantityInBox() {
         return quantityInBox;
     }
