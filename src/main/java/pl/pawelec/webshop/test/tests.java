@@ -5,16 +5,11 @@
  */
 package pl.pawelec.webshop.test;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import static org.hibernate.annotations.common.util.impl.LoggerFactory.logger;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import pl.pawelec.webshop.converter.LocalDateTimeConverter;
-import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.service.ProductService;
 
 /**
@@ -100,5 +95,21 @@ public class tests {
 //        System.out.println("ldt -> ts= " + ldtc.convertToDatabaseColumn(dt) );
 //        
 //        System.out.println( ps.getOneByProductNo("123.123.13") );
+
+        Logger log = Logger.getLogger(tests.class);
+        
+        log.setLevel(Level.DEBUG);
+
+        log.trace("Trace Message!");
+        log.debug("Debug Message!");
+        log.info("Info Message!");
+        log.warn("Warn Message!");
+        log.error("Error Message!", new Exception("New exception!"));
+        log.fatal("Fatal Message!");
+      
+        if(log.isDebugEnabled()){
+          log.debug("to działa?");
+        }
+
     }
 }

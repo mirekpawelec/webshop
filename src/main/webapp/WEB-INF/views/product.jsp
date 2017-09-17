@@ -48,75 +48,75 @@
                         <img src="${imageUrl}" class="img-responsive center-block" alt="Image"/>   
                     </div>
                     
-                    <div class="col-xs-12 col-sm-7 col-md-offset-1 col-md-6 col-lg-offset-1 col-lg-6 text-left">
+                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 text-left">
                         <div class="row">
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-5"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.productNo.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
-                                ${product.productNo}
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+                                <span class="label label-warning" style="font-size: 20px;">${product.productNo}</span>
                             </div>
                         </div>
-                            
+                            <br>
                         <div class="row">
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-5"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.name.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
                                 ${product.name}
                             </div>
                         </div>
-                            
+                            <br>
                         <div class="row">
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-5"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.manufacturer.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
                                 ${product.manufacturer}
                             </div>
                         </div>
-                            
+                            <br>
                         <div class="row">
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-5"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.category.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
                                 ${product.category}
                             </div>
                         </div>
-                            
+                            <br>
                         <div class="row">
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-5"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.description.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
                                 ${product.description}
                             </div>
                         </div>
-                            
+                            <br>
                         <div class="row">
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.unitPrice.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
-                                ${product.unitPrice}
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
+                                <span class="label label-default" style="font-size: 20px;">${product.unitPrice}</span>
                             </div>
                         </div>
-                            
+                            <br>
                         <div class="row">
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-5"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.quantityInBox.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
                                 ${product.quantityInBox}
                             </div>
                         </div>
-                            
+                            <br>    
                         <div class="row">   
-                            <label class="col-xs-12 col-sm-6 col-md-5 col-lg-5"> 
+                            <label class="col-xs-12 col-sm-4 col-md-3 col-lg-3"> 
                                 <spring:message code="product.list.status.label"/>
                             </label>
-                            <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+                            <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
                                 ${product.status}
                             </div>
                         </div> 

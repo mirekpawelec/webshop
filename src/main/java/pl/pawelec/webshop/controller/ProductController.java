@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,9 +52,11 @@ public class ProductController {
     @Autowired
     private ProductValidator productValidator;
     
+    private Logger logger = Logger.getLogger(ProductController.class);
+    
     @RequestMapping
     public String allProducts(Model model){
-        System.out.println("### show all products controller");
+        logger.info("### allProducts");
         
         List<Product> products = productService.getAll();
         products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getProductStatusDescription()) );
@@ -67,7 +70,7 @@ public class ProductController {
     
     @RequestMapping("/product")
     public String getProductById(@RequestParam("id") String productId, Model model){
-        System.out.println("### show product controller");
+        logger.info("### getProductById");
         
         Product product;
         String regex = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}";
@@ -88,7 +91,7 @@ public class ProductController {
     
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String updateProductForm(@PathVariable("id") String productId, Model model){
-        System.out.println("### modify product controller (GET)");
+        logger.info("### updateProductForm");
         
         Product updateProduct = productService.getOneById(Long.valueOf(productId));
         model.addAttribute("updateProductForm", updateProduct);
@@ -103,7 +106,7 @@ public class ProductController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String processUpdateProductForm(@ModelAttribute("updateProductForm") @Validated({updateForm.class}) Product productToBeUpdate, 
                                                BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
-        System.out.println("### process modify product controller (POST)");
+        logger.info("### processUpdateProductForm");
         if(result.hasErrors()) return "updateProductForm";
         
         String[] suppresedFields = result.getSuppressedFields();
@@ -124,7 +127,7 @@ public class ProductController {
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addProductForm(Model model, HttpServletRequest request){
-        System.out.println("### add new product controller (GET)");
+        logger.info("### addProductForm");
         
         Product product = new Product();
         model.addAttribute("newProductForm", product);
@@ -137,7 +140,7 @@ public class ProductController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddProductForm(@ModelAttribute("newProductForm") @Validated({newForm.class}) Product productToBeAdd, 
                                                 BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
-        System.out.println("### process add new product controller (POST)");  
+        logger.info("### processAddProductForm"); 
 
         if(result.hasErrors()) return "newProductForm";
 
@@ -196,7 +199,7 @@ public class ProductController {
     
     @RequestMapping(value = "/{params}/delete")
     public String deleteProductById(@MatrixVariable(pathVar = "params") Map<String, List<String>> paramList, Model model, final RedirectAttributes redirect){
-        System.out.println("### delete product controller");
+        logger.info("### deleteProductById");
         Long deleteId = Long.parseLong(paramList.get("id").get(0));
         String deleteProductNo = paramList.get("productNo").get(0);
         

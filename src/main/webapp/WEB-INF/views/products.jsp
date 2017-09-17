@@ -66,13 +66,6 @@
                                         <a href="${deleteUrl}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"> </span>
                                             <spring:message code="products.button.deleteProduct.label"/> 
                                         </a>
-                                        
-<!--                                        <button class="btn btn-primary btn-sm" style="width: 75px;" onclick="location.href='$ {updateUrl}'">
-                                        <spring :message code="products.button.updateProduct.label"/>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" style="width: 75px;" onclick="location.href='$ {deleteUrl}'">
-                                            <spring :message code="products.button.deleteProduct.label"/>
-                                        </button>-->
                                     </td>
                                 </tr>
                             </c:forEach>
