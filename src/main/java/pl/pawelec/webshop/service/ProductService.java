@@ -25,4 +25,8 @@ public interface ProductService {
     boolean exists(Long Id);
     List<Product> getByUnitsPrice(Double minPrice, Double maxPrice);
     Product getOneByProductNo(String productNo);
+    List<String> getAllManufacturers();
+    List<String> getAllCategories();
+    List<Product> getByManufacturer(String manufacturer);
+    
 }

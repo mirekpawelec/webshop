@@ -96,20 +96,20 @@ public class tests {
 //        
 //        System.out.println( ps.getOneByProductNo("123.123.13") );
 
-        Logger log = Logger.getLogger(tests.class);
-        
-        log.setLevel(Level.DEBUG);
+//        Logger log = Logger.getLogger(tests.class);
+//        log.setLevel(Level.DEBUG);
+//        log.trace("Trace Message!");
+//        log.debug("Debug Message!");
+//        log.info("Info Message!");
+//        log.warn("Warn Message!");
+//        log.error("Error Message!", new Exception("New exception!"));
+//        log.fatal("Fatal Message!");
+//        if(log.isDebugEnabled()){
+//          log.debug("to działa?");
+//        }
 
-        log.trace("Trace Message!");
-        log.debug("Debug Message!");
-        log.info("Info Message!");
-        log.warn("Warn Message!");
-        log.error("Error Message!", new Exception("New exception!"));
-        log.fatal("Fatal Message!");
-      
-        if(log.isDebugEnabled()){
-          log.debug("to działa?");
-        }
+//        ps.getAllManufacturers().forEach(System.out::println);
+//        ps.getAllCategories().forEach(System.out::println);
 
     }
 }

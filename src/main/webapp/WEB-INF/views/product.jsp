@@ -126,10 +126,17 @@
                 <hr class="gray">
                 
                 <div class="row">
-                        <spring:url value="/admin/products" var="productsUrl"/>
-                        <button class="btn btn-primary pull-right" onclick="location.href='${productsUrl}'">
-                            <span class="glyphicon glyphicon-hand-left"></span> <spring:message code="product.button.bactToProducts.label"/> 
-                        </button>
+                        <spring:url value="/home" var="homePageUrl"/>
+                        <spring:url value="" var="addToCartUrl"/>
+                        
+                        <div class="pull-right">
+                            <button class="btn btn-default" onclick="location.href='${homePageUrl}'">
+                                <span class="glyphicon glyphicon-hand-left"></span> <spring:message code="product.button.backHomePage.label"/> 
+                            </button>
+                            <button class="btn btn-primary" onclick="location.href='${addToCartUrl}'">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> <spring:message code="product.button.addToCart.label"/> 
+                            </button>
+                        </div>
                 </div>
             </div>
         </section>

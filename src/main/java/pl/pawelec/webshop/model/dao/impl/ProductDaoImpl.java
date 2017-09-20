@@ -5,11 +5,11 @@
  */
 package pl.pawelec.webshop.model.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import pl.pawelec.webshop.exception.NoProductFoundUnderProductNoException;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.dao.AbstrDao;
@@ -22,7 +22,6 @@ import pl.pawelec.webshop.model.dao.ProductDao;
 @Repository
 public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
     
-    @Override
     public List<Product> getByUnitsPrice(Double minPrice, Double maxPrice) {
         return getEntityManager().createQuery("from Product where unitPrice between :minPrice and :maxPrice")
                                 .setParameter("minPrice", minPrice)
@@ -30,7 +29,6 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
                                 .getResultList();
     }
 
-    @Override
     public void delete(Product entity) {
         EntityManager em = getEntityManager();
         Product product = em.find(Product.class, entity.getProductId());
@@ -39,7 +37,6 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
         em.remove(product);
     }
 
-    @Override
     public Product getOneByProductNo(String productNo){
         Product product = null;
         try{
@@ -48,5 +45,28 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
             throw new NoProductFoundUnderProductNoException(productNo);
         }
         return product;
+    }
+
+    public List<String> getAllManufacturers() {
+        List<String> manufacturers = new ArrayList<String>();
+        try{
+            manufacturers = getEntityManager().createNativeQuery("SELECT p.manufacturer FROM Product P GROUP BY P.manufacturer ORDER BY 1").getResultList();
+        } catch (NoResultException nr){}
+        return manufacturers;
+    }
+
+    public List<String> getAllCategories() {
+        try{
+            return getEntityManager().createNativeQuery("SELECT CATEGORY FROM Product GROUP BY CATEGORY ORDER BY 1").getResultList();
+        } catch (NoResultException nr){}
+        return null;
+    }
+
+    @Override
+    public List<Product> getByManufacturer(String manufacturer) {
+        try{
+            return getEntityManager().createNativeQuery("FROM Product WHERE MANUFACTURER = :manufacturer").setParameter("manufacturer", manufacturer).getResultList();
+        } catch (NoResultException nr){}
+        return null;
     }
 }

@@ -79,4 +79,19 @@ public class ProductServiceImpl implements ProductService{
     public Product getOneByProductNo(String productNo){
         return productDao.getOneByProductNo(productNo);
     }
+
+    @Override
+    public List<String> getAllCategories() {
+        return productDao.getAllCategories();
+    }
+
+    @Override
+    public List<String> getAllManufacturers() {
+        return productDao.getAllManufacturers();
+    }
+
+    @Override
+    public List<Product> getByManufacturer(String manufacturer) {
+        return productDao.getByManufacturer(manufacturer);
+    }
 }

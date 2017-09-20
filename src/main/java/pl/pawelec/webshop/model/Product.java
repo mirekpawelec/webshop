@@ -47,9 +47,9 @@ public class Product implements Serializable{
     @Column //(nullable = false, length = 50)
     private String name;
     @Column //(nullable = false, length = 50)
-    private String manufacturer;
+    protected String manufacturer;
     @Column //(nullable = false, length = 25)
-    private String category;
+    protected String category;
     @Column //(nullable = false)
     private String description;
     @Column //(nullable = false, precision = 7, scale = 2)
@@ -228,7 +228,7 @@ public class Product implements Serializable{
 
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name + ", manufacturer=" + manufacturer + ", category=" + category + ", description=" + description + ", unitPrice=" + unitPrice + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" + createDate + '}';
+        return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name + ", manufacturer=" + manufacturer + ", category=" + category + ", description=" + description.isEmpty() + ", unitPrice=" + unitPrice + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" + createDate + '}';
     }
     
     

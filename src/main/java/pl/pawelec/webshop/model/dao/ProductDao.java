@@ -16,5 +16,8 @@ import pl.pawelec.webshop.model.Product;
  */
 public interface ProductDao extends Dao<Product>{
     List<Product> getByUnitsPrice(Double minPrice, Double maxPrice);
+    List<Product> getByManufacturer(String manufacturer);
     Product getOneByProductNo(String productNo);
+    List<String> getAllManufacturers();
+    List<String> getAllCategories();
 }

@@ -9,7 +9,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <spring:url value="/resource/css/bootstrap.min.css" var="bootstrapCss" />
-
+    <spring:url value="/resource/css/style.css" var="styleCss" />
     <c:choose>
         <c:when test="${not empty jspFile}">
             <title>
@@ -23,6 +23,7 @@
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="${bootstrapCss}" />
+    <link rel="stylesheet" href="${styleCss}" />
     <style>
         section.main{
             min-height: 850px;
