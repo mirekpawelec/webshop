@@ -7,22 +7,69 @@ package pl.pawelec.webshop.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import pl.pawelec.webshop.converter.LocalDateTimeConverter;
 
 /**
  *
  * @author mirek
  */
+@Entity
+@Table(name = "repository")
 public class Repository {
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @Column(name = "loadunit_id", nullable = false)
     private Long loadunitId;
-    private Long productId;
+    
+    @Column(name = "loadunit_no", nullable = false, unique = true, length = 10)
+    private String loadunitNo;
+    
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id") 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Product productId;
+    
+    @Column(nullable = false)
     private Integer quantity;
-    private Long placeId;
+    
+    @JoinColumn(name = "place_id", referencedColumnName = "place_id") 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Storageplace placeId;
+    
+    /**
+     *  if new, used, refurbished 
+     */
+    @Column(nullable = false)
     private Short conditions;
+    
+    @Column(nullable = false)
     private Short qualityStatus;
+    
+    @Column(length = 2)
     private String status;
+    
+    @Column 
+    @Temporal(TemporalType.TIMESTAMP) 
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime lastModifikationDate;
+    
+    @Column 
+    @Temporal(TemporalType.TIMESTAMP) 
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime createDate;
-
+            
     public Repository() {
     }
 
@@ -33,12 +80,19 @@ public class Repository {
     public void setLoadunitId(Long loadunitId) {
         this.loadunitId = loadunitId;
     }
+    
+    public String getLoadunitNo() {
+        return loadunitNo;
+    }
 
-    public Long getProductId() {
+    public void setLoadunitNo(String loadunitNo) {
+        this.loadunitNo = loadunitNo;
+    }
+    public Product getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(Product productId) {
         this.productId = productId;
     }
 
@@ -50,11 +104,11 @@ public class Repository {
         this.quantity = quantity;
     }
 
-    public Long getPlaceId() {
+    public Storageplace getPlaceId() {
         return placeId;
     }
 
-    public void setPlaceId(Long placeId) {
+    public void setPlaceId(Storageplace placeId) {
         this.placeId = placeId;
     }
 

@@ -7,23 +7,65 @@ package pl.pawelec.webshop.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import pl.pawelec.webshop.converter.LocalDateTimeConverter;
 
 /**
  *
  * @author mirek
  */
+@Entity
+@Table(name = "storageplace")
 public class Storageplace {
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @Column(name = "place_id", nullable = false)
     private Long placeId;
+    
+    @Column(name = "place_no", nullable = false, unique = true, length = 25)
     private String placeNo;
+    
+    @Column(name = "name", nullable = false, length = 100)
     private String placaName;
+    
+    @Column(name = "area_id")
     private Long areaId;    
+    
+    @Column(precision = 4)
     private Integer height;
+    
+    @Column(precision = 4)
     private Integer width;
+    
+    @Column(precision = 4)
     private Integer depth;
+    
+    @Column(precision = 4, scale = 2)
     private Double volume;
+    
+    @Column(length = 2)
     private String status;
+    
+    @Column
+    @Convert(converter = LocalDateTimeConverter.class)
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
+    @OneToMany(mappedBy = "placeId", fetch = FetchType.EAGER)
+    private Set<Repository> repositorySet;
+    
     public Storageplace() {
     }
 
@@ -110,6 +152,14 @@ public class Storageplace {
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    public Set<Repository> getRepositorySet() {
+        return repositorySet;
+    }
+
+    public void setRepositorySet(Set<Repository> repositorySet) {
+        this.repositorySet = repositorySet;
     }
 
     @Override

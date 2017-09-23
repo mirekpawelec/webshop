@@ -10,13 +10,19 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -42,29 +48,45 @@ public class Product implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "product_id")
     private Long productId;
+    
     @Column(name = "product_no", unique = true)
     private String productNo;
+    
     @Column //(nullable = false, length = 50)
     private String name;
+    
     @Column //(nullable = false, length = 50)
-    protected String manufacturer;
+    private String manufacturer;
+    
     @Column //(nullable = false, length = 25)
-    protected String category;
+    private String category;
+    
+    @Lob
     @Column //(nullable = false)
     private String description;
+    
     @Column //(nullable = false, precision = 7, scale = 2)
     private BigDecimal unitPrice;
+    
     @Column //(nullable = false, precision = 4, scale = 0)
     private Integer quantityInBox;
+    
     @Column //(nullable = true, length = 2)
     private String status;
+    
     @Convert(converter = LocalDateTimeConverter.class)
     @Column //(nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
+    
     @Transient
     private MultipartFile productImage;
+    
     @Transient
     private MultipartFile productUserManual;
+    
+    @OneToMany(mappedBy = "productId", fetch = FetchType.EAGER)
+    private Set<Repository> repositorySet;
     
     public Product(){}
 
@@ -79,6 +101,7 @@ public class Product implements Serializable{
         this.quantityInBox = builder.quantityInBox;
         this.status = builder.status;
         this.createDate = builder.createDate;
+        this.repositorySet = builder.repositorySet;
     }
     
     public boolean isNew(){
@@ -135,6 +158,7 @@ public class Product implements Serializable{
     }
     
     @NotEmpty(groups = {newForm.class, updateForm.class}, message = "{NotEmpty.Product.description.validation}")
+    @Size(groups = {newForm.class, updateForm.class}, max = 65535, message = "{Size.Product.description.validation}")
     public String getDescription() {
         return description;
     }
@@ -196,7 +220,14 @@ public class Product implements Serializable{
     public void setProductUserManual(MultipartFile productUserManual) {
         this.productUserManual = productUserManual;
     }
-            
+    
+    public Set<Repository> getRepositorySet() {
+        return repositorySet;
+    }
+
+    public void setRepositorySet(Set<Repository> repositorySet) {
+        this.repositorySet = repositorySet;
+    }
     @Override
     public int hashCode() {
         int hash = 5;
@@ -243,7 +274,8 @@ public class Product implements Serializable{
             private Integer quantityInBox;
             private String status;
             private LocalDateTime createDate;
-
+            private Set<Repository> repositorySet;
+            
             public Builder withProductId(Long productId){
                 this.productId=productId;
                 return this;
@@ -282,6 +314,10 @@ public class Product implements Serializable{
             }
             public Builder withCreateDate(LocalDateTime createDate){
                 this.createDate=createDate;
+                return this;
+            }
+            public Builder withProductId(Set<Repository> repository){
+                this.repositorySet=repository;
                 return this;
             }
             public Product build(){
