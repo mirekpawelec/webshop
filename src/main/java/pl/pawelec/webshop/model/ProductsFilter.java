@@ -11,11 +11,11 @@ import java.math.BigDecimal;
  *
  * @author mirek
  */
-public class FilterProduct extends Product{
+public class ProductsFilter extends Product{
     private BigDecimal minUnitPrice;
     private BigDecimal maxUnitPrice;
 
-    public FilterProduct() {
+    public ProductsFilter() {
     }
 
     public BigDecimal getMinUnitPrice() {
@@ -36,7 +36,7 @@ public class FilterProduct extends Product{
 
     @Override
     public String toString() {
-        return "FilterProducts{" + "minUnitPrice=" + minUnitPrice + ", maxUnitPrice=" + maxUnitPrice + '}';
+        return "FilterProducts{ manufacturer=" + super.getManufacturer() + " , category=" + super.getCategory() + " , minUnitPrice=" + minUnitPrice + " , maxUnitPrice=" + maxUnitPrice + '}';
     }
 
 }

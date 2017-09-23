@@ -6,14 +6,16 @@
 
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<div class="container-fluid">
-    <footer class="container-fluid">
-        <spring:message code="footer.footer.copyright.label"/>
-    </footer>
-</div>
-
+<spring:url value="/resource/js/script.js" var="ownJs" />
 <spring:url value="/resource/js/jquery.min.js" var="jQueryJs" />
 <spring:url value="/resource/js/bootstrap.min.js" var="bootstrapJs" />
+<spring:message code="footer.footer.copyright.label" var="copyright"/>
 
+<div class="container-fluid">
+    <footer class="container-fluid">
+        ${copyright}
+    </footer>
+</div>
+<script src="${ownJs}"></script>
 <script src="${jQueryJs}"></script>
 <script src="${bootstrapJs}"></script>

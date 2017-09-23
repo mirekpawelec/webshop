@@ -1,18 +1,34 @@
-.panel-height{
+.panel-min-height{
     min-width: 90px;
 }
-
-.box-img{
+.box-img-lg{
     height: 200px;
 }
-
-.box-img img{
+.box-img-md{
+    height: 150px;
+}
+.thumbnail .box-img-lg img{
     max-height: 100%;
     max-width: 100%;
-    padding: 15px 0px;
+    padding: 6px 0px;
 
 }
+.thumbnail .box-img-md img{
+    max-height: 100%;
+    max-width: 100%;
+    padding: 3px 0px;
 
+}
 .thumbnail .caption .caption-box{
-    height: 75px;
+    height: 70px;
+}
+.thumbnail .caption .price-box{
+    height: 15px;
+}
+.min-width{
+    min-width: 350px;
+}
+.row .col-md-9 .col-md-4{
+    padding-left: 2px;
+    padding-right: 2px;
 }

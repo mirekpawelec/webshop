@@ -8,8 +8,8 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <spring:url value="/admin/products/add" var="addNewProductUrl"/>
-<spring:url value="/admin/products?language=pl" var="polishLanguageUrl"/>
-<spring:url value="/admin/products?language=en" var="englishLanguageUrl"/>
+<spring:url value="/home?language=pl" var="polishLanguageUrl"/>
+<spring:url value="/home?language=en" var="englishLanguageUrl"/>
 
 <div class="container">
     <div class="row">

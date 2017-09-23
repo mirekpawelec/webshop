@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.pawelec.webshop.model.FilterProduct;
+import pl.pawelec.webshop.model.ProductsFilter;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
@@ -43,66 +43,48 @@ public class HomeController {
     private ProductService productService;
     
     @RequestMapping
-    public String getAllProducts(Model model, HttpServletRequest request){
+    public String getAllProducts(@ModelAttribute("filterOfProducts") ProductsFilter filterOfProducts, Model model, BindingResult result){
         logger.info("### getAllProducts");
-        List<Product> afterFilteringProducts = new ArrayList<Product>(); 
         
-//        request.getParameterMap().entrySet().forEach((m) -> System.out.println("l:key=" + m.getKey() + " , l:value=" + Arrays.toString(m.getValue())));
-//        afterFilteringProducts = productService.getAll();
+        if(result.getSuppressedFields().length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól" + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
+
+        List<Product> afterFilteringProducts = new ArrayList<Product>();
+//        System.out.println("\n Before:");
+//        afterFilteringProducts = productService.getAll();        
 //        afterFilteringProducts.forEach(System.out::println);
         
         afterFilteringProducts = productService.getAll().parallelStream()
-                .filter( (product) ->  {if(request.getParameter("manufacturer")!=null && !request.getParameter("manufacturer").equals("NONE")) 
-                                            return product.getManufacturer().equals(request.getParameter("manufacturer")); 
+                .filter( (product) ->  {if( filterOfProducts.getManufacturer()!=null && !filterOfProducts.getManufacturer().equals("NONE")) 
+                                            return product.getManufacturer().equals(filterOfProducts.getManufacturer()); 
                                         else 
                                             return true; 
                         })
-                .filter( (product) ->  {if(request.getParameter("category")!=null && !request.getParameter("category").equals("NONE")) 
-                                            return product.getCategory().equals(request.getParameter("category"));
+                .filter( (product) ->  {if( filterOfProducts.getCategory()!=null && !filterOfProducts.getCategory().equals("NONE")) 
+                                            return product.getCategory().equals(filterOfProducts.getCategory());
                                         else
                                             return true;
                         })
-                .filter( (product) ->  {if(request.getParameter("minUnitPrice")!=null && !request.getParameter("minUnitPrice").isEmpty()) 
-                                            return product.getUnitPrice().compareTo(new BigDecimal(request.getParameter("minUnitPrice"))) >= 0;
+                .filter( (product) ->  {if( filterOfProducts.getMinUnitPrice()!=null && !filterOfProducts.getMinUnitPrice().equals(BigDecimal.valueOf(0)) ) 
+                                            return product.getUnitPrice().compareTo(filterOfProducts.getMinUnitPrice()) >= 0;
                                         else
                                             return true;
                         })
-                .filter( (product) ->  {if(request.getParameter("maxUnitPrice")!=null && !request.getParameter("maxUnitPrice").isEmpty()) 
-                                            return product.getUnitPrice().compareTo(new BigDecimal(request.getParameter("maxUnitPrice"))) <= 0;
+                .filter( (product) ->  {if( filterOfProducts.getMaxUnitPrice()!=null && !filterOfProducts.getMaxUnitPrice().equals(BigDecimal.valueOf(0)) ) 
+                                            return product.getUnitPrice().compareTo(filterOfProducts.getMaxUnitPrice()) <= 0;
                                         else
                                             return true;
                         })
-                .collect( Collectors.toList() );
+                .collect(Collectors.toList());
         
+//        System.out.println("\n After:");
 //        afterFilteringProducts.forEach(System.out::println);
         
-        if(request.getParameter("manufacturer") != null && !request.getParameter("manufacturer").equals("NONE")){
-            model.addAttribute("manufacturerSelected", request.getParameter("manufacturer"));
-        }
-        if(request.getParameter("category") != null && !request.getParameter("category").equals("NONE")){
-            model.addAttribute("categoriesSelected", request.getParameter("category"));
-        }
-        if(request.getParameter("minUnitPrice")!=null && !request.getParameter("minUnitPrice").isEmpty()){
-            model.addAttribute("minPriceEntered", request.getParameter("minUnitPrice"));
-        }
-        if(request.getParameter("maxUnitPrice")!=null && !request.getParameter("maxUnitPrice").isEmpty()){
-            model.addAttribute("maxPriceEntered", request.getParameter("maxUnitPrice"));
-        }
-        model.addAttribute("filterProducts",  new FilterProduct());
         model.addAttribute("allProducts", afterFilteringProducts);
         model.addAttribute("jspFile", "welcome");
         addAtributesToModel(model);
         return "welcome";
     }
     
-//    @RequestMapping("/filter")
-//    public String processFilterProducts(@ModelAttribute FilterProduct filterProducts, Model model, BindingResult result){
-//        logger.info("### processFilterProducts");
-//        if(result.getSuppressedFields().length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól" + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
-//        addAtributesToModel(model);
-//        model.addAttribute("jspFile", "welcome");
-//        return "redirect: home/welcome";
-//    }
     
     @RequestMapping("/product")
     public String getProductByNo(@RequestParam String productNo, Model model){
@@ -118,11 +100,13 @@ public class HomeController {
         return "product";
     }
     
-    @InitBinder(value = "filterProducts")
+    
+    @InitBinder(value = "filterOfProducts")
     public void initializeBinder(WebDataBinder binder){
-        binder.setAllowedFields("manufacturer", "category", "minUnitPrice", "maxUnitPrice");
+        binder.setAllowedFields("manufacturer", "category", "minUnitPrice", "maxUnitPrice", "language");
     }
 
+    
     private Model addAtributesToModel(Model model){
         model.addAttribute("manufacturers", productService.getAllManufacturers());
         model.addAttribute("categories", productService.getAllCategories());
