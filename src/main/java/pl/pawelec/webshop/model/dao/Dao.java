@@ -7,6 +7,7 @@ package pl.pawelec.webshop.model.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *

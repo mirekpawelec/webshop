@@ -49,4 +49,12 @@
         <bean class="pl.pawelec.webshop.interceptor.PerformanceMonitorInterceptor" />
         <bean class= "org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="language" />
     </mvc:interceptors>
+    
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+               <bean class="pl.pawelec.webshop.converter.RepositoryConverter"/>
+            </list>
+        </property>
+    </bean>
 </beans>

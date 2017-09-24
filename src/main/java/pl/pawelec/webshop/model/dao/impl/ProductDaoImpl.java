@@ -57,7 +57,7 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
 
     public List<String> getAllCategories() {
         try{
-            return getEntityManager().createNativeQuery("SELECT CATEGORY FROM Product GROUP BY CATEGORY ORDER BY 1").getResultList();
+            return getEntityManager().createNativeQuery("SELECT category FROM Product GROUP BY category ORDER BY 1").getResultList();
         } catch (NoResultException nr){}
         return null;
     }
@@ -65,7 +65,7 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
     @Override
     public List<Product> getByManufacturer(String manufacturer) {
         try{
-            return getEntityManager().createNativeQuery("FROM Product WHERE MANUFACTURER = :manufacturer").setParameter("manufacturer", manufacturer).getResultList();
+            return getEntityManager().createNativeQuery("FROM Product WHERE manufacturer = :manufacturer").setParameter("manufacturer", manufacturer).getResultList();
         } catch (NoResultException nr){}
         return null;
     }

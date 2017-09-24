@@ -17,8 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import pl.pawelec.webshop.converter.LocalDateTimeConverter;
 
 /**
@@ -51,22 +49,20 @@ public class Repository {
     /**
      *  if new, used, refurbished 
      */
-    @Column(nullable = false)
-    private Short conditions;
+    @Column(nullable = false, length = 25)
+    private String conditions;
     
     @Column(nullable = false)
     private Short qualityStatus;
     
-    @Column(length = 2)
+    @Column(nullable = false, length = 2)
     private String status;
     
-    @Column 
-    @Temporal(TemporalType.TIMESTAMP) 
+    @Column(name = "lm_date")
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime lastModifikationDate;
     
-    @Column 
-    @Temporal(TemporalType.TIMESTAMP) 
+    @Column(name = "c_date")
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime createDate;
             
@@ -112,11 +108,11 @@ public class Repository {
         this.placeId = placeId;
     }
 
-    public Short getConditions() {
+    public String getConditions() {
         return conditions;
     }
 
-    public void setConditions(Short conditions) {
+    public void setConditions(String conditions) {
         this.conditions = conditions;
     }
 

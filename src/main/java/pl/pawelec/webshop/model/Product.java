@@ -9,6 +9,8 @@ package pl.pawelec.webshop.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
@@ -21,8 +23,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -75,8 +75,7 @@ public class Product implements Serializable{
     private String status;
     
     @Convert(converter = LocalDateTimeConverter.class)
-    @Column //(nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "c_date")
     private LocalDateTime createDate;
     
     @Transient
@@ -86,7 +85,7 @@ public class Product implements Serializable{
     private MultipartFile productUserManual;
     
     @OneToMany(mappedBy = "productId", fetch = FetchType.EAGER)
-    private Set<Repository> repositorySet;
+    private Set<Repository> repositorySet = new HashSet<Repository>();
     
     public Product(){}
 
@@ -228,6 +227,7 @@ public class Product implements Serializable{
     public void setRepositorySet(Set<Repository> repositorySet) {
         this.repositorySet = repositorySet;
     }
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -259,7 +259,25 @@ public class Product implements Serializable{
 
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name + ", manufacturer=" + manufacturer + ", category=" + category + ", description=" + description.isEmpty() + ", unitPrice=" + unitPrice + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" + createDate + '}';
+        StringBuilder sb = new StringBuilder();
+        if(repositorySet.size() > 0){
+            for(Repository s : repositorySet){
+                sb.append("[loadunitId=" + s.getLoadunitId() );
+                sb.append(", loadunitNo=" + s.getLoadunitNo() );
+                sb.append(", quantity=" + s.getQuantity() );
+                sb.append(", placeId=" + s.getPlaceId().getPlaceNo() );
+                sb.append(", conditions=" + s.getConditions() );
+                sb.append(", qualityStatus=" + s.getQualityStatus() );
+                sb.append(", status=" + s.getStatus() );
+                sb.append("] ");
+            }
+        } else {
+            sb.append("[]");
+        }
+        return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name 
+             + ", manufacturer=" + manufacturer + ", category=" + category + ", description=" + description.isEmpty() 
+             + ", unitPrice=" + unitPrice + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" 
+             + createDate + ", repositorySet=" + sb.toString() +'}';   
     }
     
     
@@ -316,8 +334,8 @@ public class Product implements Serializable{
                 this.createDate=createDate;
                 return this;
             }
-            public Builder withProductId(Set<Repository> repository){
-                this.repositorySet=repository;
+            public Builder withRepositorySet(Set<Repository> repositorySet){
+                this.repositorySet=repositorySet;
                 return this;
             }
             public Product build(){

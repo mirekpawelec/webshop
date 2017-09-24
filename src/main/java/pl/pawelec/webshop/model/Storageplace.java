@@ -15,10 +15,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import pl.pawelec.webshop.converter.LocalDateTimeConverter;
 
 /**
@@ -40,8 +40,9 @@ public class Storageplace {
     @Column(name = "name", nullable = false, length = 100)
     private String placaName;
     
-    @Column(name = "area_id")
-    private Long areaId;    
+    @JoinColumn(name = "area_id", referencedColumnName = "area_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Storagearea areaId;    
     
     @Column(precision = 4)
     private Integer height;
@@ -58,9 +59,8 @@ public class Storageplace {
     @Column(length = 2)
     private String status;
     
-    @Column
+    @Column(name = "c_date")
     @Convert(converter = LocalDateTimeConverter.class)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "placeId", fetch = FetchType.EAGER)
@@ -98,11 +98,11 @@ public class Storageplace {
         this.placaName = placaName;
     }
 
-    public Long getAreaId() {
+    public Storagearea getAreaId() {
         return areaId;
     }
 
-    public void setAreaId(Long areaId) {
+    public void setAreaId(Storagearea areaId) {
         this.areaId = areaId;
     }
 

@@ -8,8 +8,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
+    
     <spring:url value="/resource/css/bootstrap.min.css" var="bootstrapCss" />
     <spring:url value="/resource/css/style.css" var="styleCss" />
+    
     <c:choose>
         <c:when test="${not empty jspFile}">
             <title>
@@ -47,21 +49,26 @@
 </head>
 <body>
     <header>
+        
         <spring:url value="/home" var="homePage"/>
-        <spring:url value="/admin/products" var="allProducts"/>
         <spring:url value="" var="contact" />
-
+        
+        <spring:message code="header.navi.nameHomePage.label" var="homepageLbl"/>
+        <spring:message code="header.navi.home.label" var="homeLbl"/> 
+        <spring:message code="header.navi.contact.label" var="contactLbl"/>
+        
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="${homePage}">  <spring:message code="header.navi.nameHomePage.label"/> </a>
+                    <a class="navbar-brand" href="${homePage}"> ${homepageLbl} </a>
                 </div>
                 <div class="navbar">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="${allProducts}"> <spring:message code="header.navi.allProducts.label"/> </a></li>
-                        <li><a href="${contact}"> <spring:message code="header.navi.contact.label"/> </a></li>
+                        <li class="active"><a href="${homePage}"> ${homeLbl} </a></li>
+                        <li><a href="${contact}"> ${contactLbl} </a></li>
                     </ul>
                 </div>
             </div>
-        </nav>                
+        </nav>    
+                    
     </header>

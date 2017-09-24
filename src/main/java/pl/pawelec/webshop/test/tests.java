@@ -5,12 +5,14 @@
  */
 package pl.pawelec.webshop.test;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import static org.hibernate.annotations.common.util.impl.LoggerFactory.logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import pl.pawelec.webshop.model.Repository;
+import pl.pawelec.webshop.model.Storageplace;
 import pl.pawelec.webshop.service.ProductService;
+import pl.pawelec.webshop.service.RepositoryService;
+import pl.pawelec.webshop.service.StorageareaService;
+import pl.pawelec.webshop.service.StorageplaceService;
 
 /**
  *
@@ -38,6 +40,9 @@ public class tests {
         //TestBean test = context.getBean(TestBean.class);
         //System.out.println(test);
         ProductService ps = context.getBean(ProductService.class);
+        StorageareaService sas = context.getBean(StorageareaService.class);
+        RepositoryService rs = context.getBean(RepositoryService.class);
+        StorageplaceService sps = context.getBean(StorageplaceService.class);
 //      
 //        Product product = new Product.Builder()
 //                .withProductNo("123.321.10")
@@ -111,5 +116,58 @@ public class tests {
 //        ps.getAllManufacturers().forEach(System.out::println);
 //        ps.getAllCategories().forEach(System.out::println);
 
+
+
+
+
+//          System.out.println( sas.count() );
+//          System.out.println( sas.exists(2l) );      
+          //Storagearea storagearea = new Storagearea();
+          //storagearea.setAreaId(3l);
+          //storagearea.setName("M3");
+          //storagearea.setDescription("Magazyn nr 3");
+          //sas.create(storagearea);
+          //System.out.println(sas.getById(2l));
+          //sas.update(storagearea);
+//          try{
+          //sas.deleteById( 1l );
+//          } catch (DataIntegrityViolationException e){
+//              System.out.println( e.getMessage() );
+//          }
+          //System.out.println( sas.getByDescription("Magazyn") );
+          //System.out.println(sas.getAll());
+          
+          
+          
+          
+        
+        //System.out.println( rs.count() );
+        //System.out.println( rs.exists(14l) );
+        //System.out.println( rs.getByLoadunitNo("1010100003") );
+        //System.out.println( rs.getById(13l) );    
+//        Repository r = new Repository();
+//        r.setLoadunitId(16l);
+//        r.setLoadunitNo( "1010100004" );
+//        r.setProductId( ps.getOneById( 35l ) );
+//        r.setQuantity(1);
+//        r.setPlaceId( sps.getById( 7l ) );
+//        r.setConditions("USED");
+//        r.setQualityStatus(Short.valueOf("0"));
+//        r.setStatus("FI");
+//        System.out.println(r);  
+        //rs.create(r);
+        //rs.update(r);
+        //rs.deleteById(16l);
+        //System.out.println( rs.getById(16l) );
+        
+        
+        
+        
+        
+//        System.out.println( sps.count() );
+//        System.out.println( sps.exists(5l) );
+//        System.out.println( sps.getByPlaceNo("G03") );
+        
+        
     }
 }

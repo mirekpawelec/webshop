@@ -4,11 +4,6 @@
  * and open the template in the editor.
  */
 package pl.pawelec.webshop.model;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  *
  * @author mirek

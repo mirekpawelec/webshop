@@ -14,7 +14,9 @@
     <jsp:include page="./fragments/header.jsp" /> 
 
         <section class="main">
-        
+            
+            <jsp:include page="./fragments/navi.jsp"/>
+            
             <div class="container text-left">
                 <div class="row">
                     <div class="page-header">

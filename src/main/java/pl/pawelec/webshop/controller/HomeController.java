@@ -7,12 +7,9 @@ package pl.pawelec.webshop.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.pawelec.webshop.model.ProductsFilter;
+import pl.pawelec.webshop.model.ProductFilter;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
@@ -43,7 +40,7 @@ public class HomeController {
     private ProductService productService;
     
     @RequestMapping
-    public String getAllProducts(@ModelAttribute("filterOfProducts") ProductsFilter filterOfProducts, Model model, BindingResult result){
+    public String getAllProducts(@ModelAttribute("filterOfProducts") ProductFilter filterOfProducts, Model model, BindingResult result){
         logger.info("### getAllProducts");
         
         if(result.getSuppressedFields().length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól" + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
@@ -54,26 +51,31 @@ public class HomeController {
 //        afterFilteringProducts.forEach(System.out::println);
         
         afterFilteringProducts = productService.getAll().parallelStream()
-                .filter( (product) ->  {if( filterOfProducts.getManufacturer()!=null && !filterOfProducts.getManufacturer().equals("NONE")) 
+                .filter( (product) -> { if( filterOfProducts.isInStock() )
+                                            return product.getRepositorySet().size() > 0;
+                                        else
+                                            return true;
+                    })
+                .filter( (product) -> { if( filterOfProducts.getManufacturer()!=null && !filterOfProducts.getManufacturer().equals("NONE") ) 
                                             return product.getManufacturer().equals(filterOfProducts.getManufacturer()); 
                                         else 
                                             return true; 
-                        })
-                .filter( (product) ->  {if( filterOfProducts.getCategory()!=null && !filterOfProducts.getCategory().equals("NONE")) 
+                    })
+                .filter( (product) -> { if( filterOfProducts.getCategory()!=null && !filterOfProducts.getCategory().equals("NONE") ) 
                                             return product.getCategory().equals(filterOfProducts.getCategory());
                                         else
                                             return true;
-                        })
-                .filter( (product) ->  {if( filterOfProducts.getMinUnitPrice()!=null && !filterOfProducts.getMinUnitPrice().equals(BigDecimal.valueOf(0)) ) 
+                    })
+                .filter( (product) -> { if( filterOfProducts.getMinUnitPrice()!=null && !filterOfProducts.getMinUnitPrice().equals(BigDecimal.valueOf(0)) ) 
                                             return product.getUnitPrice().compareTo(filterOfProducts.getMinUnitPrice()) >= 0;
                                         else
                                             return true;
-                        })
-                .filter( (product) ->  {if( filterOfProducts.getMaxUnitPrice()!=null && !filterOfProducts.getMaxUnitPrice().equals(BigDecimal.valueOf(0)) ) 
+                    })
+                .filter( (product) -> { if( filterOfProducts.getMaxUnitPrice()!=null && !filterOfProducts.getMaxUnitPrice().equals(BigDecimal.valueOf(0)) ) 
                                             return product.getUnitPrice().compareTo(filterOfProducts.getMaxUnitPrice()) <= 0;
                                         else
                                             return true;
-                        })
+                    })
                 .collect(Collectors.toList());
         
 //        System.out.println("\n After:");
@@ -103,7 +105,7 @@ public class HomeController {
     
     @InitBinder(value = "filterOfProducts")
     public void initializeBinder(WebDataBinder binder){
-        binder.setAllowedFields("manufacturer", "category", "minUnitPrice", "maxUnitPrice", "language");
+        binder.setAllowedFields("manufacturer", "category", "minUnitPrice", "maxUnitPrice", "inStock", "language");
     }
 
     

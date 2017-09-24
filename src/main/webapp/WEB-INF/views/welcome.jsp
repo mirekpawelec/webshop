@@ -3,11 +3,11 @@
     Created on : 2017-09-14, 19:14:16
     Author     : mirek
 --%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     
@@ -56,12 +56,14 @@
                         <div class="panel panel-primary panel-min-height">
                             
                             <spring:url value="/filter" var="filterActionUrl" />
+                            
                             <spring:message code="welcome.form.browsingOptions.label" var="browsingOptionsLbl" />
                             <spring:message code="welcome.form.manufacturer.label" var="manufacturerLbl" />
                             <spring:message code="welcome.form.category.label" var="categoryLbl" />
                             <spring:message code="welcome.form.unitPrice.label" var="priceLbl" />
                             <spring:message code="welcome.form.unitPriceFrom.label" var="priceFromLbl" />
                             <spring:message code="welcome.form.unitPriceTo.label" var="priceToLbl" />
+                            <spring:message code="welcome.form.inStock.label" var="inStockLbl" />
                             <spring:message code="welcome.form.button.filter.label" var="buttonFilterLbl" />
                             <spring:message code="welcome.form.button.reset.label" var="buttonResetLbl" />
                             
@@ -107,7 +109,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                                        
+                                                    
+                                            <div class="form-group form-group-sm">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6">
+                                                        <label class="control-label">${inStockLbl}</label>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
+                                                        <form:checkbox path="inStock" class="form-control"/>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                                    
                                             <div class="form-group">
                                                 <input id="btnSubmit" type="submit" value="${buttonFilterLbl}" class="btn btn-primary btn-block btn-xs"/>
                                                 <input id="btnReset" type="reset" value="${buttonResetLbl}" class="btn btn-primary btn-block btn-xs"/>
@@ -123,6 +136,9 @@
                         
                         <c:forEach items="${allProducts}" var="product">
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                                
+                                
+                                <c:set value="${fn:length(product.repositorySet)}" var="repositorySetSize" />
+                                
                                 <spring:url value="/resource/img/${product.productNo}.jpg" var="imageUrl"/>
                                 <spring:url value="/home/product?productNo=${product.productNo}" var="detailsUrl"/>
                                 
@@ -153,15 +169,25 @@
                                         </div>
                                             
                                         <div class="price-box">
-                                            <h4>
-                                                <strong> ${product.unitPrice} </strong> ${currencyLabel}
-                                            </h4>
+                                            <p>
+                                                <span style="font-size: 20px; font-weight: bold"> ${product.unitPrice} </span> ${currencyLabel}
+                                                <c:choose>
+                                                    <c:when test="${repositorySetSize > 0}">
+                                                        <span class="label label-success"> InStock <span class="badge"> ${repositorySetSize} </span> </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="label label-danger"> OutStock </span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </p>
                                         </div>
                                             
                                         <br>
                                         <div class="btn-group btn-group btn-group-sm">
-                                            <a href="${detailsUrl}" class="btn btn-default"> ${detailsLabel} <span class="glyphicon glyphicon-chevron-right"></span></a>
-                                            <a href="#" class="btn btn-primary"> ${addToCartLabel} <span class="glyphicon glyphicon-shopping-cart"></span></a>
+                                            <a href="${detailsUrl}" class="btn btn-default"> ${detailsLabel} 
+                                                <span class="glyphicon glyphicon-chevron-right"></span> </a>
+                                            <a href="#" class="btn btn-primary ${repositorySetSize==0?'disabled':''}"> ${addToCartLabel} 
+                                                <span class="glyphicon glyphicon-shopping-cart"></span> </a>
                                         </div>
                                     </div>
                                 </div>
