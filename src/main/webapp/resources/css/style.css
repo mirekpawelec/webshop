@@ -32,3 +32,6 @@
     padding-left: 2px;
     padding-right: 2px;
 }
+.container-fluid .table-responsive{
+    margin: 0px 75px;
+}

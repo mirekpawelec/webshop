@@ -9,8 +9,9 @@ package pl.pawelec.webshop.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
-import pl.pawelec.webshop.converter.LocalDateTimeConverter;
+import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 import pl.pawelec.webshop.validator.ProductNo;
 
 /**
@@ -41,6 +42,7 @@ import pl.pawelec.webshop.validator.ProductNo;
 @Entity
 @Table(name = "product" )
 public class Product implements Serializable{
+    private static final long serialVersionUID = 1L;
     public interface newForm{}
     public interface updateForm{}
     
@@ -74,7 +76,7 @@ public class Product implements Serializable{
     @Column //(nullable = true, length = 2)
     private String status;
     
-    @Convert(converter = LocalDateTimeConverter.class)
+    @Convert(converter = TimestampToLocalDateTimeConverter.class)
     @Column(name = "c_date")
     private LocalDateTime createDate;
     
@@ -84,11 +86,20 @@ public class Product implements Serializable{
     @Transient
     private MultipartFile productUserManual;
     
-    @OneToMany(mappedBy = "productId", fetch = FetchType.EAGER)
+    
+    
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<Repository> repositorySet = new HashSet<Repository>();
+    
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private Set<DeliveryItem> deliveryItemSet = new HashSet<DeliveryItem>();
+    
+    
     
     public Product(){}
 
+    
+    
     public Product(Builder builder) {
         this.productId = builder.productId;
         this.productNo = builder.productNo;
@@ -101,6 +112,7 @@ public class Product implements Serializable{
         this.status = builder.status;
         this.createDate = builder.createDate;
         this.repositorySet = builder.repositorySet;
+        this.deliveryItemSet = builder.deliveryItemSet;
     }
     
     public boolean isNew(){
@@ -227,6 +239,16 @@ public class Product implements Serializable{
     public void setRepositorySet(Set<Repository> repositorySet) {
         this.repositorySet = repositorySet;
     }
+
+    public Set<DeliveryItem> getDeliveryItemSet() {
+        return deliveryItemSet;
+    }
+
+    public void setDeliveryItemSet(Set<DeliveryItem> deliveryItemSet) {
+        this.deliveryItemSet = deliveryItemSet;
+    }
+    
+    
     
     @Override
     public int hashCode() {
@@ -257,28 +279,16 @@ public class Product implements Serializable{
         return true;
     }
 
+    
+    
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        if(repositorySet.size() > 0){
-            for(Repository s : repositorySet){
-                sb.append("[loadunitId=" + s.getLoadunitId() );
-                sb.append(", loadunitNo=" + s.getLoadunitNo() );
-                sb.append(", quantity=" + s.getQuantity() );
-                sb.append(", placeId=" + s.getPlaceId().getPlaceNo() );
-                sb.append(", conditions=" + s.getConditions() );
-                sb.append(", qualityStatus=" + s.getQualityStatus() );
-                sb.append(", status=" + s.getStatus() );
-                sb.append("] ");
-            }
-        } else {
-            sb.append("[]");
-        }
         return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name 
-             + ", manufacturer=" + manufacturer + ", category=" + category + ", description=" + description.isEmpty() 
-             + ", unitPrice=" + unitPrice + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" 
-             + createDate + ", repositorySet=" + sb.toString() +'}';   
+             + ", manufacturer=" + manufacturer + ", category=" + category + ", unitPrice=" + unitPrice 
+             + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" + createDate 
+             + ", repositorySet=" + repositorySet.size() + ", deliveryItemSet=" + deliveryItemSet.size() + '}';   
     }
+    
     
     
         public static class Builder{
@@ -293,7 +303,8 @@ public class Product implements Serializable{
             private String status;
             private LocalDateTime createDate;
             private Set<Repository> repositorySet;
-            
+            private Set<DeliveryItem> deliveryItemSet;
+                    
             public Builder withProductId(Long productId){
                 this.productId=productId;
                 return this;
@@ -336,6 +347,10 @@ public class Product implements Serializable{
             }
             public Builder withRepositorySet(Set<Repository> repositorySet){
                 this.repositorySet=repositorySet;
+                return this;
+            }
+            public Builder withDeliveryItemSet(Set<DeliveryItem> deliveryItemSet){
+                this.deliveryItemSet=deliveryItemSet;
                 return this;
             }
             public Product build(){

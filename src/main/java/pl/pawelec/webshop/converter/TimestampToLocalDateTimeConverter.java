@@ -6,10 +6,7 @@
 package pl.pawelec.webshop.converter;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
@@ -18,7 +15,7 @@ import javax.persistence.Converter;
  * @author mirek
  */
 @Converter(autoApply = true)
-public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp>{
+public class TimestampToLocalDateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp>{
 
     @Override
     public Timestamp convertToDatabaseColumn(LocalDateTime attribute) {
@@ -29,6 +26,6 @@ public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime,
     public LocalDateTime convertToEntityAttribute(Timestamp dbData) {
         return dbData==null ? null : dbData.toLocalDateTime();
     }
-
+        
     
 }

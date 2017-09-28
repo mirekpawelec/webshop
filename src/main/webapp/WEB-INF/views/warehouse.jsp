@@ -25,13 +25,13 @@
             <spring:message code="warehouse.table.productName.label" var="productNameLbl" />
             <spring:message code="warehouse.table.quantity.label" var="quantityLbl" />
             <spring:message code="warehouse.table.placeNo.label" var="placeIdLbl" />
-            <spring:message code="warehouse.table.conditions.label" var="conditionsLbl" />
+            <spring:message code="warehouse.table.state.label" var="stateLbl" />
             <spring:message code="warehouse.table.qualityStatus.label" var="qualityStatusLbl" />
             <spring:message code="warehouse.table.status.label" var="statusLbl" />
             <spring:message code="warehouse.table.lastModifikationDate.label" var="lastModifikationDateLbl" />
             <spring:message code="warehouse.table.createDate.label" var="createDateLbl" />
             
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="page-header">
                         <h2> ${headerLbl} </h2>
@@ -41,30 +41,32 @@
                         
                 </div>
                 <div class="row">                    
-                    <div class="table-responsive">
+                    <div class="table-responsive text-left">
                         <table class="table table-striped table-hover">
                             <tr>
+                                <th>Lp.</th>
                                 <th>${loadunitNoLbl}</th>
                                 <th>${productNoLbl}</th>
                                 <th>${manufacturerLbl}</th>
                                 <th>${productNameLbl}</th>
                                 <th>${quantityLbl}</th>
                                 <th>${placeIdLbl}</th>
-                                <th>${conditionsLbl}</th>
+                                <th>${stateLbl}</th>
                                 <th>${qualityStatusLbl}</th>
                                 <th>${statusLbl}</th>
                                 <th>${lastModifikationDateLbl}</th>
                                 <th>${createDateLbl}</th>
                             </tr>
-                            <c:forEach items="${wholeStock}" var="loadunit">
+                            <c:forEach items="${wholeStock}" var="loadunit" varStatus="counter">
                                 <tr>
+                                    <td>${counter.count}</td>
                                     <td>${loadunit.loadunitNo}</td>
-                                    <td>${loadunit.productId.productNo}</td>
-                                    <td>${loadunit.productId.manufacturer}</td>
-                                    <td>${loadunit.productId.name}</td>
+                                    <td>${loadunit.product.productNo}</td>
+                                    <td>${loadunit.product.manufacturer}</td>
+                                    <td>${loadunit.product.name}</td>
                                     <td>${loadunit.quantity}</td>
-                                    <td>${loadunit.placeId.placeNo}</td>
-                                    <td>${loadunit.conditions}</td>
+                                    <td>${loadunit.place.placeNo}</td>
+                                    <td>${loadunit.state}</td>
                                     <td>${loadunit.qualityStatus}</td>
                                     <td>${loadunit.status}</td>                              
                                          <c:set var="cleanedDateTime" value="${fn:replace(loadunit.lastModifikationDate, 'T' , ' ')}" />

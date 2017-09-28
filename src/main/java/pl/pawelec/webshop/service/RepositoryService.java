@@ -23,4 +23,5 @@ public interface RepositoryService {
     Long count();
     boolean exists(Long Id);
     Repository getByLoadunitNo(String loadunitNo);
+    List<Repository> getByStatus(String status);
 }

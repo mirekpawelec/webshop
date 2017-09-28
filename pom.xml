@@ -15,6 +15,7 @@
         <jstl.version>1.2</jstl.version>
         <javax.servle.version>3.1.0</javax.servle.version>
         <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.webflow.version>2.4.2.RELEASE</spring.webflow.version>
         <spring.security.version>4.0.4.RELEASE</spring.security.version>
 <!--        <spring.version>3.2.8.RELEASE</spring.version>
         <spring.security.version>3.2.3.RELEASE</spring.security.version>-->
@@ -72,6 +73,14 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        
+            <!-- Spring Web Flow -->
+        <dependency>
+            <groupId>org.springframework.webflow</groupId>
+            <artifactId>spring-webflow</artifactId>
+            <version>${spring.webflow.version}</version>
             <scope>compile</scope>
         </dependency>
         

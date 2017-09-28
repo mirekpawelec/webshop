@@ -73,4 +73,7 @@ public class StorageplaceServiceImpl implements StorageplaceService{
         return storageplaceDao.getByPlaceNo(placeNo);
     }
     
+    public List<Storageplace> getByType(String type){
+        return storageplaceDao.getByType(type);
+    }
 }

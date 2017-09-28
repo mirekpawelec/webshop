@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model.dao;
 
+import java.util.List;
 import pl.pawelec.webshop.model.Repository;
 
 /**
@@ -13,4 +14,5 @@ import pl.pawelec.webshop.model.Repository;
  */
 public interface RepositoryDao extends Dao<Repository>{
     Repository getByLoadunitNo(String loadunitNo);
+    List<Repository> getByStatus(String status);
 }

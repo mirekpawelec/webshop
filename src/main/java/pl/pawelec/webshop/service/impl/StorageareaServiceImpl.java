@@ -74,5 +74,4 @@ public class StorageareaServiceImpl implements StorageareaService{
     public List<Storagearea> getByDescription(String wholeDescriptionOrPart) {
         return storageareaDao.getByDescription(wholeDescriptionOrPart);
     }
-    
 }

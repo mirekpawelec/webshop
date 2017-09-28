@@ -28,5 +28,6 @@ public interface ProductService {
     List<String> getAllManufacturers();
     List<String> getAllCategories();
     List<Product> getByManufacturer(String manufacturer);
+    List<Product> getByStatus(String status);
     
 }

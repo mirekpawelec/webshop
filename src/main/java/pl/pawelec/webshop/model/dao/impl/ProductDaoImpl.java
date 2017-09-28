@@ -65,8 +65,13 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
     @Override
     public List<Product> getByManufacturer(String manufacturer) {
         try{
-            return getEntityManager().createNativeQuery("FROM Product WHERE manufacturer = :manufacturer").setParameter("manufacturer", manufacturer).getResultList();
+            return getEntityManager().createNativeQuery("from Product WHERE manufacturer = :manufacturer").setParameter("manufacturer", manufacturer).getResultList();
         } catch (NoResultException nr){}
         return null;
+    }
+
+    @Override
+    public List<Product> getByStatus(String status) {
+        return getEntityManager().createQuery("from Product WHERE status = :status").setParameter("status", status).getResultList();
     }
 }

@@ -94,4 +94,9 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> getByManufacturer(String manufacturer) {
         return productDao.getByManufacturer(manufacturer);
     }
+
+    @Override
+    public List<Product> getByStatus(String status) {
+        return productDao.getByStatus(status);
+    }
 }

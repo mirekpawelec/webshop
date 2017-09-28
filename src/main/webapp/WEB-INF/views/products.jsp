@@ -6,6 +6,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="pl">
 
@@ -15,7 +17,7 @@
             
             <jsp:include page="./fragments/navi.jsp"/>
             
-            <div class="container">
+            <div class="container-">
                 <div class="row">
                     <div class="page-header">
                         <h2> 
@@ -32,8 +34,10 @@
                         </div>                        
                     </c:if>
                 </div>
+            </div>
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="table-responsive">
+                    <div class="table-responsive text-left">
                         <table class="table table-striped table-hover">
                             <tr>
                                 <th> <spring:message code="products.table.productNo.label"/> </th>
@@ -42,6 +46,7 @@
                                 <th> <spring:message code="products.table.category.label"/> </th>
                                 <th> <spring:message code="products.table.price.label"/> </th>
                                 <th> <spring:message code="products.table.status.label"/> </th>
+                                <th> <spring:message code="products.table.createDate.label"/> </th>
                                 <th> </th>
                             </tr>
                             <c:forEach var="item" items="${products}">
@@ -52,6 +57,9 @@
                                     <td>${item.category}</td>
                                     <td>${item.unitPrice}</td>
                                     <td>${item.status}</td>
+                                         <c:set var="createDate" value="${fn:replace(item.createDate, 'T' , ' ')}" />
+                                         <fmt:parseDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
+                                    <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
                                     <td>
                                         <spring:url value="/admin/products/product?id=${item.productId}" var="productUrl"/>
                                         <spring:url value="/admin/products/${item.productId}/update" var="updateUrl"/>

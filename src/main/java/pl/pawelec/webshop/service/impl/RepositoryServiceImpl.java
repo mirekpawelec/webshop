@@ -73,5 +73,10 @@ public class RepositoryServiceImpl implements RepositoryService{
     public Repository getByLoadunitNo(String loadunitNo) {
         return repositoryDao.getByLoadunitNo(loadunitNo);
     }
+
+    @Override
+    public List<Repository> getByStatus(String status) {
+        return repositoryDao.getByStatus(status);
+    }
     
 }

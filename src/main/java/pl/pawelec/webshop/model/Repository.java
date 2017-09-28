@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import pl.pawelec.webshop.converter.LocalDateTimeConverter;
+import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 
 /**
  *
@@ -25,7 +26,7 @@ import pl.pawelec.webshop.converter.LocalDateTimeConverter;
  */
 @Entity
 @Table(name = "repository")
-public class Repository {
+public class Repository implements Serializable{
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -37,38 +38,44 @@ public class Repository {
     
     @JoinColumn(name = "product_id", referencedColumnName = "product_id") 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Product productId;
+    private Product product;
     
     @Column(nullable = false)
     private Integer quantity;
     
     @JoinColumn(name = "place_id", referencedColumnName = "place_id") 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Storageplace placeId;
+    private Storageplace place;
     
     /**
      *  if new, used, refurbished 
      */
     @Column(nullable = false, length = 25)
-    private String conditions;
+    private String state;
     
     @Column(nullable = false)
-    private Short qualityStatus;
+    private Integer qualityStatus;
     
     @Column(nullable = false, length = 2)
     private String status;
     
     @Column(name = "lm_date")
-    @Convert(converter = LocalDateTimeConverter.class)
+    @Convert(converter = TimestampToLocalDateTimeConverter.class)
     private LocalDateTime lastModifikationDate;
     
     @Column(name = "c_date")
-    @Convert(converter = LocalDateTimeConverter.class)
+    @Convert(converter = TimestampToLocalDateTimeConverter.class)
     private LocalDateTime createDate;
-            
+         
+    
+    
     public Repository() {
+        product = new Product();
+        place = new Storageplace();
     }
 
+    
+    
     public Long getLoadunitId() {
         return loadunitId;
     }
@@ -84,12 +91,12 @@ public class Repository {
     public void setLoadunitNo(String loadunitNo) {
         this.loadunitNo = loadunitNo;
     }
-    public Product getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Product productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {
@@ -100,27 +107,27 @@ public class Repository {
         this.quantity = quantity;
     }
 
-    public Storageplace getPlaceId() {
-        return placeId;
+    public Storageplace getPlace() {
+        return place;
     }
 
-    public void setPlaceId(Storageplace placeId) {
-        this.placeId = placeId;
+    public void setPlace(Storageplace place) {
+        this.place = place;
     }
 
-    public String getConditions() {
-        return conditions;
+    public String getState() {
+        return state;
     }
 
-    public void setConditions(String conditions) {
-        this.conditions = conditions;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public Short getQualityStatus() {
+    public Integer getQualityStatus() {
         return qualityStatus;
     }
 
-    public void setQualityStatus(Short qualityStatus) {
+    public void setQualityStatus(Integer qualityStatus) {
         this.qualityStatus = qualityStatus;
     }
 
@@ -148,11 +155,13 @@ public class Repository {
         this.createDate = createDate;
     }
 
+    
+    
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 97 * hash + Objects.hashCode(this.loadunitId);
-        hash = 97 * hash + Objects.hashCode(this.productId);
+        hash = 97 * hash + Objects.hashCode(this.product);
         return hash;
     }
 
@@ -171,15 +180,17 @@ public class Repository {
         if (!Objects.equals(this.loadunitId, other.loadunitId)) {
             return false;
         }
-        if (!Objects.equals(this.productId, other.productId)) {
+        if (!Objects.equals(this.product, other.product)) {
             return false;
         }
         return true;
     }
 
+    
+    
     @Override
     public String toString() {
-        return "Repository{" + "loadunitId=" + loadunitId + ", productId=" + productId + ", quantity=" + quantity + ", placeId=" + placeId + ", conditions=" + conditions + ", qualityStatus=" + qualityStatus + ", status=" + status + ", lastModifikationDate=" + lastModifikationDate + ", createDate=" + createDate + '}';
+        return "Repository{" + "loadunitId=" + loadunitId + ", loadunitNo=" + loadunitNo + ", product=" + product + ", quantity=" + quantity + ", place=" + place + ", state=" + state + ", qualityStatus=" + qualityStatus + ", status=" + status + ", lastModifikationDate=" + lastModifikationDate + ", createDate=" + createDate + '}';
     }
     
 }

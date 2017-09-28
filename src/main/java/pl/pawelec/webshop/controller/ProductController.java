@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.Product.newForm;
 import pl.pawelec.webshop.model.Product.updateForm;
-import pl.pawelec.webshop.model.ProductStatus;
+import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
 import pl.pawelec.webshop.validator.ProductValidator;
 

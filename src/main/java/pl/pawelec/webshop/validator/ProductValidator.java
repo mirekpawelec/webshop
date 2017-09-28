@@ -25,7 +25,6 @@ public class ProductValidator implements Validator{
     private Set<Validator> springValidators;
      
     public ProductValidator() {
-        System.out.println("### tworzę ProductValidator");
         springValidators = new HashSet<Validator>();
     }
 

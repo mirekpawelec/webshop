@@ -7,6 +7,7 @@ package pl.pawelec.webshop.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import pl.pawelec.webshop.converter.LocalDateTimeConverter;
+import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 
 /**
  *
@@ -27,7 +28,7 @@ import pl.pawelec.webshop.converter.LocalDateTimeConverter;
 @Entity
 @Table(name = "storagearea")
 public class Storagearea implements Serializable{
-    
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "area_id", nullable = false)
@@ -40,15 +41,21 @@ public class Storagearea implements Serializable{
     private String description;
 
     @Column(name = "c_date")
-    @Convert(converter = LocalDateTimeConverter.class)
+    @Convert(converter = TimestampToLocalDateTimeConverter.class)
     private LocalDateTime createDate;
     
+    
+    
     @OneToMany(mappedBy = "areaId", fetch = FetchType.EAGER)
-    private Set<Storageplace> storageplaceSet;
+    private Set<Storageplace> storageplaceSet = new HashSet<Storageplace>();
+    
+    
     
     public Storagearea() {
     }
 
+    
+    
     public Long getAreaId() {
         return areaId;
     }
@@ -89,6 +96,8 @@ public class Storagearea implements Serializable{
         this.storageplaceSet = storageplaceSet;
     }
 
+    
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -114,9 +123,11 @@ public class Storagearea implements Serializable{
         return true;
     }
 
+    
+    
     @Override
     public String toString() {
-        return "Storagearea{" + "areaId=" + areaId + ", name=" + name + ", description=" + description + '}';
+        return "Storagearea{" + "areaId=" + areaId + ", name=" + name + ", description=" + description + ", storageplaceSet=" + storageplaceSet.size() + '}';
     }
     
     

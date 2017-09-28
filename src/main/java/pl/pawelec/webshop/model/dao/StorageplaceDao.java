@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model.dao;
 
+import java.util.List;
 import pl.pawelec.webshop.model.Storageplace;
 
 /**
@@ -13,4 +14,5 @@ import pl.pawelec.webshop.model.Storageplace;
  */
 public interface StorageplaceDao extends Dao<Storageplace>{
     Storageplace getByPlaceNo(String placeNo);
+    List<Storageplace> getByType(String type);
 }

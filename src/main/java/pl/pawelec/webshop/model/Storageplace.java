@@ -5,7 +5,9 @@
  */
 package pl.pawelec.webshop.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
@@ -19,7 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import pl.pawelec.webshop.converter.LocalDateTimeConverter;
+import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 
 /**
  *
@@ -27,8 +29,8 @@ import pl.pawelec.webshop.converter.LocalDateTimeConverter;
  */
 @Entity
 @Table(name = "storageplace")
-public class Storageplace {
-    
+public class Storageplace implements Serializable{
+    private static final long serialVersionUID = 1L;
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "place_id", nullable = false)
@@ -43,6 +45,9 @@ public class Storageplace {
     @JoinColumn(name = "area_id", referencedColumnName = "area_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private Storagearea areaId;    
+    
+    @Column(nullable = false, length = 25)
+    private String type;
     
     @Column(precision = 4)
     private Integer height;
@@ -60,20 +65,34 @@ public class Storageplace {
     private String status;
     
     @Column(name = "c_date")
-    @Convert(converter = LocalDateTimeConverter.class)
+    @Convert(converter = TimestampToLocalDateTimeConverter.class)
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "placeId", fetch = FetchType.EAGER)
-    private Set<Repository> repositorySet;
+    
+    
+    @OneToMany(mappedBy = "place", fetch = FetchType.EAGER)
+    private Set<Repository> repositorySet = new HashSet<Repository>();
+    
+    @OneToMany(mappedBy = "place", fetch = FetchType.EAGER)
+    private Set<Delivery> deliverySet = new HashSet<Delivery>();;
+    
+    
     
     public Storageplace() {
+        areaId = new Storagearea();
+    }
+
+    public Storageplace(Long placeId) {
+        this.placeId = placeId;
     }
 
     public Storageplace(Long placeId, String placeNo) {
         this.placeId = placeId;
         this.placeNo = placeNo;
     }
-
+    
+    
+    
     public Long getPlaceId() {
         return placeId;
     }
@@ -104,6 +123,14 @@ public class Storageplace {
 
     public void setAreaId(Storagearea areaId) {
         this.areaId = areaId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Integer getHeight() {
@@ -162,6 +189,16 @@ public class Storageplace {
         this.repositorySet = repositorySet;
     }
 
+    public Set<Delivery> getDeliverySet() {
+        return deliverySet;
+    }
+
+    public void setDeliverySet(Set<Delivery> deliverySet) {
+        this.deliverySet = deliverySet;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -187,9 +224,12 @@ public class Storageplace {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Storageplace{" + "placeId=" + placeId + ", placeNo=" + placeNo + ", placaName=" + placaName + ", areaId=" + areaId + ", height=" + height + ", width=" + width + ", depth=" + depth + ", volume=" + volume + ", status=" + status + ", createDate=" + createDate + '}';
-    }
     
+    
+    @Override
+    public String toString() {        
+        return "Storageplace{" + "placeId=" + placeId + ", placeNo=" + placeNo + ", placaName=" + placaName + ", areaId=" + areaId 
+             + ", type=" + type + ", height=" + height + ", width=" + width + ", depth=" + depth + ", volume=" + volume 
+             + ", status=" + status + ", createDate=" + createDate + ", repositorySet=" + repositorySet.size() + ", deliverySet=" + deliverySet.size() + '}';
+    }
 }

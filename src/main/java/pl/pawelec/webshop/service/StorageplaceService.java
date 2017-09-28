@@ -23,4 +23,5 @@ public interface StorageplaceService {
     Long count();
     boolean exists(Long Id);
     Storageplace getByPlaceNo(String placeNo);
+    List<Storageplace> getByType(String type);
 }

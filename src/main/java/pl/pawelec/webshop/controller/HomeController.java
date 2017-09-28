@@ -7,6 +7,7 @@ package pl.pawelec.webshop.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.pawelec.webshop.model.ProductFilter;
 import pl.pawelec.webshop.model.Product;
-import pl.pawelec.webshop.model.ProductStatus;
+import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
 
 /**
@@ -45,12 +46,12 @@ public class HomeController {
         
         if(result.getSuppressedFields().length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól" + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
 
-        List<Product> afterFilteringProducts = new ArrayList<Product>();
+//        List<Product> afterFilteringProducts = new ArrayList<Product>();
 //        System.out.println("\n Before:");
-//        afterFilteringProducts = productService.getAll();        
+//        afterFilteringProducts = productService.getByStatus(ProductStatus.OK.getProductStatusType());
 //        afterFilteringProducts.forEach(System.out::println);
         
-        afterFilteringProducts = productService.getAll().parallelStream()
+        List<Product> afterFilteringProducts = productService.getByStatus(ProductStatus.OK.getProductStatusType()).parallelStream()
                 .filter( (product) -> { if( filterOfProducts.isInStock() )
                                             return product.getRepositorySet().size() > 0;
                                         else
@@ -75,6 +76,8 @@ public class HomeController {
                                             return product.getUnitPrice().compareTo(filterOfProducts.getMaxUnitPrice()) <= 0;
                                         else
                                             return true;
+                    })
+                .sorted( (o1, o2) -> {  return o1.getCategory().compareTo( o2.getCategory() ); 
                     })
                 .collect(Collectors.toList());
         
