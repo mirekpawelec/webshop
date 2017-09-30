@@ -13,7 +13,9 @@
 <spring:url value="/admin/products/add" var="addNewProductUrl"/>
 <spring:url value="/home?language=pl" var="polishLanguageUrl"/>
 <spring:url value="/home?language=en" var="englishLanguageUrl"/>
+<spring:url value="/delivery" var="newDeliveryUrl"/>
 
+<spring:message code="navi.button.newDelivery.label" var="newDeliveryLbl" />
 <spring:message code="navi.button.warehouse.label" var="warehouseLbl" />
 <spring:message code="navi.button.deliveries.label" var="deliveriesLbl" />
 <spring:message code="navi.button.allProduct.label" var="allProductLbl" />
@@ -28,6 +30,7 @@
             <div class="btn-group pull-right" role="group">
                 <button type="button" class="btn btn-default" onclick="location.href='${warehouseUrl}'"> ${warehouseLbl} </button>
                 <button type="button" class="btn btn-default" onclick="location.href='${deliveriesUrl}'"> ${deliveriesLbl} </button>
+                <button type="button" class="btn btn-default" onclick="location.href='${newDeliveryUrl}'"> ${newDeliveryLbl} </button>
                 <button type="button" class="btn btn-default" onclick="location.href='${allProductUrl}'"> ${allProductLbl} </button>
                 <button type="button" class="btn btn-default" onclick="location.href='${addNewProductUrl}'"> ${newProductLbl} </button> 
             </div>

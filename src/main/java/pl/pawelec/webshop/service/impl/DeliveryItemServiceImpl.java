@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pawelec.webshop.model.DeliveryItem;
-import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.enum_.ProductState;
 import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.model.Repository;
@@ -39,8 +38,11 @@ public class DeliveryItemServiceImpl implements DeliveryItemService{
         if(deliveryItem.getStatus()==null){
             deliveryItem.setStatus( ProductStatus.OK.getProductStatusType() );
         }
-        System.out.println("deliveryItem=" + deliveryItem);
-        deliveryItemDao.create(deliveryItem);
+        if(deliveryItem.getItemId()==null){
+            deliveryItemDao.create(deliveryItem);
+        } else {
+            deliveryItemDao.update(deliveryItem);
+        }
     }
 
     @Override

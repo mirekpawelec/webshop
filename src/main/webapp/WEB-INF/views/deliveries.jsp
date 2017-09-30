@@ -18,15 +18,8 @@
             <jsp:include page="./fragments/navi.jsp"/>
             <br/>
             <div class="container">
-                <spring:url value="/delivery" var="newDeliveryUrl"/>
-                <spring:message code="deliveries.button.newDelivery.label" var="newDeliveryLbl" />
-                <spring:message code="deliveries.pageHeader.label" var="headerInfo"/>
                 
-                <div class="row">
-                    <div class="btn-group pull-left">
-                        <button type="button" class="btn btn-default" onclick="location.href='${newDeliveryUrl}'"> ${newDeliveryLbl} </button>
-                    </div>
-                </div>
+                <spring:message code="deliveries.pageHeader.label" var="headerInfo"/>
                         
                 <div class="row">
                     <div class="page-header">
@@ -49,7 +42,8 @@
                                 <th> <spring:message code="deliveries.table.truckNumber.label" /> </th>
                                 <th> <spring:message code="deliveries.table.trailerOrCaravanNumber.label" /> </th>
                                 <th> <spring:message code="deliveries.table.createUser.label" /> </th>
-                                <th> <spring:message code="deliveries.table.status.label" /> </th>  
+                                <th> <spring:message code="deliveries.table.status.label" /> </th>
+                                <th> <spring:message code="deliveries.table.countItems.label" /> </th> 
                                 <th> <spring:message code="deliveries.table.createDate.label" /> </th>
                                 <th> <spring:message code="deliveries.table.finishDate.label" /> </th>
                                 <th> </th>
@@ -67,25 +61,12 @@
                                     <td>${item.trailerOrCaravanNumber}</td>
                                     <td>${item.createUser}</td>
                                     <td>${item.status}</td>
-                                    <td>
-                                        <%--<c:set var="createDate" value="${fn:replace(item.createDate, 'T' , ' ')}" />--%>
-                                        <%--<fmt:parseDate value="${createDate}" pattern="yyyy-MM-dd HH:mm" var="parsedCreateDate" type="both" />--%>
-                                        <%--<fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedCreateDate}" />--%> 
-                                        ${item.createDate}
-                                    </td>
-                                    <td>
-                                        <%--<c:set var="finishDate" value="${fn:replace(item.finishDate, 'T' , ' ')}" />--%>
-                                        <%--<fmt:parseDate value="${finishDate}" pattern="yyyy-MM-dd HH:mm" var="parsedFinishDate" type="both" />--%>
-
-                                        <%--<c:if test="${item.status=='Zamknięta'}">--%>
-                                            <%--<fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedFinishDate}" />--%> 
-                                        <%--</c:if>--%>
-                                        ${item.finishDate}
-                                    </td>
+                                    <td>${fn:length(item.deliveryItemSet)}</td>
+                                    <td>${item.createDate}</td>
+                                    <td>${item.finishDate}</td>
                                     <td>
                                         <spring:url value="/delivery?deliveryId=${item.deliveryId}" var="deliveryUrl" />                                        
                                         <spring:message code="deliveries.button.selectDelivery.label" var="selectLbl" /> 
-
                                         <a href="${deliveryUrl}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-check"> </span> ${selectLbl} </a>
                                     </td>
                                 </tr>

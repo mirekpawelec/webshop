@@ -20,11 +20,9 @@ public class DeliveryOrder implements Serializable{
     private static final long serialVersionUID = 1L;
     private Delivery delivery;
     private DeliveryItem item;
-    private List<DeliveryItem> deliveryItems;
-//
+    
     public DeliveryOrder() {
         item = new DeliveryItem();
-        deliveryItems = new ArrayList<DeliveryItem>();
     }
 
     public Delivery getDelivery() {
@@ -43,25 +41,9 @@ public class DeliveryOrder implements Serializable{
         this.item = item;
     }
 
-    public List<DeliveryItem> getDeliveryItems() {
-        return deliveryItems;
-    }
-
-    public void setDeliveryItems(List<DeliveryItem> deliveryItems) {
-        this.deliveryItems = deliveryItems;
-    }
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        if(deliveryItems.size() > 0){
-            for(DeliveryItem di : deliveryItems){
-                sb.append("[" + di + "] ");
-            }
-        } else {
-            sb.append("[]");
-        }
-        return "DeliveryOrder{" + "delivery=" + delivery + "item=" + item + ", deliveryItems=" + sb.toString() + '}';
+        return "DeliveryOrder{" + "delivery=" + delivery + "item=" + item + '}';
     }
     
 }

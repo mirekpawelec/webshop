@@ -6,11 +6,13 @@
 package pl.pawelec.webshop.service.impl;
 
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pawelec.webshop.exception.InvalidDeliveryException;
 import pl.pawelec.webshop.model.Delivery;
+import pl.pawelec.webshop.model.DeliveryItem;
 import pl.pawelec.webshop.model.enum_.DeliveryStatus;
 import pl.pawelec.webshop.model.Storageplace;
 import pl.pawelec.webshop.model.dao.DeliveryDao;
@@ -43,12 +45,14 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public void delete(Delivery delivery) {
-        deliveryDao.delete(delivery);
+        if(delivery.getStatus().equals(DeliveryStatus.OK.getStatus())){
+            deliveryDao.delete(delivery);
+        }
     }
 
     @Override
-    public void deleteById(Long Id) {
-        deliveryDao.deleteById(Id);
+    public void deleteById(Long id) {
+        deliveryDao.deleteById(id);
     }
 
     @Override
@@ -57,8 +61,8 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public Delivery getOneById(Long Id) {
-        return deliveryDao.getOneById(Id);
+    public Delivery getOneById(Long id) {
+        return deliveryDao.getOneById(id);
     }
 
     @Override
@@ -72,8 +76,8 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public boolean exists(Long Id) {
-        return deliveryDao.exists(Id);
+    public boolean exists(Long id) {
+        return deliveryDao.exists(id);
     }
     
     @Override
@@ -88,7 +92,6 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public Delivery startProcessDelivery(String deliveryId) {
-        System.out.println("### startProcessDelivery ; deliveryId=" + deliveryId);
         Delivery delivery = new Delivery();
         String delivStatus = null;
         if(deliveryId==null){
@@ -103,15 +106,15 @@ public class DeliveryServiceImpl implements DeliveryService{
     }
 
     @Override
-    public String closeDelivery(Long Id) {
-        if(deliveryDao.closeDelivery(Id)){
+    public String closeDelivery(Long id) {
+        if(deliveryDao.closeDelivery(id)){
             return "true";
         } else {
             return "false";
         }
     }
     
-    public Delivery setPlaceIdIntoDelivery(Delivery delivery, List<Storageplace> storageplaces){
+    public Delivery setPlaceIdAccordingToPlaceNo(Delivery delivery, List<Storageplace> storageplaces){
         storageplaces.forEach( storageplace -> {
             if( storageplace.getPlaceNo().equals( delivery.getPlace().getPlaceNo() )){
                 delivery.getPlace().setPlaceId( storageplace.getPlaceId() );
@@ -120,17 +123,28 @@ public class DeliveryServiceImpl implements DeliveryService{
         return delivery;
     }
     
-    public boolean saveDetailsDelivery(Delivery delivery){
-        System.out.println("delivery=" + delivery);
+    public String saveDetailsDelivery(Delivery delivery){
         try{
             if(delivery.getPlace().getPlaceNo()!=null && !delivery.getPlace().getPlaceNo().equals("NONE")){
                 delivery.getPlace().setPlaceId( storageplaceService.getByPlaceNo( delivery.getPlace().getPlaceNo() ).getPlaceId() );
             }
-            delivery.setStatus(DeliveryStatus.RE.getStatus());
-            this.update(delivery);
+            if(!delivery.getStatus().equals("FI")){
+                delivery.setStatus(DeliveryStatus.RE.getStatus());
+                this.update(delivery);
+            } else {
+                throw new IllegalArgumentException("It can't update closed delivery!");
+            }
         } catch(Exception e){
-            return false;
+            return "false";
         }
-        return true;
+        return "true";
     }
+
+    @Override
+    public void deleteByIdAndStatus(Long id, String status) {
+        if(status.equals("OK")){
+            this.deleteById(id);
+        }
+    }
+
 }

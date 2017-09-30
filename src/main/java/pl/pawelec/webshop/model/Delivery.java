@@ -6,12 +6,10 @@
 package pl.pawelec.webshop.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,8 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
-import pl.pawelec.webshop.converter.StringToLocalDataTimeConverter;
 
 /**
  *
@@ -68,14 +64,10 @@ public class Delivery implements Serializable{
     @Column(length = 2)
     private String status;
     
-    @Column(name = "c_date")
-    //@Convert(converter = LocalDateTimeConverter.class)
-//    @Convert(converter = StringToLocalDataTimeConverter.class)
+    @Column(name = "c_date", length = 20)
     private String createDate;
     
-    @Column(name = "f_date")
-    //@Convert(converter = LocalDateTimeConverter.class)
-//    @Convert(converter = StringToLocalDataTimeConverter.class)
+    @Column(name = "f_date", length = 20)
     private String finishDate;
     
     
@@ -171,14 +163,6 @@ public class Delivery implements Serializable{
         this.trailerOrCaravanNumber = trailerOrCaravanNumber;
     }
 
-    public Set<DeliveryItem> getDeliveryItemSet() {
-        return deliveryItemSet;
-    }
-
-    public void setDeliveryItemSet(Set<DeliveryItem> deliveryItemSet) {
-        this.deliveryItemSet = deliveryItemSet;
-    }
-
     public String getCreateUser() {
         return createUser;
     }
@@ -210,7 +194,14 @@ public class Delivery implements Serializable{
     public void setFinishDate(String finishDate) {
         this.finishDate = finishDate;
     }
+    
+    public Set<DeliveryItem> getDeliveryItemSet() {
+        return deliveryItemSet;
+    }
 
+    public void setDeliveryItemSet(Set<DeliveryItem> deliveryItemSet) {
+        this.deliveryItemSet = deliveryItemSet;
+    }
     
     
     @Override

@@ -5,6 +5,8 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -46,7 +48,7 @@
 
                 <br/>
 
-                <form:form modelAttribute="deliveryOrder.item" class="form-horizontal">
+                <form:form modelAttribute="deliveryOrder.item" class="form-horizontal" autocomplete="off">
                     <div class="row text-danger">
                         <form:errors path="*" class="text-danger"/>
                     </div>
@@ -73,7 +75,7 @@
                                         <form:select id="productId" path="product.productId" class="form-control">
                                             <option value="0"> -------------------- </option> 
                                             <c:forEach items="${articles}" var="article">
-                                                <option value="${article.productId}"> ${article.productNo} - ${article.name} </option>
+                                                <option value="${article.productId}" <c:if test="${article.productId==deliveryOrder.item.product.productId}"> selected="true" </c:if> > ${article.productNo} - ${article.name} </option>
                                             </c:forEach>
                                         </form:select>
                                         <form:errors path="product.productId" class="text-danger"/>
@@ -90,7 +92,9 @@
                                 
                                 <div class="form-group">
                                     <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
-                                        <button type="submit" name="_eventId_add" class="btn btn-primary pull-right"> Dodaj <span class="glyphicon glyphicon-plus"></span></button>
+                                        <button type="submit" name="_eventId_add" class="btn btn-primary pull-right"> 
+                                            ${deliveryOrder.item.itemId==null?'Dodaj <span class="glyphicon glyphicon-plus"></span>':'Aktualizuj <span class="glyphicon glyphicon-ok"></span>'}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -110,15 +114,32 @@
                                             <th>Nazwa artykułu</th>
                                             <th>Ilość</th>
                                             <th>Data dodania</th>
+                                            <th></th>
                                         </tr>
-                                    <c:forEach items="${deliveryOrder.deliveryItems}" var="item" varStatus="licznik">
+                                    <c:forEach items="${deliveryOrder.delivery.deliveryItemSet}" var="item" varStatus="licznik">
                                         <tr> 
                                             <td>${licznik.count}.</td>
                                             <td>${item.loadunitNo}</td>
                                             <td>${item.product.productNo}</td>
                                             <td>${item.product.name}</td>
                                             <td>${item.quantity}</td>
-                                            <td>${item.createDate}</td>
+                                            <c:set var="createDate" value="${fn:replace(item.createDate, 'T', ' ')}" />
+                                            <td>${createDate}</td>
+                                            <td>
+                                                <form:form action="${flowExecutionUrl}">
+                                                    <input type="hidden" name="editItemId" value="${item.itemId}" />
+                                                    
+                                                    <div class="form-group btn-group-sm"> 
+                                                        <button type="submit" name="_eventId_edit" class="btn btn-primary"> 
+                                                            <span class="glyphicon glyphicon-edit"></span> Edytuj
+                                                        </button> 
+
+                                                        <button type="submit" name="_eventId_delete" class="btn btn-danger">
+                                                            <span class="glyphicon glyphicon-remove"></span> Usuń 
+                                                        </button> 
+                                                    </div>
+                                                </form:form>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     </table>
@@ -129,9 +150,10 @@
                         
                         <div class="row">
                             <div class="form-group">
-                                <button type="submit" name="_eventId_back" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Cofnij</button> 
-                                <button type="submit" name="_eventId_summary" class="btn btn-primary">Dalej <span class="glyphicon glyphicon-menu-right"></span></button>                                
-                                <button type="submit" name="_eventId_cancel" class="btn btn-danger">Anuluj <span class="glyphicon glyphicon-remove"></span></button>
+                                <button type="submit" name="_eventId_back" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Wstecz </button> 
+                                <button type="submit" name="_eventId_summary" class="btn btn-primary" ${fn:length(deliveryOrder.delivery.deliveryItemSet)==0?'disabled':''} > 
+                                    Podsumowanie <span class="glyphicon glyphicon-check"></span>
+                                </button>
                             </div>
                         </div>
                     </fieldset>

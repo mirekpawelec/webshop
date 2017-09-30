@@ -173,7 +173,7 @@
                                                 <span style="font-size: 20px; font-weight: bold"> ${product.unitPrice} </span> ${currencyLabel}
                                                 <c:choose>
                                                     <c:when test="${repositorySetSize > 0}">
-                                                        <span class="label label-success"> InStock <span class="badge"> ${repositorySetSize} </span> </span>
+                                                        <span class="label label-success"> InStock </span>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <span class="label label-danger"> OutStock </span>

@@ -18,16 +18,17 @@ public interface DeliveryService {
     void create(Delivery delivery);
     void update(Delivery delivery);
     void delete(Delivery delivery);
-    void deleteById(Long Id);
+    void deleteById(Long id);
     void deleteAll();
-    Delivery getOneById(Long Id);
+    Delivery getOneById(Long id);
     List<Delivery> getAll();
     Long count();
-    boolean exists(Long Id);
+    boolean exists(Long id);
     List<Delivery> getByDriver(String firstName, String lastName, String phoneNo);
     List<Delivery> getByTruck(String type, String truckNumber, String trailerOrCaravanNumber);
     Delivery startProcessDelivery(String deliveryId);
-    String closeDelivery(Long Id);
-    Delivery setPlaceIdIntoDelivery(Delivery delivery, List<Storageplace> storageplaces);
-    boolean saveDetailsDelivery(Delivery delivery);
+    String closeDelivery(Long id);
+    Delivery setPlaceIdAccordingToPlaceNo(Delivery delivery, List<Storageplace> storageplaces);
+    String saveDetailsDelivery(Delivery delivery);
+    void deleteByIdAndStatus(Long id, String status);
 }
