@@ -40,14 +40,15 @@ public class ProductValidator implements Validator{
     @Override
     public void validate(Object validatedClass, Errors errors) {            
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(validatedClass, newForm.class);
+        
         for(ConstraintViolation<Object> constraintViolation : constraintViolations){
             String propertyPath = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();
-            System.out.println("propertyPath="+propertyPath+", message="+message);
+            System.out.println("### ProductValidator ; propertyPath="+propertyPath+", message="+message);
             errors.rejectValue(propertyPath, "", message);
         }
         for(Validator validator : springValidators){
-            System.out.println( "validator="+validator.toString() );
+            System.out.println( "### ProductValidator ; validator="+validator.toString() );
             validator.validate(validatedClass, errors);
         }
     }

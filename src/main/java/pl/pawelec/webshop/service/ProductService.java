@@ -17,12 +17,12 @@ public interface ProductService {
     void create(Product product);
     void update(Product product);
     void delete(Product product);
-    void deleteById(Long Id);
+    void deleteById(Long id);
     void deleteAll();
-    Product getOneById(Long Id);
+    Product getOneById(Long id);
     List<Product> getAll();
     Long count();
-    boolean exists(Long Id);
+    boolean exists(Long id);
     List<Product> getByUnitsPrice(Double minPrice, Double maxPrice);
     Product getOneByProductNo(String productNo);
     List<String> getAllManufacturers();

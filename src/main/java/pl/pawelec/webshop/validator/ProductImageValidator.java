@@ -6,8 +6,6 @@
 package pl.pawelec.webshop.validator;
 
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import pl.pawelec.webshop.model.Product;
 

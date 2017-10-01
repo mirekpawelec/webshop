@@ -146,5 +146,15 @@ public class DeliveryServiceImpl implements DeliveryService{
             this.deleteById(id);
         }
     }
+    
+    @Override
+    public String setWhereComeFrom(String view) {
+        return view;
+    }
+    
+    @Override
+    public String whatView(String view) {
+        return view;
+    }
 
 }

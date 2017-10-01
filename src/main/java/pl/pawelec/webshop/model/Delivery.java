@@ -19,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -27,7 +29,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "delivery")
 public class Delivery implements Serializable{
+    
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id", nullable = false)
@@ -107,6 +111,7 @@ public class Delivery implements Serializable{
         this.place = place;
     }
 
+    @Size(max = 255, message = "Size.Delivery.description.validation")
     public String getDescription() {
         return description;
     }
@@ -115,6 +120,7 @@ public class Delivery implements Serializable{
         this.description = description;
     }
 
+    @Size(max = 25, message = "Size.Delivery.driverFirstName.validation")
     public String getDriverFirstName() {
         return driverFirstName;
     }
@@ -123,6 +129,7 @@ public class Delivery implements Serializable{
         this.driverFirstName = driverFirstName;
     }
 
+    @Size(max = 25, message = "Size.Delivery.driverLastName.validation")
     public String getDriverLastName() {
         return driverLastName;
     }
@@ -130,7 +137,9 @@ public class Delivery implements Serializable{
     public void setDriverLastName(String driverLastName) {
         this.driverLastName = driverLastName;
     }
-
+    
+    @Pattern(regexp = "^[+][0-9]{2}[ ][0-9]{3}[ ][0-9]{3}[ ][0-9]{3}$", message = "Pattern.DeliveryItem.driverPhoneNo.validation")
+    @Size(max = 25, message = "Size.Delivery.driverPhoneNo.validation")
     public String getDriverPhoneNo() {
         return driverPhoneNo;
     }
@@ -139,6 +148,7 @@ public class Delivery implements Serializable{
         this.driverPhoneNo = driverPhoneNo;
     }
 
+    @Size(max = 25, message = "Size.Delivery.truckType.validation")
     public String getTruckType() {
         return truckType;
     }
@@ -147,6 +157,7 @@ public class Delivery implements Serializable{
         this.truckType = truckType;
     }
 
+    @Size(max = 25, message = "Size.Delivery.truckNumber.validation")
     public String getTruckNumber() {
         return truckNumber;
     }
@@ -155,6 +166,7 @@ public class Delivery implements Serializable{
         this.truckNumber = truckNumber;
     }
 
+    @Size(max = 25, message = "Size.Delivery.trailerOrCaravanNumber.validation")
     public String getTrailerOrCaravanNumber() {
         return trailerOrCaravanNumber;
     }

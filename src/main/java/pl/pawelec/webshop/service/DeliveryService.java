@@ -31,4 +31,6 @@ public interface DeliveryService {
     Delivery setPlaceIdAccordingToPlaceNo(Delivery delivery, List<Storageplace> storageplaces);
     String saveDetailsDelivery(Delivery delivery);
     void deleteByIdAndStatus(Long id, String status);
+    String setWhereComeFrom(String view);
+    String whatView(String view);
 }

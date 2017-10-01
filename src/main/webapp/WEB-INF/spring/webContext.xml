@@ -59,18 +59,12 @@
         </property>
     </bean>
     
+    <flow:flow-builder-services id="flowBuilderService" validator="validator" development="true"/>
     <flow:flow-executor id="deliveryFlowExecutor" flow-registry="deliveryFlowRegistry" />
-    
-    <flow:flow-registry id="deliveryFlowRegistry" base-path="/WEB-INF/flows" >
+    <flow:flow-registry id="deliveryFlowRegistry" base-path="/WEB-INF/flows" flow-builder-services="flowBuilderService" >
         <flow:flow-location path="/delivery/delivery-flow.xml" id="delivery" />
     </flow:flow-registry>
-    
-    <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
-        <property name="flowRegistry" ref="deliveryFlowRegistry" />
-    </bean>
-    
-    <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">
-        <property name="flowExecutor" ref="deliveryFlowExecutor" />
-    </bean>
+    <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping" p:flowRegistry-ref="deliveryFlowRegistry" />
+    <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter" p:flowExecutor-ref="deliveryFlowExecutor" />
     
 </beans>

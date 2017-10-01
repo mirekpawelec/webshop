@@ -15,4 +15,5 @@ import pl.pawelec.webshop.model.DeliveryItem;
 public interface DeliveryItemDao extends Dao<DeliveryItem>{
     DeliveryItem getByLoadunitNo(String loadunitNo);
     List<DeliveryItem> getByDeliveryId(Long deliveryId);
+    List<Object> getSummaryDelivery(Long id);
 }

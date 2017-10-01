@@ -5,7 +5,9 @@
  */
 package pl.pawelec.webshop.service.impl;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ import pl.pawelec.webshop.service.RepositoryService;
  */
 @Service
 @Transactional
-public class DeliveryItemServiceImpl implements DeliveryItemService{
+public class DeliveryItemServiceImpl implements DeliveryItemService, Serializable{
 
     @Autowired
     private DeliveryItemDao deliveryItemDao;
@@ -35,6 +37,7 @@ public class DeliveryItemServiceImpl implements DeliveryItemService{
     
     @Override
     public void create(DeliveryItem deliveryItem) {
+        System.out.println("### DeliveryItemServiceImpl; deliveryItem=" + deliveryItem);
         if(deliveryItem.getStatus()==null){
             deliveryItem.setStatus( ProductStatus.OK.getProductStatusType() );
         }
@@ -56,8 +59,8 @@ public class DeliveryItemServiceImpl implements DeliveryItemService{
     }
 
     @Override
-    public void deleteById(Long Id) {
-        deliveryItemDao.deleteById(Id);
+    public void deleteById(Long id) {
+        deliveryItemDao.deleteById(id);
     }
 
     @Override
@@ -66,8 +69,8 @@ public class DeliveryItemServiceImpl implements DeliveryItemService{
     }
 
     @Override
-    public DeliveryItem getOneById(Long Id) {
-        return deliveryItemDao.getOneById(Id);
+    public DeliveryItem getOneById(Long id) {
+        return deliveryItemDao.getOneById(id);
     }
 
     @Override
@@ -81,8 +84,8 @@ public class DeliveryItemServiceImpl implements DeliveryItemService{
     }
 
     @Override
-    public boolean exists(Long Id) {
-        return deliveryItemDao.exists(Id);
+    public boolean exists(Long id) {
+        return deliveryItemDao.exists(id);
     }
 
     @Override
@@ -124,5 +127,11 @@ public class DeliveryItemServiceImpl implements DeliveryItemService{
         }
         return "true";
     }
+
+    @Override
+    public List<Object> getSummaryDelivery(Long id) {
+        return deliveryItemDao.getSummaryDelivery(id);
+    }
     
+
 }

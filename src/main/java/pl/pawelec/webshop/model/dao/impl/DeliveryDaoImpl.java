@@ -96,12 +96,16 @@ public class DeliveryDaoImpl extends AbstrDao<Delivery> implements DeliveryDao{
         return newDelivery;
     }
     
-    public boolean closeDelivery(Long Id) {
+    public boolean closeDelivery(Long id) {
         try{
-            Delivery deliveryToClosing = getOneById(Id);
-            deliveryToClosing.setStatus( DeliveryStatus.FI.getStatus() );
-            deliveryToClosing.setFinishDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            this.update(deliveryToClosing);
+            Delivery deliveryToClosing = getOneById(id);
+            if(deliveryToClosing.getStatus().equals(DeliveryStatus.RE.getStatus())){
+                deliveryToClosing.setStatus( DeliveryStatus.FI.getStatus() );
+                deliveryToClosing.setFinishDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                this.update(deliveryToClosing);
+            } else {
+                return false;
+            }
         } catch (Exception e){
             return false;
         }

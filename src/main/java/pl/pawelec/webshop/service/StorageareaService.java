@@ -18,11 +18,11 @@ public interface StorageareaService {
     void create(Storagearea storagearea);
     void update(Storagearea storagearea);
     void delete(Storagearea storagearea);
-    void deleteById(Long Id);
+    void deleteById(Long id);
     void deleteAll();
-    Storagearea getById(Long Id);
+    Storagearea getById(Long id);
     List<Storagearea> getAll();
     Long count();
-    boolean exists(Long Id);
+    boolean exists(Long id);
     List<Storagearea> getByDescription(String wholeDescriptionOrPart);
 }

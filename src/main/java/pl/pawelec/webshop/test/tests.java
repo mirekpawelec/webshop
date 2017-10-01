@@ -5,15 +5,11 @@
  */
 package pl.pawelec.webshop.test;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import pl.pawelec.webshop.model.Repository;
-import pl.pawelec.webshop.model.enum_.ProductState;
-import pl.pawelec.webshop.model.enum_.ProductStatus;
-import pl.pawelec.webshop.model.enum_.QualityStatus;
+import org.springframework.webflow.validation.BeanValidationHintResolver;
 import pl.pawelec.webshop.service.DeliveryItemService;
 import pl.pawelec.webshop.service.DeliveryService;
 import pl.pawelec.webshop.service.ProductService;
@@ -168,29 +164,30 @@ public class tests {
         //rs.update(r);
         //rs.deleteById(15l);
         //System.out.println( rs.getByStatus("OK") );
-        List<Repository> repList = new ArrayList<Repository>();
-        Repository newRep;
-        for(int i = 0 ; i <=2 ; i++){
-            newRep = new Repository();
-            newRep.setLoadunitNo( String.valueOf(1010122320 + i) );
-            newRep.getProduct().setProductId( Long.valueOf( 30 + i ) ); // do 33
-            newRep.setQuantity( 1 );
-            newRep.getPlace().setPlaceId( 2l ); // do 5
-            newRep.setState( ProductState.NEW.name() );
-            newRep.setQualityStatus( QualityStatus._0.getNumer() );
-            newRep.setStatus( ProductStatus.OK.getProductStatusType() );
-            newRep.setLastModifikationDate( LocalDateTime.now() );
-            newRep.setCreateDate( LocalDateTime.now() );
-        repList.add(newRep);
-        }
-        System.out.println("before:");
-        repList.forEach(System.out::println);
         
-        System.out.println("save:");
-        repList.forEach( item -> {
-                    System.out.println("item=" + item);
-                    rs.create(item);
-                });
+//        List<Repository> repList = new ArrayList<Repository>();
+//        Repository newRep;
+//        for(int i = 0 ; i <=2 ; i++){
+//            newRep = new Repository();
+//            newRep.setLoadunitNo( String.valueOf(1010122320 + i) );
+//            newRep.getProduct().setProductId( Long.valueOf( 30 + i ) ); // do 33
+//            newRep.setQuantity( 1 );
+//            newRep.getPlace().setPlaceId( 2l ); // do 5
+//            newRep.setState( ProductState.NEW.name() );
+//            newRep.setQualityStatus( QualityStatus._0.getNumer() );
+//            newRep.setStatus( ProductStatus.OK.getProductStatusType() );
+//            newRep.setLastModifikationDate( LocalDateTime.now() );
+//            newRep.setCreateDate( LocalDateTime.now() );
+//        repList.add(newRep);
+//        }
+//        System.out.println("before:");
+//        repList.forEach(System.out::println);
+//        
+//        System.out.println("save:");
+//        repList.forEach( item -> {
+//                    System.out.println("item=" + item);
+//                    rs.create(item);
+//                });
         
 //        System.out.println( sps.count() );
 //        System.out.println( sps.exists(5l) );
@@ -219,6 +216,14 @@ public class tests {
 
 
 //        Arrays.asList( ProductState.values() ).forEach(System.out::println);
+//
+//        List<Object> list = dis.getSummaryDelivery( 135L );
+//        Iterator iter;
+//        for(iter = list.iterator() ; iter.hasNext(); ){
+//            Object[] row = (Object[]) iter.next();
+//            System.out.println("deliveryId=" + row[0] + ", productNo=" + row[1] + ", name=" + row[2] + ", quantity=" + row[3]);
+//        }
+        
 
     }
 }

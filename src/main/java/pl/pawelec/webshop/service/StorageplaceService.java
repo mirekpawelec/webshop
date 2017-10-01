@@ -16,12 +16,12 @@ public interface StorageplaceService {
     void create(Storageplace storageplace);
     void update(Storageplace storageplace);
     void delete(Storageplace storageplace);
-    void deleteById(Long Id);
+    void deleteById(Long id);
     void deleteAll();
-    Storageplace getById(Long Id);
+    Storageplace getById(Long id);
     List<Storageplace> getAll();
     Long count();
-    boolean exists(Long Id);
+    boolean exists(Long id);
     Storageplace getByPlaceNo(String placeNo);
     List<Storageplace> getByType(String type);
 }

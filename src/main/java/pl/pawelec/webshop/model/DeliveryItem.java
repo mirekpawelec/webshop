@@ -18,7 +18,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 
 /**
@@ -28,7 +33,9 @@ import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 @Entity
 @Table(name = "delivery_item")
 public class DeliveryItem implements Serializable{
+    
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id", nullable = false)
@@ -76,6 +83,9 @@ public class DeliveryItem implements Serializable{
         this.delivery = delivery;
     }
 
+    @NotEmpty(message = "NotEmpty.DeliveryItem.loadunitNo.validation")
+    @Pattern(regexp = "[0-9]{10}", message = "Pattern.DeliveryItem.loadunitNo.validation")
+    @Size(max = 10, message = "Size.DeliveryItem.loadunitNo.validation")
     public String getLoadunitNo() {
         return loadunitNo;
     }
@@ -92,10 +102,13 @@ public class DeliveryItem implements Serializable{
         this.product = product;
     }
 
+    @NotNull(message = "NotNull.DeliveryItem.quantity.validation")
+    @Min(value = 1, message = "Min.DeliveryItem.quantity.validation")
+    @Digits(integer = 2, fraction = 0, message = "Digits.DeliveryItem.quantity.validation")
     public Integer getQuantity() {
         return quantity;
     }
-
+    
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }

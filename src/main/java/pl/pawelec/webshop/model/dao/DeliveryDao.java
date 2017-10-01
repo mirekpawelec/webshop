@@ -17,5 +17,5 @@ public interface DeliveryDao extends Dao<Delivery>{
     List<Delivery> getByTruck(String type, String truckNumber, String trailerOrCaravanNumber);
     Long createAndGetId(Delivery entity);
     Delivery startProcessDelivery();
-    boolean closeDelivery(Long Id);
+    boolean closeDelivery(Long id);
 }

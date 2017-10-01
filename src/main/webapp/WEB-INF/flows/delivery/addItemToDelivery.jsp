@@ -23,14 +23,14 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1"><strong> Nr dostawy: </strong></span>
-                            <input type="text" class="form-control" aria-describedby="basic-addon1" readonly="true" value="${deliveryOrder.delivery.deliveryId}"/>
+                            <input type="text" class="form-control" aria-describedby="basic-addon1" readonly="true" value="${delivery.deliveryId}"/>
                         </div>
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1"><strong> Miejsce: </strong></span>
-                            <input type="text" class="form-control" aria-describedby="basic-addon1" readonly="true" value="${deliveryOrder.delivery.place.placeNo}"/>
+                            <input type="text" class="form-control" aria-describedby="basic-addon1" readonly="true" value="${delivery.place.placeNo}"/>
                         </div>
                     </div>
                 </div>
@@ -41,16 +41,16 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1"><strong> Info: </strong></span>
-                            <textarea type="text" class="form-control" aria-describedby="basic-addon1" readonly="true">${deliveryOrder.delivery.description}</textarea>
+                            <textarea type="text" class="form-control" aria-describedby="basic-addon1" readonly="true">${delivery.description}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <br/>
 
-                <form:form modelAttribute="deliveryOrder.item" class="form-horizontal" autocomplete="off">
+                <form:form modelAttribute="deliveryItem" class="form-horizontal" autocomplete="off">
                     <div class="row text-danger">
-                        <form:errors path="*" class="text-danger"/>
+                        <form:errors path="*" class="alert alert-danger" element="div"/>
                     </div>
                     <fieldset>      
                         <div class="panel panel-primary">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="panel-body">
                                 
-                                <form:input path="delivery.deliveryId" value="${deliveryOrder.delivery.deliveryId}" type="hidden" />
+                                <form:input path="delivery.deliveryId" value="${delivery.deliveryId}" type="hidden" />
                                 
                                 <div class="form-group"> 
                                     <label for="loadunitNo" class="col-xs-12 col-sm-3 col-md-3 col-lg-2 control-label"> Identyfikator </label>
@@ -75,7 +75,7 @@
                                         <form:select id="productId" path="product.productId" class="form-control">
                                             <option value="0"> -------------------- </option> 
                                             <c:forEach items="${articles}" var="article">
-                                                <option value="${article.productId}" <c:if test="${article.productId==deliveryOrder.item.product.productId}"> selected="true" </c:if> > ${article.productNo} - ${article.name} </option>
+                                                <option value="${article.productId}" <c:if test="${article.productId==deliveryItem.product.productId}"> selected="true" </c:if> > ${article.productNo} - ${article.name} </option>
                                             </c:forEach>
                                         </form:select>
                                         <form:errors path="product.productId" class="text-danger"/>
@@ -93,7 +93,7 @@
                                 <div class="form-group">
                                     <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11">
                                         <button type="submit" name="_eventId_add" class="btn btn-primary pull-right"> 
-                                            ${deliveryOrder.item.itemId==null?'Dodaj <span class="glyphicon glyphicon-plus"></span>':'Aktualizuj <span class="glyphicon glyphicon-ok"></span>'}
+                                            ${deliveryItem.itemId==null?'Dodaj <span class="glyphicon glyphicon-plus"></span>':'Aktualizuj <span class="glyphicon glyphicon-ok"></span>'}
                                         </button>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                                             <th>Data dodania</th>
                                             <th></th>
                                         </tr>
-                                    <c:forEach items="${deliveryOrder.delivery.deliveryItemSet}" var="item" varStatus="licznik">
+                                    <c:forEach items="${delivery.deliveryItemSet}" var="item" varStatus="licznik">
                                         <tr> 
                                             <td>${licznik.count}.</td>
                                             <td>${item.loadunitNo}</td>
@@ -146,12 +146,13 @@
                                 </div>
                             </div>
                         </div>
+
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                        
+
                         <div class="row">
                             <div class="form-group">
                                 <button type="submit" name="_eventId_back" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Wstecz </button> 
-                                <button type="submit" name="_eventId_summary" class="btn btn-primary" ${fn:length(deliveryOrder.delivery.deliveryItemSet)==0?'disabled':''} > 
+                                <button type="submit" name="_eventId_summary" class="btn btn-primary" ${fn:length(delivery.deliveryItemSet)==0?'disabled':''} > 
                                     Podsumowanie <span class="glyphicon glyphicon-check"></span>
                                 </button>
                             </div>

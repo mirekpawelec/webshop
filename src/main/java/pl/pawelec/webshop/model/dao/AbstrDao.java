@@ -36,8 +36,8 @@ public abstract class AbstrDao<T extends Object> implements Dao<T>{
     private String getDomainName(){
         return getDomainClass().getName();
     }
-    private T find(Serializable Id){
-        return getEntityManager().find(getDomainClass(), Id);
+    private T find(Serializable id){
+        return getEntityManager().find(getDomainClass(), id);
     }
     public void create(T entity){
         getEntityManager().persist(entity);
@@ -48,16 +48,16 @@ public abstract class AbstrDao<T extends Object> implements Dao<T>{
     public void delete(T entity){
         getEntityManager().remove(entity);
     }
-    public void deleteById(Serializable Id){
-        T deleteItem = find(Id);
+    public void deleteById(Serializable id){
+        T deleteItem = find(id);
         if(deleteItem!=null) getEntityManager().remove(deleteItem);
     }
     public void deleteAll(){
         getEntityManager().createQuery("DELETE FROM " + getDomainName()).executeUpdate();
     }
-    public T getOneById(Serializable Id){
+    public T getOneById(Serializable id){
         //return (T) getEntityManager().createQuery("from " + getDomainName() + " where id = :id").setParameter("id", Id).getSingleResult();    
-        return find(Id);
+        return find(id);
     }
     public List<T> getAll(){
         return getEntityManager().createQuery("FROM " + getDomainName()).getResultList();
@@ -65,7 +65,7 @@ public abstract class AbstrDao<T extends Object> implements Dao<T>{
     public Long count(){
         return (Long) getEntityManager().createQuery("SELECT count(*) FROM " + getDomainName()).getSingleResult();
     }
-    public boolean exists(Serializable Id){
-        return (find(Id) != null);
+    public boolean exists(Serializable id){
+        return (find(id) != null);
     }
 }

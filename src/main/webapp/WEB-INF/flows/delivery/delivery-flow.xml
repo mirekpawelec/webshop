@@ -4,61 +4,69 @@
     
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
     
-    <var name="deliveryOrder" class="pl.pawelec.webshop.model.DeliveryOrder" />
+    <var name="delivery" class="pl.pawelec.webshop.model.Delivery" />
+    <var name="deliveryItem" class="pl.pawelec.webshop.model.DeliveryItem" />
     
     <action-state id="createDelivery">
-        <evaluate expression="deliveryServiceImpl.startProcessDelivery(requestParameters.deliveryId)" result="deliveryOrder.delivery" />
+        <evaluate expression="deliveryServiceImpl.startProcessDelivery(requestParameters.deliveryId)" result="delivery" />
         <transition to="displayError" on-exception="pl.pawelec.webshop.exception.InvalidDeliveryException" />
-        <transition to="addDetailsDelivery">
+        <transition to="addDetailsToDelivery">
             <evaluate expression="storageplaceServiceImpl.getByType('WE')" result="flowScope.places" />
         </transition>
     </action-state>
     
-    <view-state id="addDetailsDelivery" model="deliveryOrder">
-        <transition on="toDeliveries" to="sendToDeliveries">
-            <evaluate expression="deliveryServiceImpl.deleteByIdAndStatus(deliveryOrder.delivery.deliveryId, deliveryOrder.delivery.status)" />
+    <view-state id="addDetailsToDelivery" model="delivery">
+        <transition on="toDeliveries" to="sendToDeliveries" validate="false">
+            <evaluate expression="deliveryServiceImpl.deleteByIdAndStatus(delivery.deliveryId, delivery.status)" />
         </transition>
         <transition on="saveChange" to="saveDetailsDelivery" />
         <transition on="addItems" to="saveAndMoveToAddItems" />
-        <transition on="delete" to="deliveryDropConfirmation" />
+        <transition on="summary" to="summaryOfDelivery" validate="false">
+            <evaluate expression="deliveryItemServiceImpl.getSummaryDelivery(delivery.deliveryId)" result="flowScope.summary"/>
+            <set name="flowScope.whereComeFrom" value="'addDetailsToDelivery'" />
+        </transition>
+        <transition on="delete" to="deliveryDropConfirmation" validate="false"/>
     </view-state>
             
-        <view-state id="deliveryDropConfirmation" model="deliveryOrder">
-            <transition on="no" to="addDetailsDelivery" />
-            <transition on="yes" to="deleteDelivery" />
+        <view-state id="deliveryDropConfirmation" model="delivery">
+            <transition on="no" to="addDetailsToDelivery" validate="false"/>
+            <transition on="yes" to="deleteDelivery" validate="false"/>
         </view-state>
         
     <action-state id="saveDetailsDelivery">
-        <evaluate expression="deliveryServiceImpl.setPlaceIdAccordingToPlaceNo(deliveryOrder.delivery, flowScope.places)" result="deliveryOrder.delivery" />
-        <evaluate expression="deliveryServiceImpl.saveDetailsDelivery(deliveryOrder.delivery)" />
-        <transition on="true" to="addDetailsDelivery" />
+        <evaluate expression="deliveryServiceImpl.setPlaceIdAccordingToPlaceNo(delivery, flowScope.places)" result="delivery" />
+        <evaluate expression="deliveryServiceImpl.saveDetailsDelivery(delivery)" />
+        <transition on="true" to="addDetailsToDelivery" />
         <transition on="false" to="displayError" />
     </action-state>
     
     <action-state id="saveAndMoveToAddItems">
-        <evaluate expression="deliveryServiceImpl.setPlaceIdAccordingToPlaceNo(deliveryOrder.delivery, flowScope.places)" result="deliveryOrder.delivery" />
-        <evaluate expression="deliveryServiceImpl.saveDetailsDelivery(deliveryOrder.delivery)" />
+        <evaluate expression="deliveryServiceImpl.setPlaceIdAccordingToPlaceNo(delivery, flowScope.places)" result="delivery" />
+        <evaluate expression="deliveryServiceImpl.saveDetailsDelivery(delivery)" />
         <transition on="true" to="addItemToDelivery">
             <evaluate expression="productServiceImpl.getByStatus('OK')" result="flowScope.articles" />
         </transition>
         <transition on="false" to="displayError" />
     </action-state>
     
-    <view-state id="addItemToDelivery" model="deliveryOrder">
-        <transition on="edit" to="editDeliveryItem"/>
-        <transition on="delete" to="deleteDeliveryItem" />
-        <transition on="add" to="saveDeliveryItem" />
-        <transition on="back" to="addDetailsDelivery" />
-        <transition on="summary" to="summaryOfDelivery" />
+    <view-state id="addItemToDelivery" model="deliveryItem">
+        <transition on="edit" to="editDeliveryItem" validate="false"/>
+        <transition on="delete" to="deleteDeliveryItem" validate="false"/>
+        <transition on="add" to="saveDeliveryItem"/>
+        <transition on="back" to="addDetailsToDelivery" validate="false"/>
+        <transition on="summary" to="summaryOfDelivery" validate="false">
+            <evaluate expression="deliveryItemServiceImpl.getSummaryDelivery(delivery.deliveryId)" result="flowScope.summary"/>
+            <set name="flowScope.whereComeFrom" value="'addItemToDelivery'" />
+        </transition>
     </view-state>    
     
             <action-state id="saveDeliveryItem">
-                <evaluate expression="deliveryItemServiceImpl.create(deliveryOrder.item)" />
+                <evaluate expression="deliveryItemServiceImpl.create(deliveryItem)" />
                 <transition to="newDeliveryItem" />
             </action-state>
             
             <action-state id="editDeliveryItem">
-                <evaluate expression="deliveryItemServiceImpl.getOneById(requestParameters.editItemId)" result="deliveryOrder.item" />
+                <evaluate expression="deliveryItemServiceImpl.getOneById(requestParameters.editItemId)" result="deliveryItem" />
                 <transition to="addItemToDelivery" />
             </action-state>
             
@@ -68,22 +76,29 @@
             </action-state>
             
             <action-state id="newDeliveryItem">
-                <evaluate expression="deliveryItemServiceImpl.newDeliveryItem()" result="deliveryOrder.item"/>
+                <evaluate expression="deliveryItemServiceImpl.newDeliveryItem()" result="deliveryItem"/>
                 <transition to="refreshDeliveryObjectIntoDeliveryOrder" />
             </action-state>
 
             <action-state id="refreshDeliveryObjectIntoDeliveryOrder">
-                <evaluate expression="deliveryServiceImpl.getOneById(deliveryOrder.delivery.deliveryId)" result="deliveryOrder.delivery" />
+                <evaluate expression="deliveryServiceImpl.getOneById(delivery.deliveryId)" result="delivery" />
                 <transition to="addItemToDelivery"/>
             </action-state>
     
-    <view-state id="summaryOfDelivery" model="deliveryOrder">
-        <transition on="back" to="addItemToDelivery" />
-        <transition on="close" to="moveItemsToRepository" />
+    <view-state id="summaryOfDelivery" model="delivery">
+        <!--<transition on="back" to="addItemToDelivery" validate="false" />-->
+        <transition on="back" to="decisionWhereGo" validate="false" />
+        <transition on="close" to="moveItemsToRepository" validate="false" />
     </view-state>
     
+    <action-state id="decisionWhereGo">
+        <evaluate expression="deliveryServiceImpl.whatView(requestParameters.whatView)" />
+        <transition on="addDetailsToDelivery" to="addDetailsToDelivery" />
+        <transition on="addItemToDelivery" to="addItemToDelivery" />
+    </action-state>
+    
     <action-state id="moveItemsToRepository">
-        <evaluate expression="deliveryItemServiceImpl.moveItemsToRepository(deliveryOrder.delivery.place.placeId, deliveryOrder.delivery.deliveryItemSet)"/>
+        <evaluate expression="deliveryItemServiceImpl.moveItemsToRepository(delivery.place.placeId, delivery.deliveryItemSet)"/>
         <transition to="closeDelivery" />
     </action-state>
     
@@ -94,21 +109,15 @@
     <end-state id="endState"/>
     
     <action-state id="closeDelivery">
-        <evaluate expression="deliveryServiceImpl.closeDelivery(deliveryOrder.delivery.deliveryId)" />
-        <transition on="true" to="displaySuccess" />
+        <evaluate expression="deliveryServiceImpl.closeDelivery(delivery.deliveryId)" />
+        <transition on="true" to="sendToDeliveries" />
         <transition on="false" to="displayError" />
     </action-state>
     
     <action-state id="deleteDelivery">
-        <evaluate expression="deliveryServiceImpl.deleteById(deliveryOrder.delivery.deliveryId)" />
+        <evaluate expression="deliveryServiceImpl.deleteById(delivery.deliveryId)" />
         <transition to="sendToDeliveries" />
     </action-state>
     
-    <end-state id="sendToDeliveries" view="externalRedirect:/admin/deliveries"/>
-    <end-state id="displaySuccess" view = "deliveryClosed.jsp"/>
-
-     <global-transitions>
-        <transition on = "cancel" to="deleteDelivery"/>
-    </global-transitions>
-    
+    <end-state id="sendToDeliveries" view="externalRedirect:/admin/deliveries"/>    
 </flow>

@@ -1,10 +1,12 @@
 package pl.pawelec.webshop.service.impl;
 
 
+import java.io.Serializable;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.pawelec.webshop.exception.NoProductIdFoundException;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.dao.ProductDao;
 import pl.pawelec.webshop.service.ProductService;
@@ -21,7 +23,7 @@ import pl.pawelec.webshop.service.ProductService;
  */
 @Service
 @Transactional
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService, Serializable{
     @Autowired
     private ProductDao productDao;
 
@@ -41,8 +43,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteById(Long Id) {
-        productDao.deleteById(Id);
+    public void deleteById(Long id) {
+        productDao.deleteById(id);
     }
 
     @Override
@@ -51,8 +53,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getOneById(Long Id) {
-        return productDao.getOneById(Id);
+    public Product getOneById(Long id) {
+        return productDao.getOneById(id);
     }
 
     @Override
@@ -66,8 +68,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public boolean exists(Long Id) {
-        return productDao.exists(Id);
+    public boolean exists(Long id) {
+        return productDao.exists(id);
     }
 
     @Override

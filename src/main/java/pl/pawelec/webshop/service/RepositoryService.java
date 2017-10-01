@@ -16,12 +16,12 @@ public interface RepositoryService {
     void create(Repository repository);
     void update(Repository repository);
     void delete(Repository repository);
-    void deleteById(Long Id);
+    void deleteById(Long id);
     void deleteAll();
-    Repository getById(Long Id);
+    Repository getById(Long id);
     List<Repository> getAll();
     Long count();
-    boolean exists(Long Id);
+    boolean exists(Long id);
     Repository getByLoadunitNo(String loadunitNo);
     List<Repository> getByStatus(String status);
 }

@@ -40,8 +40,8 @@ public class RepositoryServiceImpl implements RepositoryService{
     }
 
     @Override
-    public void deleteById(Long Id) {
-        repositoryDao.deleteById(Id);
+    public void deleteById(Long id) {
+        repositoryDao.deleteById(id);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class RepositoryServiceImpl implements RepositoryService{
     }
 
     @Override
-    public Repository getById(Long Id) {
-        return repositoryDao.getOneById(Id);
+    public Repository getById(Long id) {
+        return repositoryDao.getOneById(id);
     }
 
     @Override
@@ -65,8 +65,8 @@ public class RepositoryServiceImpl implements RepositoryService{
     }
 
     @Override
-    public boolean exists(Long Id) {
-        return repositoryDao.exists(Id);
+    public boolean exists(Long id) {
+        return repositoryDao.exists(id);
     }
 
     @Override

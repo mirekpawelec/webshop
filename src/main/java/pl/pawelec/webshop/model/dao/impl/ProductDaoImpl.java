@@ -5,12 +5,14 @@
  */
 package pl.pawelec.webshop.model.dao.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
 import pl.pawelec.webshop.exception.NoProductFoundUnderProductNoException;
+import pl.pawelec.webshop.exception.NoProductIdFoundException;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.dao.AbstrDao;
 import pl.pawelec.webshop.model.dao.ProductDao;
@@ -20,7 +22,7 @@ import pl.pawelec.webshop.model.dao.ProductDao;
  * @author mirek
  */
 @Repository
-public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
+public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao, Serializable{
     
     public List<Product> getByUnitsPrice(Double minPrice, Double maxPrice) {
         return getEntityManager().createQuery("from Product where unitPrice between :minPrice and :maxPrice")
@@ -74,4 +76,16 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao{
     public List<Product> getByStatus(String status) {
         return getEntityManager().createQuery("from Product WHERE status = :status").setParameter("status", status).getResultList();
     }
+
+    @Override
+    public Product getOneById(Serializable id) {
+        Product product = null;
+        try{
+            product = (Product) getEntityManager().createQuery("from Product WHERE product_id = :productId").setParameter("productId", id).getSingleResult();
+        } catch(NoResultException e){
+            throw new NoProductIdFoundException((Long) id);
+        }
+        return product;
+    }
+
 }

@@ -39,8 +39,8 @@ public class StorageplaceServiceImpl implements StorageplaceService{
     }
 
     @Override
-    public void deleteById(Long Id) {
-        storageplaceDao.deleteById(Id);
+    public void deleteById(Long id) {
+        storageplaceDao.deleteById(id);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class StorageplaceServiceImpl implements StorageplaceService{
     }
 
     @Override
-    public Storageplace getById(Long Id) {
-        return storageplaceDao.getOneById(Id);
+    public Storageplace getById(Long id) {
+        return storageplaceDao.getOneById(id);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class StorageplaceServiceImpl implements StorageplaceService{
     }
 
     @Override
-    public boolean exists(Long Id) {
-        return storageplaceDao.exists(Id);
+    public boolean exists(Long id) {
+        return storageplaceDao.exists(id);
     }
 
     @Override

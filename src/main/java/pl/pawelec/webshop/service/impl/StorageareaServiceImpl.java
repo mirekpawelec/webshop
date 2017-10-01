@@ -41,8 +41,8 @@ public class StorageareaServiceImpl implements StorageareaService{
     }
 
     @Override
-    public void deleteById(Long Id){
-        storageareaDao.deleteById(Id);
+    public void deleteById(Long id){
+        storageareaDao.deleteById(id);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class StorageareaServiceImpl implements StorageareaService{
     }
 
     @Override
-    public Storagearea getById(Long Id) {
-        return storageareaDao.getOneById(Id);
+    public Storagearea getById(Long id) {
+        return storageareaDao.getOneById(id);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class StorageareaServiceImpl implements StorageareaService{
     }
 
     @Override
-    public boolean exists(Long Id) {
-        return storageareaDao.exists(Id);
+    public boolean exists(Long id) {
+        return storageareaDao.exists(id);
     }
 
     @Override
