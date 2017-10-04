@@ -35,3 +35,10 @@
 .container-fluid .table-responsive{
     margin: 0px 75px;
 }
+table#sortTable thead th{
+    position: relative;
+    cursor: pointer;
+}
+thead th span{
+    float: right;
+}

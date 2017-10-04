@@ -42,42 +42,46 @@
                 </div>
                 <div class="row">                    
                     <div class="table-responsive text-left">
-                        <table class="table table-striped table-hover">
-                            <tr>
-                                <th>Lp.</th>
-                                <th>${loadunitNoLbl}</th>
-                                <th>${productNoLbl}</th>
-                                <th>${manufacturerLbl}</th>
-                                <th>${productNameLbl}</th>
-                                <th>${quantityLbl}</th>
-                                <th>${placeIdLbl}</th>
-                                <th>${stateLbl}</th>
-                                <th>${qualityStatusLbl}</th>
-                                <th>${statusLbl}</th>
-                                <th>${lastModifikationDateLbl}</th>
-                                <th>${createDateLbl}</th>
-                            </tr>
-                            <c:forEach items="${wholeStock}" var="loadunit" varStatus="counter">
+                        <table id="sortTable" class="table table-striped table-hover">
+                            <thead>
                                 <tr>
-                                    <td>${counter.count}</td>
-                                    <td>${loadunit.loadunitNo}</td>
-                                    <td>${loadunit.product.productNo}</td>
-                                    <td>${loadunit.product.manufacturer}</td>
-                                    <td>${loadunit.product.name}</td>
-                                    <td>${loadunit.quantity}</td>
-                                    <td>${loadunit.place.placeNo}</td>
-                                    <td>${loadunit.state}</td>
-                                    <td>${loadunit.qualityStatus}</td>
-                                    <td>${loadunit.status}</td>                              
-                                         <c:set var="cleanedDateTime" value="${fn:replace(loadunit.lastModifikationDate, 'T' , ' ')}" />
-                                         <fmt:parseDate value="${cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
-                                    <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
-                                         <c:set var="cleanedDateTime" value="${fn:replace(loadunit.createDate, 'T' , ' ')}" />
-                                         <fmt:parseDate value="${cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
-                                    <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
-                                    
+                                    <th>Lp.</th>
+                                    <th>${loadunitNoLbl}</th>
+                                    <th>${productNoLbl}</th>
+                                    <th>${manufacturerLbl}</th>
+                                    <th>${productNameLbl}</th>
+                                    <th>${quantityLbl}</th>
+                                    <th>${placeIdLbl}</th>
+                                    <th>${stateLbl}</th>
+                                    <th>${qualityStatusLbl}</th>
+                                    <th>${statusLbl}</th>
+                                    <th>${lastModifikationDateLbl}</th>
+                                    <th>${createDateLbl}</th>
                                 </tr>
-                            </c:forEach>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${wholeStock}" var="loadunit" varStatus="counter">
+                                    <tr>
+                                        <td>${counter.count}</td>
+                                        <td>${loadunit.loadunitNo}</td>
+                                        <td>${loadunit.product.productNo}</td>
+                                        <td>${loadunit.product.manufacturer}</td>
+                                        <td>${loadunit.product.name}</td>
+                                        <td>${loadunit.quantity}</td>
+                                        <td>${loadunit.place.placeNo}</td>
+                                        <td>${loadunit.state}</td>
+                                        <td>${loadunit.qualityStatus}</td>
+                                        <td>${loadunit.status}</td>                              
+                                             <c:set var="cleanedDateTime" value="${fn:replace(loadunit.lastModifikationDate, 'T' , ' ')}" />
+                                             <fmt:parseDate value="${cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
+                                        <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
+                                             <c:set var="cleanedDateTime" value="${fn:replace(loadunit.createDate, 'T' , ' ')}" />
+                                             <fmt:parseDate value="${cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
+                                        <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
+
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
                         </table>
                     </div>
                 </div>

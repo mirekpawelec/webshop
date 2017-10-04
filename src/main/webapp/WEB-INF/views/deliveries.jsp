@@ -31,47 +31,49 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="table-responsive text-left">
-                        <table class="table table-striped table-hover">
-                            <tr>
-                                <th> <spring:message code="deliveries.table.deliveryId.label" /> </th>
-                                <th> <spring:message code="deliveries.table.placeNo.label" /> </th>
-                                <th> <spring:message code="deliveries.table.driverFirstName.label" /> </th>
-                                <th> <spring:message code="deliveries.table.driverLastName.label" /> </th>
-                                <th> <spring:message code="deliveries.table.driverPhoneNo.label" /> </th>
-                                <th> <spring:message code="deliveries.table.truckType.label" /> </th>
-                                <th> <spring:message code="deliveries.table.truckNumber.label" /> </th>
-                                <th> <spring:message code="deliveries.table.trailerOrCaravanNumber.label" /> </th>
-                                <th> <spring:message code="deliveries.table.createUser.label" /> </th>
-                                <th> <spring:message code="deliveries.table.status.label" /> </th>
-                                <th> <spring:message code="deliveries.table.countItems.label" /> </th> 
-                                <th> <spring:message code="deliveries.table.createDate.label" /> </th>
-                                <th> <spring:message code="deliveries.table.finishDate.label" /> </th>
-                                <th> </th>
-                            </tr>
-                            
-                            <c:forEach var="item" items="${deliveries}">
+                        <table id="sortTable" class="table table-striped table-hover">
+                            <thead>
                                 <tr>
-                                    <td>${item.deliveryId}</td>
-                                    <td>${item.place.placeNo}</td>
-                                    <td>${item.driverFirstName}</td>
-                                    <td>${item.driverLastName}</td>
-                                    <td>${item.driverPhoneNo}</td>
-                                    <td>${item.truckType}</td>
-                                    <td>${item.truckNumber}</td>
-                                    <td>${item.trailerOrCaravanNumber}</td>
-                                    <td>${item.createUser}</td>
-                                    <td>${item.status}</td>
-                                    <td>${fn:length(item.deliveryItemSet)}</td>
-                                    <td>${item.createDate}</td>
-                                    <td>${item.finishDate}</td>
-                                    <td>
-                                        <spring:url value="/delivery?deliveryId=${item.deliveryId}" var="deliveryUrl" />                                        
-                                        <spring:message code="deliveries.button.selectDelivery.label" var="selectLbl" /> 
-                                        <a href="${deliveryUrl}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-check"> </span> ${selectLbl} </a>
-                                    </td>
+                                    <th> <spring:message code="deliveries.table.deliveryId.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.placeNo.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.driverFirstName.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.driverLastName.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.driverPhoneNo.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.truckType.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.truckNumber.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.trailerOrCaravanNumber.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.createUser.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.status.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.countItems.label" /> </th> 
+                                    <th> <spring:message code="deliveries.table.createDate.label" /> </th>
+                                    <th> <spring:message code="deliveries.table.finishDate.label" /> </th>
+                                    <th> </th>
                                 </tr>
-                            </c:forEach>
-                            
+                            </thead>
+                            <tbody>
+                                <c:forEach var="item" items="${deliveries}">
+                                    <tr>
+                                        <td>${item.deliveryId}</td>
+                                        <td>${item.place.placeNo}</td>
+                                        <td>${item.driverFirstName}</td>
+                                        <td>${item.driverLastName}</td>
+                                        <td>${item.driverPhoneNo}</td>
+                                        <td>${item.truckType}</td>
+                                        <td>${item.truckNumber}</td>
+                                        <td>${item.trailerOrCaravanNumber}</td>
+                                        <td>${item.createUser}</td>
+                                        <td>${item.status}</td>
+                                        <td>${fn:length(item.deliveryItemSet)}</td>
+                                        <td>${item.createDate}</td>
+                                        <td>${item.finishDate}</td>
+                                        <td>
+                                            <spring:url value="/delivery?deliveryId=${item.deliveryId}" var="deliveryUrl" />                                        
+                                            <spring:message code="deliveries.button.selectDelivery.label" var="selectLbl" /> 
+                                            <a href="${deliveryUrl}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-check"> </span> ${selectLbl} </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
                         </table>
                     </div>
                 </div>

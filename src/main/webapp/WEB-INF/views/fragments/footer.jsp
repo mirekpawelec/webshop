@@ -6,7 +6,8 @@
 
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<spring:url value="/resource/js/script.js" var="ownJs" />
+
+<spring:url value="/resource/js/table_sorting.js" var="tableSortingJs" />
 <spring:url value="/resource/js/jquery.min.js" var="jQueryJs" />
 <spring:url value="/resource/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:message code="footer.footer.copyright.label" var="copyright"/>
@@ -16,6 +17,8 @@
         ${copyright}
     </footer>
 </div>
-<script src="${ownJs}"></script>
+    
+<script src="${tableSortingJs}"></script>
 <script src="${jQueryJs}"></script>
 <script src="${bootstrapJs}"></script>
+
