@@ -8,15 +8,13 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html>
-<html lang="pl">
 
     <jsp:include page="./fragments/header.jsp"/>      
         
         <section class="main">
           
             <jsp:include page="./fragments/navi.jsp"/>
-            <br/>
+            <hr>
             <div class="container">
                 
                 <spring:message code="deliveries.pageHeader.label" var="headerInfo"/>

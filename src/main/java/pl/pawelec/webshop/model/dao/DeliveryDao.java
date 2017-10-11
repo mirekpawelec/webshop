@@ -15,7 +15,7 @@ import pl.pawelec.webshop.model.Delivery;
 public interface DeliveryDao extends Dao<Delivery>{
     List<Delivery> getByDriver(String firstName, String lastName, String phoneNo);
     List<Delivery> getByTruck(String type, String truckNumber, String trailerOrCaravanNumber);
-    Long createAndGetId(Delivery entity);
+    Delivery createAndGetDelivery(Delivery entity);
     Delivery startProcessDelivery();
     boolean closeDelivery(Long id);
 }

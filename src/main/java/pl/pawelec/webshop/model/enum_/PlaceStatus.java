@@ -8,21 +8,18 @@ package pl.pawelec.webshop.model.enum_;
  *
  * @author mirek
  */
-public enum ProductStatus {
+public enum PlaceStatus {
     OK("OK"),
     BL("Blocked"),
-    FI("Canceled");
+    FI("OFF");
     
     private String description;
 
-    private ProductStatus(String description) {
+    private PlaceStatus(String description) {
         this.description = description;
     }
 
-    public String getName() {
-        return this.name();
-    }
     public String getDescription() {
         return description;
-    }    
+    }   
 }

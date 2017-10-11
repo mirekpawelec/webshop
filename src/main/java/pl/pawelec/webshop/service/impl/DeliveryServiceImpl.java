@@ -45,7 +45,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 
     @Override
     public void delete(Delivery delivery) {
-        if(delivery.getStatus().equals(DeliveryStatus.OK.getStatus())){
+        if(delivery.getStatus().equals(DeliveryStatus.OK.name())){
             deliveryDao.delete(delivery);
         }
     }
@@ -93,7 +93,6 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Override
     public Delivery startProcessDelivery(String deliveryId) {
         Delivery delivery = new Delivery();
-        String delivStatus = null;
         if(deliveryId==null){
             delivery = deliveryDao.startProcessDelivery();
         } else {
@@ -129,7 +128,7 @@ public class DeliveryServiceImpl implements DeliveryService{
                 delivery.getPlace().setPlaceId( storageplaceService.getByPlaceNo( delivery.getPlace().getPlaceNo() ).getPlaceId() );
             }
             if(!delivery.getStatus().equals("FI")){
-                delivery.setStatus(DeliveryStatus.RE.getStatus());
+                delivery.setStatus(DeliveryStatus.RE.name());
                 this.update(delivery);
             } else {
                 throw new IllegalArgumentException("It can't update closed delivery!");

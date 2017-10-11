@@ -39,7 +39,7 @@ public class DeliveryItemServiceImpl implements DeliveryItemService, Serializabl
     public void create(DeliveryItem deliveryItem) {
         System.out.println("### DeliveryItemServiceImpl; deliveryItem=" + deliveryItem);
         if(deliveryItem.getStatus()==null){
-            deliveryItem.setStatus( ProductStatus.OK.getProductStatusType() );
+            deliveryItem.setStatus( ProductStatus.OK.name() );
         }
         if(deliveryItem.getItemId()==null){
             deliveryItemDao.create(deliveryItem);
@@ -115,11 +115,11 @@ public class DeliveryItemServiceImpl implements DeliveryItemService, Serializabl
                 repository.getPlace().setPlaceId( placeId );
                 repository.setState( ProductState.NEW.name() );
                 repository.setQualityStatus( QualityStatus._0.getNumer() );
-                repository.setStatus( ProductStatus.OK.getProductStatusType() );
+                repository.setStatus( ProductStatus.OK.name() );
                 repository.setLastModifikationDate( LocalDateTime.now() );
                 repository.setCreateDate( item.getCreateDate() );
                 repositoryService.create(repository);
-                item.setStatus( ProductStatus.FI.getProductStatusType() );
+                item.setStatus(ProductStatus.FI.name());
                 this.update(item); 
             };
         } catch(Exception e){

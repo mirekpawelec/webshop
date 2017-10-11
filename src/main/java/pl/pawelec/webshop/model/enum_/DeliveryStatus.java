@@ -10,29 +10,17 @@ package pl.pawelec.webshop.model.enum_;
  * @author mirek
  */
 public enum DeliveryStatus{
-    OK("OK", "Utworzona"),
-    RE("RE", "Realizacja"),
-    FI("FI", "Zamknięta");
+    OK("Utworzona"),
+    RE("Realizacja"),
+    FI("Zamknięta");
 
-    private String status;
     private String description; 
 
-    private DeliveryStatus(String status, String description) {
-        this.status = status;
+    private DeliveryStatus(String description) {
         this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public String getDescription() {
         return description;
     }
-
-    @Override
-    public String toString() {
-        return "DeliveryStatus{" + "status=" + status + ", description=" + description + '}';
-    }
-    
 }

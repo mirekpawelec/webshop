@@ -4,25 +4,23 @@
  * and open the template in the editor.
  */
 package pl.pawelec.webshop.model.enum_;
+
 /**
  *
  * @author mirek
  */
-public enum ProductStatus {
-    OK("OK"),
-    BL("Blocked"),
-    FI("Canceled");
+public enum OrderStatus {
+    RE("Realization"),
+    DE("Deleted"),
+    FI("Completed");
     
     private String description;
 
-    private ProductStatus(String description) {
+    private OrderStatus(String description) {
         this.description = description;
     }
 
-    public String getName() {
-        return this.name();
-    }
     public String getDescription() {
         return description;
-    }    
+    }
 }

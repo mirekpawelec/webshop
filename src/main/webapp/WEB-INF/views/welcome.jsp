@@ -8,14 +8,12 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
     
     <jsp:include page="./fragments/header.jsp"/>
     
         <section class="main">
             <jsp:include page="./fragments/navi.jsp"/>
-            
+            <hr>
             <div class="container">
                 <div class="jumbotron min-width">
                     <div class="row">
@@ -132,8 +130,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        
+                                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" ng-controller="cartController" ng-init="refreshCart('${sessionId}')">    
                         <c:forEach items="${allProducts}" var="product">
                             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                                
                                 
@@ -186,14 +183,13 @@
                                         <div class="btn-group btn-group btn-group-sm">
                                             <a href="${detailsUrl}" class="btn btn-default"> ${detailsLabel} 
                                                 <span class="glyphicon glyphicon-chevron-right"></span> </a>
-                                            <a href="#" class="btn btn-primary ${repositorySetSize==0?'disabled':''}"> ${addToCartLabel} 
+                                            <a class="btn btn-primary ${repositorySetSize==0?'disabled':''}" ng-click="addItemToCart('${product.productId}')"> ${addToCartLabel} 
                                                 <span class="glyphicon glyphicon-shopping-cart"></span> </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </c:forEach>
-                        
+                        </c:forEach> 
                     </div>
                 </div>
             </div>

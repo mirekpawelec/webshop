@@ -10,7 +10,7 @@
     <jsp:include page="../../views/fragments/header.jsp" />
         
     <jsp:include page="../../views/fragments/navi.jsp" />
-    
+    <hr>
         <section class="main">
             <div class="container">
                 <br/><br/><br/><br/>
@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="alert alert-warning" role="alert">
                         <strong>
-                            Operacja spowoduje przerwanie realizacji dostawy nr ${deliveryOrder.delivery.deliveryId} !
+                            Operacja spowoduje przerwanie realizacji dostawy nr ${delivery.deliveryId} !
                             <br/>
                             Czy jesteś pewien, że chcesz ją usunąć?
                         </strong>

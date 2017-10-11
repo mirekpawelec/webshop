@@ -7,15 +7,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<!DOCTYPE html>
-<html>
     
     <jsp:include page="./fragments/header.jsp" />
         
         <section class="main">
             
             <jsp:include page="./fragments/navi.jsp"/>
-            
+            <hr>
             <div class="container">
             
                 <hr class="gray">
@@ -125,17 +123,16 @@
                             
                 <hr class="gray">
                 
-                <div class="row">
+                <div class="row" ng-controller="cartController" ng-init="refreshCart('${sessionId}')">
                         <spring:url value="/home" var="homePageUrl"/>
-                        <spring:url value="" var="addToCartUrl"/>
                         
                         <div class="pull-right">
-                            <button class="btn btn-default" onclick="location.href='${homePageUrl}'">
+                            <a href="${homePageUrl}" class="btn btn-default">
                                 <span class="glyphicon glyphicon-hand-left"></span> <spring:message code="product.button.backHomePage.label"/> 
-                            </button>
-                            <button class="btn btn-primary" onclick="location.href='${addToCartUrl}'">
+                            </a>
+                            <a class="btn btn-primary" ng-click="addItemToCart('${product.productId}')">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> <spring:message code="product.button.addToCart.label"/> 
-                            </button>
+                            </a>
                         </div>
                 </div>
             </div>

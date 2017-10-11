@@ -6,6 +6,7 @@
 package pl.pawelec.webshop.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -91,6 +92,9 @@ public class Product implements Serializable{
     
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<DeliveryItem> deliveryItemSet = new HashSet<DeliveryItem>();
+    
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private Set<CartItem> cartItemSet = new HashSet<CartItem>();
     
     
     
@@ -206,6 +210,7 @@ public class Product implements Serializable{
         this.status = status;
     }
     
+    @JsonIgnore
     public LocalDateTime getCreateDate() {
         return createDate;
     }
@@ -214,6 +219,7 @@ public class Product implements Serializable{
         this.createDate = createDate;
     }
     
+    @JsonIgnore
     public MultipartFile getProductImage() {
         return productImage;
     }
@@ -222,6 +228,7 @@ public class Product implements Serializable{
         this.productImage = productImage;
     }
     
+    @JsonIgnore
     public MultipartFile getProductUserManual() {
         return productUserManual;
     }
@@ -230,6 +237,7 @@ public class Product implements Serializable{
         this.productUserManual = productUserManual;
     }
     
+    @JsonIgnore
     public Set<Repository> getRepositorySet() {
         return repositorySet;
     }
@@ -237,13 +245,19 @@ public class Product implements Serializable{
     public void setRepositorySet(Set<Repository> repositorySet) {
         this.repositorySet = repositorySet;
     }
-
+    
+    @JsonIgnore
     public Set<DeliveryItem> getDeliveryItemSet() {
         return deliveryItemSet;
     }
 
     public void setDeliveryItemSet(Set<DeliveryItem> deliveryItemSet) {
         this.deliveryItemSet = deliveryItemSet;
+    }
+
+    @JsonIgnore
+    public Set<CartItem> getCartItemSet() {
+        return cartItemSet;
     }
     
     
@@ -282,7 +296,7 @@ public class Product implements Serializable{
     @Override
     public String toString() {
         return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name 
-             + ", manufacturer=" + manufacturer + ", category=" + category + ", unitPrice=" + unitPrice 
+             + ", manufacturer=" + manufacturer + ", category=" + category + ", unitPrice=" + unitPrice // + '}';
              + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" + createDate 
              + ", repositorySet=" + repositorySet.size() + ", deliveryItemSet=" + deliveryItemSet.size() + '}';   
     }

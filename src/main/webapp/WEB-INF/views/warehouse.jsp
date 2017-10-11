@@ -10,8 +10,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html>
     <jsp:include page="./fragments/header.jsp" />
         
         <section class="main">
@@ -30,7 +28,7 @@
             <spring:message code="warehouse.table.status.label" var="statusLbl" />
             <spring:message code="warehouse.table.lastModifikationDate.label" var="lastModifikationDateLbl" />
             <spring:message code="warehouse.table.createDate.label" var="createDateLbl" />
-            
+            <hr>
             <div class="container-fluid">
                 <div class="row">
                     <div class="page-header">

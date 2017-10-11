@@ -6,6 +6,8 @@
 package pl.pawelec.webshop.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -21,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import pl.pawelec.webshop.model.enum_.DeliveryStatus;
 
 /**
  *
@@ -82,14 +85,19 @@ public class Delivery implements Serializable{
     
     
     public Delivery() {
-        place = new Storageplace();
+        this.place = new Storageplace();
+        this.status = DeliveryStatus.OK.name();
+        this.createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    
+    public Delivery(Storageplace place){
+        this();
+        this.place = place;
+    }
     
     public Delivery(Long deliveryId, Storageplace place, String description) {
+        this(place);
         this.deliveryId = deliveryId;
-        this.place = place;
         this.description = description;
     }
    

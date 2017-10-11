@@ -8,15 +8,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html>
-<html>
 
     <jsp:include page="./fragments/header.jsp" /> 
 
         <section class="main">
             
             <jsp:include page="./fragments/navi.jsp"/>
-            
+            <hr>
             <div class="container text-left">
                 <div class="row">
                     <div class="page-header">
@@ -98,7 +96,7 @@
                             <div class="form-group">
                                 <label for="status" class="col-xs-12 col-sm-3 control-label"><spring:message code="updateProductForm.form.status.label"/></label>
                                 <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
-                                    <form:select path="status" items="${productStatus}" itemValue="productStatusType" itemLabel="productStatusDescription" class="form-control"/>
+                                    <form:select path="status" items="${productStatus}" itemValue="name" itemLabel="description" class="form-control"/>
                                     <form:errors path="status" class="text-danger"/>
                                 </div>
                             </div>

@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.springframework.transaction.annotation.Transactional;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author mirek
  */
 public abstract class AbstrDao<T extends Object> implements Dao<T>{
+    
+    Logger logger = Logger.getLogger(AbstrDao.class);
     
     @PersistenceContext
     private EntityManager entityManager;
@@ -45,8 +47,8 @@ public abstract class AbstrDao<T extends Object> implements Dao<T>{
     public void update(T entity){
         getEntityManager().merge(entity);
     }
-    public void delete(T entity){
-        getEntityManager().remove(entity);
+    public void delete(T entity){      
+        getEntityManager().remove( getEntityManager().merge(entity) );
     }
     public void deleteById(Serializable id){
         T deleteItem = find(id);

@@ -6,7 +6,8 @@
 
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-
+<spring:url value="/resource/js/angular.min.js" var="angularJs"/>    
+<spring:url value="/resource/js/main-angular.js" var="mainAngularJs" />
 <spring:url value="/resource/js/table_sorting.js" var="tableSortingJs" />
 <spring:url value="/resource/js/jquery.min.js" var="jQueryJs" />
 <spring:url value="/resource/js/bootstrap.min.js" var="bootstrapJs" />
@@ -17,7 +18,9 @@
         ${copyright}
     </footer>
 </div>
-    
+
+<script src="${angularJs}" ></script>
+<script src="${mainAngularJs}"></script>
 <script src="${tableSortingJs}"></script>
 <script src="${jQueryJs}"></script>
 <script src="${bootstrapJs}"></script>

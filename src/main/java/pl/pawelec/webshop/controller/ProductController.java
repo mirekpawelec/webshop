@@ -59,7 +59,7 @@ public class ProductController {
         logger.info("### allProducts");
         
         List<Product> products = productService.getAll();
-        products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getProductStatusDescription()) );
+        products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getDescription()));
         
         model.addAttribute("products", products);
         model.addAttribute("jspFile", "products");
@@ -80,7 +80,7 @@ public class ProductController {
         else {
             product = productService.getOneById(Long.valueOf(productId)); 
         }
-        product.setStatus( ProductStatus.valueOf(product.getStatus()).getProductStatusDescription() );
+        product.setStatus(ProductStatus.valueOf(product.getStatus()).getDescription());
         
         model.addAttribute("product", product);
         model.addAttribute("jspFile", "product");

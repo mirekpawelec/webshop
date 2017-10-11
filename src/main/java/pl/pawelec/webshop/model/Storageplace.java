@@ -22,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
+import pl.pawelec.webshop.model.enum_.PlaceStatus;
 
 /**
  *
@@ -79,15 +80,18 @@ public class Storageplace implements Serializable{
     
     
     public Storageplace() {
-        areaId = new Storagearea();
+        this.areaId = new Storagearea();
+        this.status = PlaceStatus.OK.name();
+        this.createDate = LocalDateTime.now();
     }
 
     public Storageplace(Long placeId) {
+        this();
         this.placeId = placeId;
     }
 
     public Storageplace(Long placeId, String placeNo) {
-        this.placeId = placeId;
+        this(placeId);
         this.placeNo = placeNo;
     }
     

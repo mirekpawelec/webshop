@@ -67,4 +67,12 @@
     <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping" p:flowRegistry-ref="deliveryFlowRegistry" />
     <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter" p:flowExecutor-ref="deliveryFlowExecutor" />
     
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+            <property name="messageConverters">
+                    <list>
+                         <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+                    </list>
+            </property>
+    </bean>  
+    
 </beans>

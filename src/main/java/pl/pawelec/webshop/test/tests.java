@@ -5,11 +5,13 @@
  */
 package pl.pawelec.webshop.test;
 
-import java.util.Iterator;
-import java.util.List;
+import java.time.LocalDateTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.webflow.validation.BeanValidationHintResolver;
+import pl.pawelec.webshop.model.Cart;
+import pl.pawelec.webshop.model.enum_.CartStatus;
+import pl.pawelec.webshop.service.CartItemService;
+import pl.pawelec.webshop.service.CartService;
 import pl.pawelec.webshop.service.DeliveryItemService;
 import pl.pawelec.webshop.service.DeliveryService;
 import pl.pawelec.webshop.service.ProductService;
@@ -48,6 +50,8 @@ public class tests {
         StorageplaceService sps = context.getBean(StorageplaceService.class);
         DeliveryService ds = context.getBean(DeliveryService.class);
         DeliveryItemService dis = context.getBean(DeliveryItemService.class);
+        CartService cs = context.getBean(CartService.class);
+        CartItemService cis = context.getBean(CartItemService.class);
 //      
 //        Product product = new Product.Builder()
 //                .withProductNo("123.321.10")
@@ -224,6 +228,89 @@ public class tests {
 //            System.out.println("deliveryId=" + row[0] + ", productNo=" + row[1] + ", name=" + row[2] + ", quantity=" + row[3]);
 //        }
         
+
+
+   
+        
+//        Cart cart1 = cs.getOneById(1l);
+//        cart1.setStatus(CartStatus.FI.name());
+//        cart1.setLastModificationDate(LocalDateTime.now());
+////        cart1.setCreateDate(LocalDateTime.now());
+//        cart1.updateCostOfAllItems();
+//        cs.update(cart1);
+//        
+//        Cart cart2 = new Cart("222222QQQWWW444");//cs.getOneById("222222QQQWWW444");
+//        cart2.setStatus(CartStatus.FI.name());
+//        cart2.setLastModificationDate(LocalDateTime.now());
+//        cart2.setCreateDate(LocalDateTime.now());
+//        cs.create(cart2);
+        
+//        Cart cart3 = new Cart();
+//        cart3.setCartId("333222QQQWWW444");
+//        cart3.setStatus(CartStatus.OK.name());
+//        cart3.setLastModificationDate(LocalDateTime.now());
+//        cart3.setCreateDate(LocalDateTime.now());
+//        cs.deleteById("333222QQQWWW444");
+    
+//        Cart cart4 = new Cart();
+//        cart4.setCartId("444222QQQWWW444");
+//        cart4.setStatus(CartStatus.OK.name());
+//        cart4.setLastModificationDate(LocalDateTime.now());
+//        cart4.setCreateDate(LocalDateTime.now());
+//        cs.create(cart4);
+        
+        
+//        cs.update(cart4);
+//        cs.deleteAll();
+        
+//        cs.delete( cs.getOneById(3l) );
+//        cs.deleteById( 4l );
+//        System.out.println( cs.getBySessionId("111222QQQWWW444") );
+//        cs.getAll().forEach(System.out::println);
+//        System.out.println( cs.existsBySessionId("222222QQQWWW444","") );
+
+
+
+
+
+//        Product pr1 = ps.getOneById(40l);
+//        Product pr2 = ps.getOneById(42l);
+//        Product pr3 = ps.getOneById(43l);
+        
+//        CartItem ci1 = new CartItem(); //cis.getOneById(1L);
+//        ci1.getCart().setCartId(1l);
+//        ci1.setProduct(pr1);
+//        ci1.setQuantity(2);
+//        ci1.setLastModificationDate(LocalDateTime.now());
+//        ci1.setCreateDate(LocalDateTime.now());
+//        ci1.updateTotalPrice();
+//        cis.create(ci1);
+//        
+//        CartItem ci2 = new CartItem(pr1);
+//        ci2.getCart().setCartId(1l);
+//        ci2.setProduct(pr2);
+//        ci2.setQuantity(2);
+//        ci2.setLastModificationDate(LocalDateTime.now());
+//        ci2.setCreateDate(LocalDateTime.now());
+//        ci2.updateTotalPrice();
+//        cis.create(ci2);
+        
+//        CartItem ci3 = new CartItem(pr3);
+//        ci3.getCart().setCartId("111222QQQWWW444");
+//        ci3.setQuantity(1);
+//        ci3.updateTotalPrice();
+
+//        CartItem ci = cis.getOneById(1l);
+//        ci.setStatus("OK");
+//        cis.update(ci);
+//        cis.create(ci2);
+//        cis.create(ci3);
+        
+//        cis.deleteById( 1l );
+//        cis.delete( cis.getOneById(7l) );
+//        cis.getAll().forEach(System.out::println);
+    
+//        cis.deleteById(18l);
 
     }
 }

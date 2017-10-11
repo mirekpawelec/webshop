@@ -81,26 +81,21 @@ public class DeliveryDaoImpl extends AbstrDao<Delivery> implements DeliveryDao{
         return defaultPlace.getPlaceId();
     }
 
-    public Long createAndGetId(Delivery entity) {
+    public Delivery createAndGetDelivery(Delivery entity) {
         EntityManager em = getEntityManager();
         em.persist(entity);
-        return entity.getDeliveryId();
+        return entity;
     }
     
     public Delivery startProcessDelivery(){
-        Delivery newDelivery = new Delivery();
-        newDelivery.getPlace().setPlaceId( this.getIdDefaultPlace() );
-        newDelivery.setStatus( DeliveryStatus.OK.getStatus() );
-        newDelivery.setCreateDate( LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) );        
-        newDelivery.setDeliveryId( this.createAndGetId(newDelivery) );
-        return newDelivery;
+        return createAndGetDelivery(new Delivery(new Storageplace(getIdDefaultPlace())));
     }
     
     public boolean closeDelivery(Long id) {
         try{
             Delivery deliveryToClosing = getOneById(id);
-            if(deliveryToClosing.getStatus().equals(DeliveryStatus.RE.getStatus())){
-                deliveryToClosing.setStatus( DeliveryStatus.FI.getStatus() );
+            if(deliveryToClosing.getStatus().equals(DeliveryStatus.RE.name())){
+                deliveryToClosing.setStatus( DeliveryStatus.FI.name() );
                 deliveryToClosing.setFinishDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 this.update(deliveryToClosing);
             } else {

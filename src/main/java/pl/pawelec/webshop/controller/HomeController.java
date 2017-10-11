@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,15 +23,19 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.pawelec.webshop.model.ProductFilter;
 import pl.pawelec.webshop.model.Product;
+import pl.pawelec.webshop.model.enum_.CartStatus;
 import pl.pawelec.webshop.model.enum_.ProductStatus;
+import pl.pawelec.webshop.service.CartService;
 import pl.pawelec.webshop.service.ProductService;
 
 /**
  *
  * @author mirek
  */
+@SessionAttributes(names = {"sessionId"})
 @RequestMapping("/home")
 @Controller
 public class HomeController {
@@ -40,18 +45,19 @@ public class HomeController {
     @Autowired
     private ProductService productService;
     
+    @Autowired
+    private CartService cartService;
+    
+    
+    
     @RequestMapping
-    public String getAllProducts(@ModelAttribute("filterOfProducts") ProductFilter filterOfProducts, Model model, BindingResult result){
+    public String getAllProducts(@ModelAttribute("filterOfProducts") ProductFilter filterOfProducts, Model model
+                               , BindingResult result, HttpServletRequest request){
         logger.info("### getAllProducts");
-        
-        if(result.getSuppressedFields().length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól" + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
-
-//        List<Product> afterFilteringProducts = new ArrayList<Product>();
-//        System.out.println("\n Before:");
-//        afterFilteringProducts = productService.getByStatus(ProductStatus.OK.getProductStatusType());
-//        afterFilteringProducts.forEach(System.out::println);
-        
-        List<Product> afterFilteringProducts = productService.getByStatus(ProductStatus.OK.getProductStatusType()).parallelStream()
+        if(result.getSuppressedFields().length > 0){
+            throw new RuntimeException("Próba wiązania niedozwolonych pól" + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
+        }
+        List<Product> afterFilteringProducts = productService.getByStatus(ProductStatus.OK.name()).parallelStream()
                 .filter( (product) -> { if( filterOfProducts.isInStock() )
                                             return product.getRepositorySet().size() > 0;
                                         else
@@ -80,11 +86,8 @@ public class HomeController {
                 .sorted( (o1, o2) -> {  return o1.getCategory().compareTo( o2.getCategory() ); 
                     })
                 .collect(Collectors.toList());
-        
-//        System.out.println("\n After:");
-//        afterFilteringProducts.forEach(System.out::println);
-        
         model.addAttribute("allProducts", afterFilteringProducts);
+        model.addAttribute("sessionId", request.getSession(true).getId());
         model.addAttribute("jspFile", "welcome");
         addAtributesToModel(model);
         return "welcome";
@@ -94,12 +97,9 @@ public class HomeController {
     @RequestMapping("/product")
     public String getProductByNo(@RequestParam String productNo, Model model){
         logger.info("### getProductByNo");
-        
         Product product;
         product = productService.getOneByProductNo(productNo); 
-
-        product.setStatus( ProductStatus.valueOf(product.getStatus()).getProductStatusDescription() );
-        
+        product.setStatus( ProductStatus.valueOf(product.getStatus()).getDescription() );
         model.addAttribute("product", product);
         model.addAttribute("jspFile", "product");
         return "product";

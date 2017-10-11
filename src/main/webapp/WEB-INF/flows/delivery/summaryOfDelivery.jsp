@@ -11,7 +11,7 @@
     <jsp:include page="../../views/fragments/header.jsp" />
         
     <jsp:include page="../../views/fragments/navi.jsp" />
-    
+    <hr>
         <section class="main">
             <div class="container">
                 <br/><br/><br/>
