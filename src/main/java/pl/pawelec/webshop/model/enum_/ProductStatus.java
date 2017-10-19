@@ -9,6 +9,7 @@ package pl.pawelec.webshop.model.enum_;
  * @author mirek
  */
 public enum ProductStatus {
+    ED("In edit"),
     OK("OK"),
     BL("Blocked"),
     FI("Canceled");

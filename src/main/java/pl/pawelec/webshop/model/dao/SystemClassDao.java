@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pl.pawelec.webshop.validator;
+package pl.pawelec.webshop.model.dao;
+
+import pl.pawelec.webshop.model.SystemClass;
 
 /**
  *
  * @author mirek
  */
-public class ProductUserManualValidator { 
+public interface SystemClassDao extends Dao<SystemClass>{
+    SystemClass getByUniqueKey(String symbol, String name);
 }

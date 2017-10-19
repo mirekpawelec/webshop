@@ -8,15 +8,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
     
     <jsp:include page="../../views/fragments/header.jsp" />
         
-    <jsp:include page="../../views/fragments/navi.jsp" />
-    <hr>
         <section class="main">
-            <div class="container">
+            <%--<jsp:include page="../../views/fragments/navi.jsp" />--%>
+            <!--<hr>-->
+            <div class="container pull-down">
                 <br/>
                 
                 <div class="row">
@@ -113,6 +111,7 @@
                                             <th>Numer artykułu</th>
                                             <th>Nazwa artykułu</th>
                                             <th>Ilość</th>
+                                            <th>Status</th>
                                             <th>Data dodania</th>
                                             <th></th>
                                         </tr>
@@ -123,6 +122,7 @@
                                             <td>${item.product.productNo}</td>
                                             <td>${item.product.name}</td>
                                             <td>${item.quantity}</td>
+                                            <td>${item.status}</td>
                                             <c:set var="createDate" value="${fn:replace(item.createDate, 'T', ' ')}" />
                                             <td>${createDate}</td>
                                             <td>
@@ -151,7 +151,9 @@
 
                         <div class="row">
                             <div class="form-group">
-                                <button type="submit" name="_eventId_back" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Wstecz </button> 
+                                <button type="submit" name="_eventId_back" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-menu-left"></span> Wstecz 
+                                </button> 
                                 <button type="submit" name="_eventId_summary" class="btn btn-primary" ${fn:length(delivery.deliveryItemSet)==0?'disabled':''} > 
                                     Podsumowanie <span class="glyphicon glyphicon-check"></span>
                                 </button>

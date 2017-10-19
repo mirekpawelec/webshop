@@ -37,7 +37,7 @@ public class CartController {
     
     @RequestMapping("/{cartId}")
     public String getCartBySessionId(@PathVariable String cartId, Model model, HttpServletRequest request){
-//        model.addAttribute("sessionId", request.getSession(true).getId());
+        model.addAttribute("sessionId", request.getSession(true).getId());
         model.addAttribute("jspFile", "cart");
         return "cart";
     } 

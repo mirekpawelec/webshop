@@ -10,6 +10,8 @@ package pl.pawelec.webshop.model.enum_;
  * @author mirek
  */
 public enum OrderStatus {
+    ED("Edit"),
+    AC("Active"),
     RE("Realization"),
     DE("Deleted"),
     FI("Completed");

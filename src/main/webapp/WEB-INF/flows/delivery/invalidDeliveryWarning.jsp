@@ -5,14 +5,13 @@
 --%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %> 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+
     <jsp:include page="../../views/fragments/header.jsp" />
         
-    <jsp:include page="../../views/fragments/navi.jsp" />
-    <hr>
         <section class="main">
-            <div class="jumbotron">
+            <%--<jsp:include page="../../views/fragments/navi.jsp" />--%>
+            <!--<hr>-->
+            <div class="jumbotron pull-down">
                 <div class="container"> 
                     <h3 class="alert alert-danger"> Wystąpił błąd w procesie realizacji dostawy! </h3>
                 </div>

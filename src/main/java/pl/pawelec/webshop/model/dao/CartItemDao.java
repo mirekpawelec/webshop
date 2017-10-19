@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model.dao;
 
+import java.util.List;
 import pl.pawelec.webshop.model.CartItem;
 
 /**
@@ -12,5 +13,5 @@ import pl.pawelec.webshop.model.CartItem;
  * @author mirek
  */
 public interface CartItemDao extends Dao<CartItem>{
-    
+    List<CartItem> getByCartId(Long cartId);
 }

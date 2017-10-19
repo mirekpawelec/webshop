@@ -6,6 +6,7 @@
 package pl.pawelec.webshop.model.dao.impl;
 
 
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import pl.pawelec.webshop.model.CartItem;
@@ -32,5 +33,9 @@ public class CartItemDaoImpl extends AbstrDao<CartItem> implements CartItemDao{
         } catch(NullPointerException ne){
             logger.info("The argument passed is empty!");
         }
+    }
+    
+    public List<CartItem> getByCartId(Long cartId){
+        return getEntityManager().createQuery("from CartItem where cart_id = :cartId").setParameter("cartId", cartId).getResultList();
     }
 }

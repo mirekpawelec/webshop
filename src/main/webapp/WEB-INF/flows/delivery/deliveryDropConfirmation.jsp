@@ -5,14 +5,13 @@
 --%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+
     <jsp:include page="../../views/fragments/header.jsp" />
-        
-    <jsp:include page="../../views/fragments/navi.jsp" />
-    <hr>
+
         <section class="main">
-            <div class="container">
+            <%--<jsp:include page="../../views/fragments/navi.jsp" />--%>
+            <!--<hr>-->
+            <div class="container pull-down">
                 <br/><br/><br/><br/>
                 
                 <div class="row">

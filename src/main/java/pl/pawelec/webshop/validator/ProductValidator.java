@@ -36,7 +36,7 @@ public class ProductValidator implements Validator{
     public boolean supports(Class<?> type) {
         return Product.class.isAssignableFrom(type);
     }
-//
+
     @Override
     public void validate(Object validatedClass, Errors errors) {            
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(validatedClass, newForm.class);
@@ -44,11 +44,9 @@ public class ProductValidator implements Validator{
         for(ConstraintViolation<Object> constraintViolation : constraintViolations){
             String propertyPath = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();
-            System.out.println("### ProductValidator ; propertyPath="+propertyPath+", message="+message);
             errors.rejectValue(propertyPath, "", message);
         }
         for(Validator validator : springValidators){
-            System.out.println( "### ProductValidator ; validator="+validator.toString() );
             validator.validate(validatedClass, errors);
         }
     }

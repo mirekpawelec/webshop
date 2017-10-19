@@ -107,10 +107,14 @@ public class ProductController {
     public String processUpdateProductForm(@ModelAttribute("updateProductForm") @Validated({updateForm.class}) Product productToBeUpdate, 
                                                BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
         logger.info("### processUpdateProductForm");
-        if(result.hasErrors()) return "updateProductForm";
+        if(result.hasErrors()){
+            return "updateProductForm";
+        }
         
         String[] suppresedFields = result.getSuppressedFields();
-        if(suppresedFields.length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
+        if(suppresedFields.length > 0){
+            throw new RuntimeException("It has occurred an attempt bind the illegal fields: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
+        }
         
         productToBeUpdate.setProductId((Long) request.getSession().getAttribute("productId"));
         productToBeUpdate.setProductNo((String) request.getSession().getAttribute("productNumber"));
@@ -142,10 +146,14 @@ public class ProductController {
                                                 BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
         logger.info("### processAddProductForm"); 
 
-        if(result.hasErrors()) return "newProductForm";
+        if(result.hasErrors()){
+            return "newProductForm";
+        }
 
         String[] suppresedFields = result.getSuppressedFields();
-        if(suppresedFields.length > 0) throw new RuntimeException("Próba wiązania niedozwolonych pól: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
+        if(suppresedFields.length > 0){
+            throw new RuntimeException("It has occurred an attempt bind the illegal fields: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
+        }
         
         MultipartFile productImage, productUserManual;
         String mainPath = request.getSession().getServletContext().getRealPath("");
@@ -158,7 +166,7 @@ public class ProductController {
             try {
                 productImage.transferTo(new File(createFolderImage.getAbsolutePath()+"\\"+ productToBeAdd.getProductNo() + ".jpg"));
             } catch (IOException ex) {
-                throw new RuntimeException("Błąd zapisu obrazka!");
+                throw new RuntimeException("It's has occurred an error while saving the image!");
             } 
         }
 
@@ -170,7 +178,7 @@ public class ProductController {
             try {
                 productUserManual.transferTo(new File(createFolderPdf.getAbsolutePath()+"\\"+productToBeAdd.getProductNo()+".pdf"));
             } catch (IOException ex) {
-                throw new RuntimeException("Błąd zapisu pliku pdf!");
+                throw new RuntimeException("It's has occurred an error while saving the pdf file!");
             }
         }
         

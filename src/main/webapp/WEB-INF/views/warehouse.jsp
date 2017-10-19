@@ -12,8 +12,7 @@
 
     <jsp:include page="./fragments/header.jsp" />
         
-        <section class="main">
-            
+        <section class="main">       
             <jsp:include page="./fragments/navi.jsp"/>
             
             <spring:message code="warehouse.pageHeader.label" var="headerLbl" />

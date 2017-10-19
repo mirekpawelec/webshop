@@ -5,17 +5,23 @@
  */
 package pl.pawelec.webshop.test;
 
-import java.time.LocalDateTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import pl.pawelec.webshop.model.Address;
 import pl.pawelec.webshop.model.Cart;
-import pl.pawelec.webshop.model.enum_.CartStatus;
+import pl.pawelec.webshop.model.Customer;
+import pl.pawelec.webshop.model.Order;
+import pl.pawelec.webshop.model.ShippingDetail;
+import pl.pawelec.webshop.service.AddressService;
 import pl.pawelec.webshop.service.CartItemService;
 import pl.pawelec.webshop.service.CartService;
+import pl.pawelec.webshop.service.CustomerService;
 import pl.pawelec.webshop.service.DeliveryItemService;
 import pl.pawelec.webshop.service.DeliveryService;
+import pl.pawelec.webshop.service.OrderService;
 import pl.pawelec.webshop.service.ProductService;
 import pl.pawelec.webshop.service.RepositoryService;
+import pl.pawelec.webshop.service.ShippingDetailService;
 import pl.pawelec.webshop.service.StorageareaService;
 import pl.pawelec.webshop.service.StorageplaceService;
 
@@ -52,6 +58,10 @@ public class tests {
         DeliveryItemService dis = context.getBean(DeliveryItemService.class);
         CartService cs = context.getBean(CartService.class);
         CartItemService cis = context.getBean(CartItemService.class);
+        OrderService os = context.getBean(OrderService.class);
+        AddressService as = context.getBean(AddressService.class);
+        CustomerService cuss = context.getBean(CustomerService.class);
+        ShippingDetailService sds = context.getBean(ShippingDetailService.class);
 //      
 //        Product product = new Product.Builder()
 //                .withProductNo("123.321.10")
@@ -311,6 +321,33 @@ public class tests {
 //        cis.getAll().forEach(System.out::println);
     
 //        cis.deleteById(18l);
+        
+//        Cart cart = new Cart("123123123123123123123");
+//        cs.create( cart );
+//        cart = cs.getBySessionId("123123123123123123123").get(0);
+//        cart.setCartId(22l);
+//        System.out.println(cs.getOneById(22l));
+//        
+//        Customer customer = new Customer("firstName", "lastName", "phoneNumber", "email");
+//        customer.setCustomerId(1l);
+//        cuss.create(customer);
+//        System.out.println(cuss.getAll());
+        
+        Address address = new Address("doorNo", "streetName", "areaName", "state", "country", "zipCode");
+//        address.setAddressId(1l);
+//        as.create(address);  
 
+//        Order order = new Order(cart, cuss.getOneById(1l), as.getOneById(1l));
+//        os.create( order ); 
+//        cs.getAll().forEach(System.out::println);
+//        os.getAll().forEach(System.out::println);
+//        System.out.println( os.getOneById(2l) );
+    
+        
+        ShippingDetail sd = new ShippingDetail("Janek z konopi", as.getOneById(1l));
+        sds.create(sd);
+        System.out.println(sds.count());
+        sds.getAll().forEach(System.out::println);
+    
     }
 }

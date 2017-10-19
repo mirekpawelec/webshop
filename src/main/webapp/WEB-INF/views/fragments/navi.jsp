@@ -12,6 +12,8 @@
 <spring:url value="/delivery" var="newDeliveryUrl"/>
 <spring:url value="/admin/products" var="allProductUrl"/>
 <spring:url value="/admin/products/add" var="addNewProductUrl"/>
+<spring:url value="/admin/classes" var="systemClassUrl"/>
+<spring:url value="/admin/classes/add" var="addSystemClassUrl"/>
 <spring:url value="/home?language=pl" var="polishLanguageUrl"/>
 <spring:url value="/home?language=en" var="englishLanguageUrl"/>
 
@@ -21,6 +23,8 @@
 <spring:message code="navi.button.deliveries.label" var="deliveriesLbl" />
 <spring:message code="navi.button.allProduct.label" var="allProductLbl" />
 <spring:message code="navi.button.newProduct.label" var="newProductLbl" />
+<spring:message code="navi.button.systemClasses.label" var="systemClassLbl" />
+<spring:message code="navi.button.addSystemClasses.label" var="addSystemClassLbl" />
 <spring:message code="navi.button.selectLanguages.label" var="selectLanguageLbl"/>
 <spring:message code="navi.button.polishLanguage.label" var="polishLbl" />
 <spring:message code="navi.button.englishLanguage.label" var="englishLbl" />
@@ -34,6 +38,8 @@
                 <button type="button" class="btn btn-default" onclick="location.href='${newDeliveryUrl}'"> ${newDeliveryLbl} </button>
                 <button type="button" class="btn btn-default" onclick="location.href='${allProductUrl}'"> ${allProductLbl} </button>
                 <button type="button" class="btn btn-default" onclick="location.href='${addNewProductUrl}'"> ${newProductLbl} </button> 
+                <button type="button" class="btn btn-default" onclick="location.href='${systemClassUrl}'"> ${systemClassLbl} </button> 
+                <button type="button" class="btn btn-default" onclick="location.href='${addSystemClassUrl}'"> ${addSystemClassLbl} </button>
             </div>
         </div>
         <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">

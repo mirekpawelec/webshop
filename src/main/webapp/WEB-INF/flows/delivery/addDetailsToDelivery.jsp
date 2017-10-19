@@ -7,16 +7,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>    
+<%@page contentType="text/html" pageEncoding="UTF-8"%>   
     
     <jsp:include page="../../views/fragments/header.jsp" />
-        
-    <jsp:include page="../../views/fragments/navi.jsp" />
-    <hr>
-        <section class="main">
-            <div class="container">
+    
+        <section class="main">    
+            <%--<jsp:include page="../../views/fragments/navi.jsp" />--%>
+            <hr>
+            <div class="container pull-down">
                 <br/>
                 
                 <form:form modelAttribute="delivery" class="form-horizontal">
@@ -138,6 +136,7 @@
                                                 <th>Numer artykułu</th>
                                                 <th>Nazwa artykułu</th>
                                                 <th>Ilość</th>
+                                                <th>Status</th>
                                                 <th>Data dodania</th>
                                             </tr>
                                         <c:forEach items="${delivery.deliveryItemSet}" var="item" varStatus="licznik">
@@ -147,6 +146,7 @@
                                                 <td>${item.product.productNo}</td>
                                                 <td>${item.product.name}</td>
                                                 <td>${item.quantity}</td>
+                                                <td>${item.status}</td>
                                                 <c:set var="createDate" value="${fn:replace(item.createDate, 'T', ' ')}" />
                                                 <td>${createDate}</td>
                                             </tr>

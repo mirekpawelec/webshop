@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <var name="order" class="pl.pawelec.webshop.model.Order"/>
+    <var name="customer" class="pl.pawelec.webshop.model.Customer"/>
+    <var name="shippingDetail" class="pl.pawelec.webshop.model.ShippingDetail"/>
+    
+    <action-state id="createOrder">
+        <evaluate expression="cartServiceImpl.getOneById(requestParameters.cartId)" result="order.cart"/>
+        <transition to="invalidCustomerOrderWarning" on-exception="pl.pawelec.webshop.exception.InvalidCustomerOrderException"/>
+        <transition to="collectCustomerInfo"/>
+    </action-state>
+    
+    <view-state id="collectCustomerInfo" model="customer">
+        <transition on="keepGoing" to="fillInCustomerAndShippingAddress"/>
+    </view-state>
+    
+    <action-state id="fillInCustomerAndShippingAddress">
+        <evaluate expression="orderServiceImpl.fillCustomerAndShippingAddress(order, customer)"/>
+        <transition to="orderConfirmation"/>
+    </action-state>
+    
+    <view-state id="orderConfirmation" model="shippingDetail" >
+        <transition on="backToCollectCustomerInfo" to="collectCustomerInfo" validate="false"/>
+        <transition on="changeAddress" to="fillInShippingAddressNewAddress"/>
+        <transition on="orderConfirmed" to="saveCustomerOrder" validate="false"/>
+    </view-state>
+    
+    <action-state id="fillInShippingAddressNewAddress">
+        <evaluate expression="orderServiceImpl.fillShippingAddressNewAddress(order, shippingDetail)"/>
+        <transition to="orderConfirmation"/>
+    </action-state>
+    
+    <action-state id="saveCustomerOrder">
+        <evaluate expression="orderServiceImpl.saveCustomerOrder(order)" result="order"/>
+        <transition to="thankCustomer"/>
+    </action-state>
+    
+    <view-state id="thankCustomer" model="order">
+        <transition to="endState"/>
+    </view-state>
+    
+    <view-state id="invalidCustomerOrderWarning">
+        <transition to="endState" />
+    </view-state>
+    
+    <end-state id="endState"/>
+    
+    <end-state id="cancelCustomerOrder" view = "customerOrderCancelled.jsp"/>
+    
+    <global-transitions>
+        <transition on = "cancel" to="cancelCustomerOrder" validate="false"/>
+    </global-transitions>
+</flow>

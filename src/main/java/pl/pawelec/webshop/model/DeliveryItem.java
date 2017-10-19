@@ -26,6 +26,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 import pl.pawelec.webshop.model.enum_.DeliveryStatus;
+import pl.pawelec.webshop.model.enum_.ProductStatus;
 
 /**
  *
@@ -68,7 +69,7 @@ public class DeliveryItem implements Serializable{
     public DeliveryItem() {
         this.delivery = new Delivery();
         this.product = new Product();
-        this.status = DeliveryStatus.OK.name();
+        this.status = ProductStatus.ED.name();
         this.createDate = LocalDateTime.now();
     }
 

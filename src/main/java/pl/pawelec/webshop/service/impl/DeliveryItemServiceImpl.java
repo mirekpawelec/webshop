@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,8 @@ import pl.pawelec.webshop.service.RepositoryService;
 @Service
 @Transactional
 public class DeliveryItemServiceImpl implements DeliveryItemService, Serializable{
-
+    Logger logger = Logger.getLogger(DeliveryItemServiceImpl.class);
+    
     @Autowired
     private DeliveryItemDao deliveryItemDao;
     
@@ -37,13 +40,11 @@ public class DeliveryItemServiceImpl implements DeliveryItemService, Serializabl
     
     @Override
     public void create(DeliveryItem deliveryItem) {
-        System.out.println("### DeliveryItemServiceImpl; deliveryItem=" + deliveryItem);
-        if(deliveryItem.getStatus()==null){
-            deliveryItem.setStatus( ProductStatus.OK.name() );
-        }
-        if(deliveryItem.getItemId()==null){
+        if(!Optional.ofNullable(deliveryItem.getItemId()).isPresent()){
+            logger.info("Create item");
             deliveryItemDao.create(deliveryItem);
         } else {
+            logger.info("Update item");
             deliveryItemDao.update(deliveryItem);
         }
     }
@@ -119,7 +120,7 @@ public class DeliveryItemServiceImpl implements DeliveryItemService, Serializabl
                 repository.setLastModifikationDate( LocalDateTime.now() );
                 repository.setCreateDate( item.getCreateDate() );
                 repositoryService.create(repository);
-                item.setStatus(ProductStatus.FI.name());
+                item.setStatus(ProductStatus.OK.name());
                 this.update(item); 
             };
         } catch(Exception e){

@@ -42,3 +42,20 @@ table#sortTable thead th{
 thead th span{
     float: right;
 }
+
+.pull-down {
+    padding-top: 85px;
+}
+
+.primary-background > th {
+    background-color: #337AB7;
+    color: #FFF;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+div#summary{
+    margin-right: 15px;
+    margin-left: 15px;
+}

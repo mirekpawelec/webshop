@@ -9,6 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
     <jsp:include page="./fragments/header.jsp"/>
+    
         <section class="main">
             <jsp:include page="./fragments/navi.jsp"/>
             <hr>
@@ -26,7 +27,7 @@
                         <button class="btn btn-primary pull-left" ng-click="refreshCart('${sessionId}')"><span class="glyphicon glyphicon-refresh"></span> Odśwież </button>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <button class="btn btn-danger pull-right" ng-click="removeCart(cart.cartId)"><span class="glyphicon glyphicon-remove"></span> Wyczyść koszyk </button>
+                        <button ng-if="totalQuantity" class="btn btn-danger pull-right" ng-click="removeCart(cart.cartId)"><span class="glyphicon glyphicon-remove"></span> Wyczyść koszyk </button>
                     </div>
                 </div>
                 <hr>
@@ -77,16 +78,18 @@
                     </div> 
                 </div>
                 <hr>
-                <div class="row">
-                    
+                <div class="row">                    
                     <spring:url value="/home" var="homeUrl" />
-                    <spring:url value="/order?cartId=${sessionId}" var="orderUrl" />
                     
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <button class="btn btn-default pull-left" onclick="location.href='${homeUrl}'"><span class="glyphicon glyphicon-hand-left"></span> Powrót </button>
+                        <button class="btn btn-default pull-left" onclick="location.href='${homeUrl}'">
+                            <span class="glyphicon glyphicon-hand-left"></span> Powrót 
+                        </button>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <button class="btn btn-success pull-right" onclick="location.href='${orderUrl}'"><span class="glyphicon glyphicon-shopping-cart"></span> Kupuję </button>
+                        <a ng-if="totalQuantity" class="btn btn-success pull-right" href='/webshop/customerOrder?cartId={{cart.cartId}}'" >
+                            <span class="glyphicon glyphicon-shopping-cart"></span> Kupuję 
+                        </a>
                     </div>
                 </div>
             </div>

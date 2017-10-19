@@ -17,7 +17,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 import pl.pawelec.webshop.model.enum_.CustomerStatus;
 
@@ -26,12 +33,13 @@ import pl.pawelec.webshop.model.enum_.CustomerStatus;
  * @author mirek
  */
 @Entity
+@Table(name = "customers")
 public class Customer implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id", nullable = false)
-    private String customerId;
+    private Long customerId;
     
     @Column(name = "first_name", nullable = false, length = 25)
     private String firstName;
@@ -45,6 +53,10 @@ public class Customer implements Serializable{
     @Column(nullable = false, length = 50)
     private String email;
 
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id", unique = true)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    private Address address; 
+    
     @Column(length = 2)
     private String status;
     
@@ -55,37 +67,37 @@ public class Customer implements Serializable{
     
     
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    private Set<Order> orderSet; 
-    
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    private Set<Address> addressSet;
+    private Set<Order> orderSet = new HashSet<Order>(); 
     
     
     
     public Customer() {
-        this.orderSet = new HashSet<Order>();
-        this.addressSet = new HashSet<Address>();
+        this.address = new Address();
         this.status = CustomerStatus.OK.name();
         this.createDate = LocalDateTime.now();
     }
 
-    public Customer(String customerId, String firstName, String lastName) {
+    public Customer(String firstName, String lastName, String phoneNumber, String email, Address address) {
         this();
-        this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
     }
 
     
     
-    public String getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
+    @NotEmpty(message = "{NotEmpty.Customer.firstName.validation}")
+    @Size(max = 25, message = "{Size.Customer.firstName.validation}")
     public String getFirstName() {
         return firstName;
     }
@@ -93,7 +105,9 @@ public class Customer implements Serializable{
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    
+    @NotEmpty(message = "{NotEmpty.Customer.lastName.validation}")
+    @Size(max = 25, message = "{Size.Customer.lastName.validation}")
     public String getLastName() {
         return lastName;
     }
@@ -102,6 +116,9 @@ public class Customer implements Serializable{
         this.lastName = lastName;
     }
 
+    @NotEmpty(message = "{NotEmpty.Customer.phoneNumber.validation}")
+    @Pattern(regexp = "^[+][0-9]{2}[ ][0-9]{3}[ ][0-9]{3}[ ][0-9]{3}$", message = "{Pattern.Customer.phoneNumber.validation}")
+    @Size(max = 15, message = "{Size.Customer.phoneNumber.validation}")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -109,13 +126,24 @@ public class Customer implements Serializable{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
+    
+    @NotEmpty(message = "{NotEmpty.Customer.email.validation}")
+    @Size(max = 50, message = "{Size.Customer.email.validation}")
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Valid
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getStatus() {
@@ -137,17 +165,17 @@ public class Customer implements Serializable{
     public Set<Order> getOrderSet() {
         return orderSet;
     }
-
-    public Set<Address> getAddressSet() {
-        return addressSet;
+    
+    public void setOrderSet(Set<Order> orderSet) {
+        this.orderSet = orderSet;
     }
+    
 
-    
-    
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 19 * hash + Objects.hashCode(this.customerId);
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.customerId);
         return hash;
     }
 
@@ -172,16 +200,20 @@ public class Customer implements Serializable{
     
     
     @Override
-    public String toString() {
-        StringBuilder sba = new StringBuilder();
-        addressSet.stream().forEach(a -> sba.append("["+ a +"] "));
-        
+    public String toString() {        
         StringBuilder sbo = new StringBuilder();
         orderSet.stream().forEach(o -> sbo.append("["+ o +"] "));
         
-        return "Customer{" + "customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName 
-             + ", phoneNumber=" + phoneNumber + ", email=" + email + ", status=" + status + ", createDate=" + createDate 
-             + ", addressSet=" + sba.toString() + ", orderSet=" + sbo.toString() + '}';
+        return "Customer{" + "customerId=" + customerId 
+                       + ", firstName=" + firstName 
+                       + ", lastName=" + lastName 
+                       + ", phoneNumber=" + phoneNumber 
+                       + ", email=" + email 
+                       + ", address=" + address
+                       + ", status=" + status 
+                       + ", createDate=" + createDate + "\n"
+                       + ", orderSet=" + sbo.toString() + "\n"
+                       + '}';
     } 
     
 }

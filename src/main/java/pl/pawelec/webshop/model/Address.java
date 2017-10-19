@@ -15,9 +15,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 import pl.pawelec.webshop.model.enum_.AddressStatus;
 
@@ -26,16 +28,13 @@ import pl.pawelec.webshop.model.enum_.AddressStatus;
  * @author mirek
  */
 @Entity
+@Table(name = "address")
 public class Address implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id", nullable = false)
     private Long addressId;
-    
-    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Customer customer; 
     
     @Column(name = "door_no", nullable = false, length = 10)
     private String doorNo;
@@ -65,26 +64,26 @@ public class Address implements Serializable{
     
     
     @OneToOne(mappedBy = "address", fetch = FetchType.EAGER)
-    private Order order;
+    private Customer customer;
+    
+    @OneToOne(mappedBy = "shippingAddress", fetch = FetchType.EAGER)
+    private ShippingDetail shippingDetail;
     
     
     
     public Address() {
-        this.customer = new Customer();
         this.status = AddressStatus.OK.name();
         this.createDate = LocalDateTime.now();
     }
     
-    public Address(Builder builder) {
-        this.addressId=builder.addressId;
-        this.doorNo=builder.doorNo;
-        this.streetName=builder.streetName;
-        this.areaName=builder.areaName;
-        this.state=builder.state;
-        this.country=builder.country;
-        this.zipCode=builder.zipCode;
-        this.status=builder.status;
-        this.createDate=builder.createDate;
+    public Address(String doorNo, String streetName, String areaName, String state, String country, String zipCode) {
+        this();
+        this.doorNo=doorNo;
+        this.streetName=streetName;
+        this.areaName=areaName;
+        this.state=state;
+        this.country=country;
+        this.zipCode=zipCode;
     }
 
     
@@ -97,14 +96,8 @@ public class Address implements Serializable{
         this.addressId = addressId;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
+    @NotEmpty(message = "{NotEmpty.Address.doorNo.validation}")
+    @Size(max = 10, message = "{Size.Address.doorNo.validation}")
     public String getDoorNo() {
         return doorNo;
     }
@@ -112,7 +105,8 @@ public class Address implements Serializable{
     public void setDoorNo(String doorNo) {
         this.doorNo = doorNo;
     }
-
+    @NotEmpty(message = "{NotEmpty.Address.streetName.validation}")
+    @Size(max = 25, message = "{Size.Address.streetName.validation}")
     public String getStreetName() {
         return streetName;
     }
@@ -120,7 +114,8 @@ public class Address implements Serializable{
     public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
-
+    @NotEmpty(message = "{NotEmpty.Address.areaName.validation}")
+    @Size(max = 25, message = "{Size.Address.areaName.validation}")
     public String getAreaName() {
         return areaName;
     }
@@ -128,7 +123,8 @@ public class Address implements Serializable{
     public void setAreaName(String areaName) {
         this.areaName = areaName;
     }
-
+    @NotEmpty(message = "{NotEmpty.Address.state.validation}")
+    @Size(max = 25, message = "{Size.Address.state.validation}")
     public String getState() {
         return state;
     }
@@ -136,7 +132,8 @@ public class Address implements Serializable{
     public void setState(String state) {
         this.state = state;
     }
-
+    @NotEmpty(message = "{NotEmpty.Address.country.validation}")
+    @Size(max = 25, message = "{Size.Address.country.validation}")
     public String getCountry() {
         return country;
     }
@@ -144,7 +141,9 @@ public class Address implements Serializable{
     public void setCountry(String country) {
         this.country = country;
     }
-
+    @NotEmpty(message = "{NotEmpty.Address.zipCode.validation}")
+    @Pattern(regexp = "^[0-9]{2}[-][0-9]{3}$", message = "{Pattern.Address.zipCode.validation}")
+    @Size(max = 10, message = "{Size.Address.zipCode.validation}")
     public String getZipCode() {
         return zipCode;
     }
@@ -152,7 +151,7 @@ public class Address implements Serializable{
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
-
+    
     public String getStatus() {
         return status;
     }
@@ -169,16 +168,33 @@ public class Address implements Serializable{
         this.createDate = createDate;
     }
 
-    public Order getOrder() {
-        return order;
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public ShippingDetail getShippingDetail() {
+        return shippingDetail;
+    }
+
+    public void setShippingDetail(ShippingDetail shippingDetail) {
+        this.shippingDetail = shippingDetail;
     }
 
     
     
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + Objects.hashCode(this.addressId);
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.doorNo);
+        hash = 59 * hash + Objects.hashCode(this.streetName);
+        hash = 59 * hash + Objects.hashCode(this.areaName);
+        hash = 59 * hash + Objects.hashCode(this.state);
+        hash = 59 * hash + Objects.hashCode(this.country);
+        hash = 59 * hash + Objects.hashCode(this.zipCode);
         return hash;
     }
 
@@ -194,7 +210,22 @@ public class Address implements Serializable{
             return false;
         }
         final Address other = (Address) obj;
-        if (!Objects.equals(this.addressId, other.addressId)) {
+        if (!Objects.equals(this.doorNo, other.doorNo)) {
+            return false;
+        }
+        if (!Objects.equals(this.streetName, other.streetName)) {
+            return false;
+        }
+        if (!Objects.equals(this.areaName, other.areaName)) {
+            return false;
+        }
+        if (!Objects.equals(this.state, other.state)) {
+            return false;
+        }
+        if (!Objects.equals(this.country, other.country)) {
+            return false;
+        }
+        if (!Objects.equals(this.zipCode, other.zipCode)) {
             return false;
         }
         return true;
@@ -204,68 +235,16 @@ public class Address implements Serializable{
 
     @Override
     public String toString() {
-        return "Address{addressId=" + addressId + ", customer=" + customer + ", doorNo=" + doorNo + ", streetName=" + streetName 
-             + ", areaName=" + areaName + ", state=" + state + ", country=" + country + ", zipCode=" + zipCode 
-             + ", status=" + status + ", createDate=" + createDate + ", order=" + order + '}';
-    
+        return "Address{addressId=" + addressId 
+                   + ", doorNo=" + doorNo 
+                   + ", streetName=" + streetName 
+                   + ", areaName=" + areaName 
+                   + ", state=" + state 
+                   + ", country=" + country 
+                   + ", zipCode=" + zipCode 
+                   + ", status=" + status 
+                   + ", createDate=" + createDate
+                   + '}';
     }
 
-    
-    
-    public static class Builder{
-        private Long addressId;
-        private Customer customer;
-        private String doorNo;
-        private String streetName;
-        private String areaName;
-        private String state;
-        private String country;
-        private String zipCode;
-        private String status;
-        private LocalDateTime createDate;
-        
-        public Builder withAddressId(Long addressId){
-            this.addressId=addressId;
-            return this;
-        }
-        public Builder withCustomer(Customer customer){
-            this.customer=customer;
-            return this;
-        }
-        public Builder withDoorNo(String doorNo){
-            this.doorNo=doorNo;
-            return this;
-        }
-        public Builder withStreetName(String streetName){
-            this.streetName=streetName;
-            return this;
-        }
-        public Builder withAreaName(String areaName){
-            this.areaName=areaName;
-            return this;
-        }
-        public Builder withState(String state){
-            this.state=state;
-            return this;
-        }
-        public Builder withCountry(String country){
-            this.country=country;
-            return this;
-        }
-        public Builder withZipCode(String zipCode){
-            this.zipCode=zipCode;
-            return this;
-        }
-        public Builder withStatus(String status){
-            this.status=status;
-            return this;
-        }
-        public Builder withCreateDate(LocalDateTime createDate){
-            this.createDate=createDate;
-            return this;
-        }
-        public Address build(){
-            return new Address(this);
-        }
-    } 
 }

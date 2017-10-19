@@ -33,7 +33,6 @@
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:maxUploadSize="20971520"/> <!-- 20971520 B = 20 MB -->
     
     <bean id="productImageValidator" class="pl.pawelec.webshop.validator.ProductImageValidator" p:sizeImage="2097152"/> <!-- max 2 MB -->
-    
     <bean id="productValidator" class="pl.pawelec.webshop.validator.ProductValidator">
         <property name="springValidators">
             <set>
@@ -41,6 +40,16 @@
             </set>
         </property>
     </bean>
+    
+    <bean id="systemClassUniqueKeyValidator" class="pl.pawelec.webshop.validator.SystemClassUniqueKeyValidator"/> 
+    <bean id="systemClassValidator" class="pl.pawelec.webshop.validator.SystemClassValidator">
+        <property name="springValidators">
+            <set>
+                <ref bean="systemClassUniqueKeyValidator"/>
+            </set>
+        </property>
+    </bean>
+    
     
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" p:defaultLocale="pl" />
 
@@ -63,6 +72,7 @@
     <flow:flow-executor id="deliveryFlowExecutor" flow-registry="deliveryFlowRegistry" />
     <flow:flow-registry id="deliveryFlowRegistry" base-path="/WEB-INF/flows" flow-builder-services="flowBuilderService" >
         <flow:flow-location path="/delivery/delivery-flow.xml" id="delivery" />
+        <flow:flow-location path="/customerOrder/customerOrder-flow.xml" id="customerOrder" />
     </flow:flow-registry>
     <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping" p:flowRegistry-ref="deliveryFlowRegistry" />
     <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter" p:flowExecutor-ref="deliveryFlowExecutor" />

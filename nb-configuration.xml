@@ -22,6 +22,7 @@ Any value defined here will override the pom.xml file value but is only applicab
             <config-file>src/main/webapp/WEB-INF/spring/applicationContext.xml</config-file>
             <config-file>src/main/webapp/WEB-INF/spring/securityContext.xml</config-file>
             <config-file>src/main/webapp/WEB-INF/flows/delivery/delivery-flow.xml</config-file>
+            <config-file>src/main/webapp/WEB-INF/flows/customerOrder/customerOrder-flow.xml</config-file>
         </config-files>
         <config-file-groups/>
     </spring-data>

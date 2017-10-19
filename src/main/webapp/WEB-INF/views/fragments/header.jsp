@@ -63,7 +63,6 @@
                     <div class="navbar-header">
                         <a class="navbar-brand" href="${homePage}"> ${homepageLbl} </a>
                     </div>
-                    <!--<div class="navbar">-->
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active"><a href="${homePage}"> ${homeLbl} </a></li>
                         <li><a href="${contact}"> ${contactLbl} </a></li>
@@ -74,7 +73,6 @@
                             </a>
                         </li>
                     </ul>
-                    <!--</div>-->
                 </div>
             </nav>    
         </header>

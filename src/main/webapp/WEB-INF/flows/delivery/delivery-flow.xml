@@ -86,7 +86,7 @@
             </action-state>
     
     <view-state id="summaryOfDelivery" model="delivery">
-        <!--<transition on="back" to="addItemToDelivery" validate="false" />-->
+
         <transition on="back" to="decisionWhereGo" validate="false" />
         <transition on="close" to="moveItemsToRepository" validate="false" />
     </view-state>

@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -65,17 +66,15 @@ public class Cart implements Serializable{
     
     
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "cart", fetch = FetchType.EAGER)
-    private Set<CartItem> cartItemSet;
+    private Set<CartItem> cartItemSet = new HashSet<CartItem>();
     
-//    @OneToOne(mappedBy = "cart", fetch = FetchType.EAGER)
-//    private Order order;
-    
+    @OneToOne(mappedBy = "cart", fetch = FetchType.EAGER)
+    private Order order;
+
     
     
     public Cart() {
         this.costOfAllItems = new BigDecimal(0);
-        this.cartItemSet = new HashSet<CartItem>();
-//        this.order = new Order(); 
     }
 
     public Cart(String sessiontId) {
@@ -141,19 +140,21 @@ public class Cart implements Serializable{
         return cartItemSet;
     }
 
+    public void setCartItemSet(Set<CartItem> cartItemSet) {
+        this.cartItemSet = cartItemSet;
+    }
+
     public BigDecimal getCostOfAllItems() {
         return costOfAllItems;
-    }   
-
-//    @JsonIgnore
-//    public Order getOrder() {
-//        return order;
-//    }
-//
-//    public void setOrder(Order order) {
-//        this.order = order;
-//    }
+    }       
     
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
     
     
     
@@ -196,9 +197,22 @@ public class Cart implements Serializable{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        cartItemSet.forEach(v -> sb.append("[productNo=" + v.getProduct().getProductNo() + ", quantity=" + v.getQuantity() + ", totalPrice=" + v.getTotalPrice() + "] "));
-        return "Cart{ cartId=" + cartId + ", sessiontId=" + sessiontId + ", userId=" + userId + ", status=" + status + ", lastModificationDate=" + lastModificationDate 
-             + ", createDate=" + createDate + ", costOfAllItems=" + costOfAllItems + ", cartItemSet=" + sb.toString() /* + ", order=" + order */ + '}';
+        cartItemSet.forEach(v -> sb.append("[productNo=" + v.getProduct().getProductNo() 
+                                        + ", quantity=" + v.getQuantity() 
+                                        + ", totalPrice=" + v.getTotalPrice() + "] ")
+        );
+        
+        return "Cart{ \n"
+                 + "  cartId=" + cartId 
+                 + ", sessiontId=" + sessiontId 
+                 + ", userId=" + userId 
+                 + ", status=" + status 
+                 + ", lastModificationDate=" + lastModificationDate 
+                 + ", createDate=" + createDate 
+                 + ", costOfAllItems=" + costOfAllItems + "\n"
+                 + ", cartItemSet=" + sb.toString() + "\n"
+                 + ", order=" + order + "\n"
+                 + '}';
     }
 
 }
