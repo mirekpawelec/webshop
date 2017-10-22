@@ -63,9 +63,7 @@ public class Customer implements Serializable{
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
     @Column(name = "c_date")
     private LocalDateTime createDate;
-    
-    
-    
+     
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private Set<Order> orderSet = new HashSet<Order>(); 
     
@@ -200,20 +198,17 @@ public class Customer implements Serializable{
     
     
     @Override
-    public String toString() {        
-        StringBuilder sbo = new StringBuilder();
-        orderSet.stream().forEach(o -> sbo.append("["+ o +"] "));
-        
-        return "Customer{" + "customerId=" + customerId 
-                       + ", firstName=" + firstName 
-                       + ", lastName=" + lastName 
-                       + ", phoneNumber=" + phoneNumber 
-                       + ", email=" + email 
-                       + ", address=" + address
-                       + ", status=" + status 
-                       + ", createDate=" + createDate + "\n"
-                       + ", orderSet=" + sbo.toString() + "\n"
-                       + '}';
+    public String toString() {                
+        return "Customer{" 
+                    + " customerId=" + customerId 
+                    + ", firstName=" + firstName 
+                    + ", lastName=" + lastName 
+                    + ", phoneNumber=" + phoneNumber 
+                    + ", email=" + email 
+                    + ", address=" + address
+                    + ", status=" + status 
+                    + ", createDate=" + createDate
+                    + '}';
     } 
     
 }

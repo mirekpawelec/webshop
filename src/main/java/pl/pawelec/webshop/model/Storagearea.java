@@ -127,7 +127,12 @@ public class Storagearea implements Serializable{
     
     @Override
     public String toString() {
-        return "Storagearea{" + "areaId=" + areaId + ", name=" + name + ", description=" + description + ", storageplaceSet=" + storageplaceSet.size() + '}';
+        return "Storagearea{" 
+                + "areaId=" + areaId 
+                + ", name=" + name 
+                + ", description=" + description 
+                + ", storageplaceSet=" + storageplaceSet.size() 
+                + '}';
     }
     
     

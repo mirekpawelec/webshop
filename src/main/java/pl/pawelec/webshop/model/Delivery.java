@@ -77,8 +77,6 @@ public class Delivery implements Serializable{
     @Column(name = "f_date", length = 20)
     private String finishDate;
     
-    
-    
     @OneToMany(mappedBy = "delivery", fetch = FetchType.EAGER)
     private Set<DeliveryItem> deliveryItemSet = new HashSet<DeliveryItem>();
 
@@ -253,11 +251,29 @@ public class Delivery implements Serializable{
     
     @Override
     public String toString() {
-        return "Delivery{" + "deliveryId=" + deliveryId + ", place=" + place + ", description=" + description 
-             + ", driverFirstName=" + driverFirstName + ", driverLastName=" + driverLastName + ", driverPhoneNo=" + driverPhoneNo 
-             + ", truckType=" + truckType + ", truckNumber=" + truckNumber + ", trailerOrCaravanNumber=" + trailerOrCaravanNumber 
-             + ", createUser=" + createUser + ", status=" + status + ", createDate=" + createDate + ", finishDate=" + finishDate 
-             + ", deliveryItemSet=" + deliveryItemSet.size() + '}';
+        StringBuilder sb = new StringBuilder();
+        deliveryItemSet.forEach(di -> sb.append("[loadunitNo=" + di.getLoadunitNo() 
+                                              + ",productNo=" + di.getProduct().getProductNo()
+                                              + ",quantity=" + di.getQuantity() 
+                                              + ",status=" + di.getStatus() + "] ")
+        );
+        
+        return "Delivery{" 
+                + " deliveryId=" + deliveryId 
+                + ", place=" + place 
+                + ", description=" + description 
+                + ", driverFirstName=" + driverFirstName 
+                + ", driverLastName=" + driverLastName 
+                + ", driverPhoneNo=" + driverPhoneNo 
+                + ", truckType=" + truckType 
+                + ", truckNumber=" + truckNumber 
+                + ", trailerOrCaravanNumber=" + trailerOrCaravanNumber 
+                + ", createUser=" + createUser 
+                + ", status=" + status 
+                + ", createDate=" + createDate 
+                + ", finishDate=" + finishDate 
+                + ", deliveryItemSet=" + sb.toString() 
+                + '}';
     }
 
 }

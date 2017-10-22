@@ -164,7 +164,14 @@ public class DeliveryItem implements Serializable{
 
     @Override
     public String toString() {
-        return "DeliveryItem{" + "itemId=" + itemId + ", delivery=" + delivery + ", loadunitNo=" + loadunitNo + ", product=" + product + ", quantity=" + quantity + ", status=" + status + ", createDate=" + createDate + '}';
+        return "DeliveryItem{" 
+                + " itemId=" + itemId 
+                + ", deliveryId=" + delivery.getDeliveryId() 
+                + ", loadunitNo=" + loadunitNo 
+                + ", product=" + product 
+                + ", quantity=" + quantity 
+                + ", status=" + status 
+                + ", createDate=" + createDate + '}';
     }
     
 }

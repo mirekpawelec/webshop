@@ -45,6 +45,10 @@ public class ProductFilter extends Product{
 
     @Override
     public String toString() {
-        return "ProductFilter{" + "inStock=" + inStock + ", minUnitPrice=" + minUnitPrice + ", maxUnitPrice=" + maxUnitPrice + '}';
+        return "ProductFilter{" 
+                + "inStock=" + inStock 
+                + ", minUnitPrice=" + minUnitPrice 
+                + ", maxUnitPrice=" + maxUnitPrice 
+                + '}';
     }
 }

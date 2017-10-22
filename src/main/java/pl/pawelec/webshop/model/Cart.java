@@ -63,8 +63,6 @@ public class Cart implements Serializable{
     @Transient
     private BigDecimal costOfAllItems;
 
-    
-    
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "cart", fetch = FetchType.EAGER)
     private Set<CartItem> cartItemSet = new HashSet<CartItem>();
     
@@ -202,16 +200,15 @@ public class Cart implements Serializable{
                                         + ", totalPrice=" + v.getTotalPrice() + "] ")
         );
         
-        return "Cart{ \n"
-                 + "  cartId=" + cartId 
+        return "Cart{"
+                 + " cartId=" + cartId 
                  + ", sessiontId=" + sessiontId 
                  + ", userId=" + userId 
                  + ", status=" + status 
                  + ", lastModificationDate=" + lastModificationDate 
                  + ", createDate=" + createDate 
-                 + ", costOfAllItems=" + costOfAllItems + "\n"
-                 + ", cartItemSet=" + sb.toString() + "\n"
-                 + ", order=" + order + "\n"
+                 + ", costOfAllItems=" + costOfAllItems
+                 + ", cartItemSet=" + sb.toString()
                  + '}';
     }
 

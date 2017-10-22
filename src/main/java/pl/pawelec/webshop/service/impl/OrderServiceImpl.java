@@ -5,25 +5,29 @@
  */
 package pl.pawelec.webshop.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pawelec.webshop.model.Address;
 import pl.pawelec.webshop.model.Cart;
-import pl.pawelec.webshop.model.CartItem;
 import pl.pawelec.webshop.model.Customer;
 import pl.pawelec.webshop.model.Order;
-import pl.pawelec.webshop.model.ShippingDetail;
+import pl.pawelec.webshop.model.ShippingAddress;
+import pl.pawelec.webshop.model.ShippingDetails;
 import pl.pawelec.webshop.model.dao.AddressDao;
 import pl.pawelec.webshop.model.dao.CartDao;
 import pl.pawelec.webshop.model.dao.CartItemDao;
 import pl.pawelec.webshop.model.dao.CustomerDao;
 import pl.pawelec.webshop.model.dao.OrderDao;
-import pl.pawelec.webshop.model.dao.ShippingDetailDao;
 import pl.pawelec.webshop.model.enum_.CartStatus;
 import pl.pawelec.webshop.service.OrderService;
+import pl.pawelec.webshop.model.dao.ShippingAddressDao;
+import pl.pawelec.webshop.model.dao.ShippingDetailsDao;
+import pl.pawelec.webshop.service.SystemClassService;
 
 /**
  *
@@ -32,6 +36,7 @@ import pl.pawelec.webshop.service.OrderService;
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService{
+    
     @Autowired
     private OrderDao orderDao;
     
@@ -48,7 +53,18 @@ public class OrderServiceImpl implements OrderService{
     private CustomerDao customerDao;
     
     @Autowired
-    private ShippingDetailDao shippingDetailDao;
+    private ShippingAddressDao shippingAddressDao;
+    
+    @Autowired
+    private ShippingDetailsDao shippingDetailsDao;
+    
+    @Autowired
+    private SystemClassService systemClassService;
+    
+    private final static String DELIVERY_METHOD_SYMBOL_CLASS = "delivery_method";
+    private final static String PAYMENT_METHOD_SYMBOL_CLASS = "payment_method";
+    
+    
     
     public void create(Order order) {      
         orderDao.create(order);
@@ -90,25 +106,42 @@ public class OrderServiceImpl implements OrderService{
         return orderDao.createAndReturn(order);
     }
     
-    public void fillCustomerAndShippingAddress(Order order, Customer customer){
+    public void fillInCustomerAndShippingAddressInOrder(Order order, Customer customer){
         order.setCustomer(customer);
-        order.getShippingDetail().setName(customer.getFirstName()+" "+customer.getLastName());
-        order.getShippingDetail().getShippingAddress().setDoorNo(customer.getAddress().getDoorNo());
-        order.getShippingDetail().getShippingAddress().setStreetName(customer.getAddress().getStreetName());
-        order.getShippingDetail().getShippingAddress().setZipCode(customer.getAddress().getZipCode());
-        order.getShippingDetail().getShippingAddress().setAreaName(customer.getAddress().getAreaName());
-        order.getShippingDetail().getShippingAddress().setState(customer.getAddress().getState());
-        order.getShippingDetail().getShippingAddress().setCountry(customer.getAddress().getCountry());
+        if(!Optional.ofNullable(order.getShippingAddress().getName()).isPresent()){
+            order.getShippingAddress().setName(customer.getFirstName()+" "+customer.getLastName());
+            order.getShippingAddress().setPhoneNumber(customer.getPhoneNumber()); 
+            order.getShippingAddress().getAddress().setDoorNo(customer.getAddress().getDoorNo());
+            order.getShippingAddress().getAddress().setStreetName(customer.getAddress().getStreetName());
+            order.getShippingAddress().getAddress().setZipCode(customer.getAddress().getZipCode());
+            order.getShippingAddress().getAddress().setAreaName(customer.getAddress().getAreaName());
+            order.getShippingAddress().getAddress().setState(customer.getAddress().getState());
+            order.getShippingAddress().getAddress().setCountry(customer.getAddress().getCountry());
+        }
     }
     
-    public void fillShippingAddressNewAddress(Order order, ShippingDetail shippingDetail){
-        order.getShippingDetail().setName(shippingDetail.getName());
-        order.getShippingDetail().getShippingAddress().setDoorNo(shippingDetail.getShippingAddress().getDoorNo());
-        order.getShippingDetail().getShippingAddress().setStreetName(shippingDetail.getShippingAddress().getStreetName());
-        order.getShippingDetail().getShippingAddress().setZipCode(shippingDetail.getShippingAddress().getZipCode());
-        order.getShippingDetail().getShippingAddress().setAreaName(shippingDetail.getShippingAddress().getAreaName());
-        order.getShippingDetail().getShippingAddress().setState(shippingDetail.getShippingAddress().getState());
-        order.getShippingDetail().getShippingAddress().setCountry(shippingDetail.getShippingAddress().getCountry());
+    @Override
+    public void fillInShippingDetailsInOrder(Order order, ShippingDetails shippingDetails) {
+        order.getShippingDetails().setDeliveryMethod(shippingDetails.getDeliveryMethod());
+        order.getShippingDetails().setDeliveryCost( 
+                new BigDecimal(systemClassService.getByUniqueKey(DELIVERY_METHOD_SYMBOL_CLASS, shippingDetails.getDeliveryMethod()).getValue())
+        );
+        order.getShippingDetails().setPaymentMethod(shippingDetails.getPaymentMethod());
+        order.getShippingDetails().setPaymentCost(
+                new BigDecimal(systemClassService.getByUniqueKey(PAYMENT_METHOD_SYMBOL_CLASS, shippingDetails.getPaymentMethod()).getValue())
+        );
+        order.getShippingDetails().updateTotalCost();
+    }
+    
+    public void fillInShippingAddressInOrder(Order order, ShippingAddress shippingAddress){
+        order.getShippingAddress().setName(shippingAddress.getName());
+        order.getShippingAddress().setPhoneNumber(shippingAddress.getPhoneNumber()); 
+        order.getShippingAddress().getAddress().setDoorNo(shippingAddress.getAddress().getDoorNo());
+        order.getShippingAddress().getAddress().setStreetName(shippingAddress.getAddress().getStreetName());
+        order.getShippingAddress().getAddress().setZipCode(shippingAddress.getAddress().getZipCode());
+        order.getShippingAddress().getAddress().setAreaName(shippingAddress.getAddress().getAreaName());
+        order.getShippingAddress().getAddress().setState(shippingAddress.getAddress().getState());
+        order.getShippingAddress().getAddress().setCountry(shippingAddress.getAddress().getCountry());
     }
 
     @Override
@@ -116,7 +149,8 @@ public class OrderServiceImpl implements OrderService{
         System.out.println("order=" + order 
                        +"\n order.cart=" + order.getCart()
                        +"\n order.customer=" + order.getCustomer()
-                       +"\n order.shippmentDetail=" + order.getShippingDetail());
+                       +"\n order.shippmentDetail=" + order.getShippingAddress()
+                       +"\n order.shippmentDetail=" + order.getShippingDetails());
         
         Cart cart = cartDao.getOneById(order.getCart().getCartId());
         cart.setLastModificationDate(LocalDateTime.now());
@@ -134,17 +168,19 @@ public class OrderServiceImpl implements OrderService{
         customer.setAddress(address);
         customer = customerDao.createAndReturn(customer);
         
-        
-        ShippingDetail shippingDetail = order.getShippingDetail();
-        if(order.getCustomer().getAddress().equals(order.getShippingDetail().getShippingAddress())){
-            shippingDetail.setShippingAddress(address);
+        ShippingAddress shippingAddress = order.getShippingAddress();
+        if(order.getCustomer().getAddress().equals(order.getShippingAddress().getAddress())){
+            shippingAddress.setAddress(address);
         } else {
-            address = addressDao.createAndReturn(order.getShippingDetail().getShippingAddress());
-            shippingDetail.setShippingAddress(address);
+            address = addressDao.createAndReturn(order.getShippingAddress().getAddress());
+            shippingAddress.setAddress(address);
         }
-        shippingDetail = shippingDetailDao.createAndReturn(shippingDetail);
+        shippingAddress = shippingAddressDao.createAndReturn(shippingAddress);
         
-        Order orderToSave = createAndReturn(new Order(order.getCart(), customer, shippingDetail));
+        ShippingDetails shippingDetails = order.getShippingDetails();
+        shippingDetails = shippingDetailsDao.createAndReturn(shippingDetails);
+        
+        Order orderToSave = createAndReturn(new Order(order.getCart(), customer, shippingAddress, shippingDetails));
         return orderToSave;
     }
 }

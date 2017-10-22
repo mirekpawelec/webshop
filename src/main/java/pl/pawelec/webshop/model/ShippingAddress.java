@@ -19,10 +19,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import pl.pawelec.webshop.converter.DateToLocalDateConverter;
@@ -33,65 +34,71 @@ import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
  * @author mirek
  */
 @Entity
-@Table(name = "shipping_detail")
-public class ShippingDetail implements Serializable{
+@Table(name = "shipping_address")
+public class ShippingAddress implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "sd_id", nullable = false)
-    private Long shippingDetailId;
+    @Column(name = "ship_address_id", nullable = false)
+    private Long shippingAddressId;
     
     @Column(nullable = false, length = 100)
     private String name;
     
+    @Column(name = "phone_number", nullable = false, length = 15)
+    private String phoneNumber;
+        
     @Convert(converter = DateToLocalDateConverter.class)
     @Column(name = "shipping_date")
     private LocalDate shippingDate;
     
-    @JoinColumn(name = "shipping_address_id", referencedColumnName = "address_id", unique = true)
-    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, optional = false)
-    private Address shippingAddress;
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private Address address;
     
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
     @Column(name = "c_date")
     private LocalDateTime createDate;
 
-    
-    
-    @OneToMany(mappedBy = "shippingDetail", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "shippingAddress", fetch = FetchType.EAGER)
     private Set<Order> orderSet;
     
     
     
-    public ShippingDetail() {
-        this.shippingAddress = new Address();
+    public ShippingAddress() {
+        this.address = new Address();
         this.createDate = LocalDateTime.now();
     }
 
-    public ShippingDetail(String name, Address shippingAddress) {
-        this();
-        this.name = name;
-        this.shippingAddress = shippingAddress;
-    }
-
     
     
-    public Long getShippingDetailId() {
-        return shippingDetailId;
+    public Long getShippingAddressId() {
+        return shippingAddressId;
     }
 
-    public void setShippingDetailId(Long shippingDetailId) {
-        this.shippingDetailId = shippingDetailId;
+    public void setShippingAddressId(Long shippingAddressId) {
+        this.shippingAddressId = shippingAddressId;
     }
 
-    @NotEmpty(message = "{NotEmpty.ShippingDetail.name.validation}")
-    @Size(max = 100, message = "{Size.ShippingDetail.name.validation}")
+    @NotEmpty(message = "{NotEmpty.ShippingAddress.name.validation}")
+    @Size(max = 100, message = "{Size.ShippingAddress.name.validation}")
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @NotEmpty(message = "{NotEmpty.ShippingAddress.phoneNumber.validation}")
+    @Pattern(regexp = "^[+][0-9]{2}[ ][0-9]{3}[ ][0-9]{3}[ ][0-9]{3}$", message = "{Pattern.ShippingAddress.phoneNumber.validation}")
+    @Size(max = 15, message = "{Size.ShippingAddress.phoneNumber.validation}")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public LocalDate getShippingDate() {
@@ -103,12 +110,12 @@ public class ShippingDetail implements Serializable{
     }
 
     @Valid
-    public Address getShippingAddress() {
-        return shippingAddress;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public LocalDateTime getCreateDate() {
@@ -131,8 +138,8 @@ public class ShippingDetail implements Serializable{
     
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.shippingDetailId);
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.shippingAddressId);
         return hash;
     }
 
@@ -147,22 +154,23 @@ public class ShippingDetail implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ShippingDetail other = (ShippingDetail) obj;
-        if (!Objects.equals(this.shippingDetailId, other.shippingDetailId)) {
+        final ShippingAddress other = (ShippingAddress) obj;
+        if (!Objects.equals(this.shippingAddressId, other.shippingAddressId)) {
             return false;
         }
         return true;
     }
 
+    
+
     @Override
     public String toString() {
         return "ShippingDetail{" 
-                + "shippingDetailId=" + shippingDetailId 
-                + ", name=" + name 
+                + " shippingAddressId=" + shippingAddressId 
+                + ", name=" + name
                 + ", shippingDate=" + shippingDate 
-                + ", shippingAddress=" + shippingAddress 
+                + ", shippingAddress=" + address 
                 + ", createDate=" + createDate 
-                + ", orderSet=" + orderSet
                 + '}';
     }
 

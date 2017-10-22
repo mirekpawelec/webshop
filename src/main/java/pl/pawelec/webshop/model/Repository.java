@@ -190,7 +190,18 @@ public class Repository implements Serializable{
     
     @Override
     public String toString() {
-        return "Repository{" + "loadunitId=" + loadunitId + ", loadunitNo=" + loadunitNo + ", product=" + product + ", quantity=" + quantity + ", place=" + place + ", state=" + state + ", qualityStatus=" + qualityStatus + ", status=" + status + ", lastModifikationDate=" + lastModifikationDate + ", createDate=" + createDate + '}';
+        return "Repository{" 
+                + "loadunitId=" + loadunitId 
+                + ", loadunitNo=" + loadunitNo 
+                + ", product=" + product 
+                + ", quantity=" + quantity 
+                + ", place=" + place 
+                + ", state=" + state 
+                + ", qualityStatus=" + qualityStatus 
+                + ", status=" + status 
+                + ", lastModifikationDate=" + lastModifikationDate 
+                + ", createDate=" + createDate 
+                + '}';
     }
     
 }

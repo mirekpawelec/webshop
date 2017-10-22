@@ -6,7 +6,8 @@
 
     <var name="order" class="pl.pawelec.webshop.model.Order"/>
     <var name="customer" class="pl.pawelec.webshop.model.Customer"/>
-    <var name="shippingDetail" class="pl.pawelec.webshop.model.ShippingDetail"/>
+    <var name="shippingAddress" class="pl.pawelec.webshop.model.ShippingAddress"/>
+    <var name="shippingDetails" class="pl.pawelec.webshop.model.ShippingDetails"/>
     
     <action-state id="createOrder">
         <evaluate expression="cartServiceImpl.getOneById(requestParameters.cartId)" result="order.cart"/>
@@ -15,24 +16,27 @@
     </action-state>
     
     <view-state id="collectCustomerInfo" model="customer">
-        <transition on="keepGoing" to="fillInCustomerAndShippingAddress"/>
+        <transition on="keepGoing" to="collectShippingDetails">
+            <evaluate expression="orderServiceImpl.fillInCustomerAndShippingAddressInOrder(order, customer)"/>
+            <evaluate expression="systemClassServiceImpl.getBySymbol('payment_method')" result="flowScope.paymentMethod"/>
+            <evaluate expression="systemClassServiceImpl.getBySymbol('delivery_method')" result="flowScope.deliveryMethod"/>
+        </transition>
     </view-state>
     
-    <action-state id="fillInCustomerAndShippingAddress">
-        <evaluate expression="orderServiceImpl.fillCustomerAndShippingAddress(order, customer)"/>
-        <transition to="orderConfirmation"/>
-    </action-state>
-    
-    <view-state id="orderConfirmation" model="shippingDetail" >
+    <view-state id="collectShippingDetails" model="shippingDetails">
         <transition on="backToCollectCustomerInfo" to="collectCustomerInfo" validate="false"/>
-        <transition on="changeAddress" to="fillInShippingAddressNewAddress"/>
+        <transition on="goToOrderConfirmation" to="orderConfirmation">
+            <evaluate expression="orderServiceImpl.fillInShippingDetailsInOrder(order, shippingDetails)"/>
+        </transition>
+    </view-state>
+    
+    <view-state id="orderConfirmation" model="shippingAddress" >
+        <transition on="backToCollectShippingDetails" to="collectShippingDetails" validate="false"/>
+        <transition on="changeAddress" to="orderConfirmation">
+            <evaluate expression="orderServiceImpl.fillInShippingAddressInOrder(order, shippingAddress)"/>
+        </transition>
         <transition on="orderConfirmed" to="saveCustomerOrder" validate="false"/>
     </view-state>
-    
-    <action-state id="fillInShippingAddressNewAddress">
-        <evaluate expression="orderServiceImpl.fillShippingAddressNewAddress(order, shippingDetail)"/>
-        <transition to="orderConfirmation"/>
-    </action-state>
     
     <action-state id="saveCustomerOrder">
         <evaluate expression="orderServiceImpl.saveCustomerOrder(order)" result="order"/>

@@ -28,7 +28,7 @@
                             <div class="well text-left">
                                 <h3> Dane kupującego </h3>
                                 <p> Tutaj wpisz dane osoby, która zawiera transakcje </p>
-                                <p> Adres do wysyłki podasz w nastepnym kroku </p>
+                                <p> Adres do wysyłki będziesz mógł podać w ostatnim kroku </p>
                             </div>
                         </div>
                         
@@ -203,11 +203,11 @@
                             <spring:bind path="phoneNumber">
                                 <div class="form-group ${status.error ? 'has-error' : ''}">
                                     <div class="hidden-xs col-sm-3 col-md-3 col-lg-offset-1 col-lg-2 text-right">
-                                        <label class="control-label" for="phoneNumber"> numer telefonu</label>
+                                        <label class="control-label" for="phoneNumber"> numer telefonu </label>
                                     </div>
 
                                     <div class="visible-xs col-xs-offset-1 col-xs-11 text-left">
-                                        <label class="control-label" for="phoneNumber"> numer telefonu</label>
+                                        <label class="control-label" for="phoneNumber"> numer telefonu </label>
                                     </div>
 
                                     <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
@@ -224,7 +224,7 @@
                             <div class="form-group">
                                 <a href="/webshop/cart/${sessionId}" class="btn btn-primary"><span class="glyphicon glyphicon-menu-left"></span> Wróć </a>
                                 <button name="_eventId_cancel" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Anuluj </button>
-                                <button type="submit" name="_eventId_keepGoing" class="btn btn-primary"> Dalej <span class="glyphicon glyphicon-menu-right"></span></button>
+                                <button type="submit" name="_eventId_keepGoing" class="btn btn-primary"> Dalej <span class="glyphicon glyphicon-menu-right"></span> </button>
                             </div>
                         </div>  
                     </fieldset>

@@ -9,9 +9,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.pawelec.webshop.model.ShippingDetail;
-import pl.pawelec.webshop.model.dao.ShippingDetailDao;
-import pl.pawelec.webshop.service.ShippingDetailService;
+import pl.pawelec.webshop.model.ShippingAddress;
+import pl.pawelec.webshop.model.dao.ShippingAddressDao;
+import pl.pawelec.webshop.service.ShippingAddressService;
 
 /**
  *
@@ -19,24 +19,24 @@ import pl.pawelec.webshop.service.ShippingDetailService;
  */
 @Service
 @Transactional
-public class ShippingDetailServiceImpl implements ShippingDetailService{
+public class ShippingAddressServiceImpl implements ShippingAddressService{
 
     @Autowired
-    private ShippingDetailDao shippingDetailDao;
+    private ShippingAddressDao shippingDetailDao;
     
     @Override
-    public void create(ShippingDetail shippingDetail) {
-        shippingDetailDao.create(shippingDetail);
+    public void create(ShippingAddress shippingAddress) {
+        shippingDetailDao.create(shippingAddress);
     }
 
     @Override
-    public void update(ShippingDetail shippingDetail) {
-        shippingDetailDao.update(shippingDetail);
+    public void update(ShippingAddress shippingAddress) {
+        shippingDetailDao.update(shippingAddress);
     }
 
     @Override
-    public void delete(ShippingDetail shippingDetail) {
-        shippingDetailDao.delete(shippingDetail);
+    public void delete(ShippingAddress shippingAddress) {
+        shippingDetailDao.delete(shippingAddress);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class ShippingDetailServiceImpl implements ShippingDetailService{
     }
 
     @Override
-    public ShippingDetail getOneById(Long id) {
+    public ShippingAddress getOneById(Long id) {
         return shippingDetailDao.getOneById(id);
     }
 
     @Override
-    public List<ShippingDetail> getAll() {
+    public List<ShippingAddress> getAll() {
         return shippingDetailDao.getAll();
     }
 
@@ -70,8 +70,8 @@ public class ShippingDetailServiceImpl implements ShippingDetailService{
     }
 
     @Override
-    public ShippingDetail createAndReturn(ShippingDetail shippingDetail) {
-        return shippingDetailDao.createAndReturn(shippingDetail);
+    public ShippingAddress createAndReturn(ShippingAddress shippingAddress) {
+        return shippingDetailDao.createAndReturn(shippingAddress);
     }
     
 }

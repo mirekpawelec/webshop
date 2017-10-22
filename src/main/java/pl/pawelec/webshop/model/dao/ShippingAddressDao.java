@@ -5,12 +5,12 @@
  */
 package pl.pawelec.webshop.model.dao;
 
-import pl.pawelec.webshop.model.ShippingDetail;
+import pl.pawelec.webshop.model.ShippingAddress;
 
 /**
  *
  * @author mirek
  */
-public interface ShippingDetailDao extends Dao<ShippingDetail>{
-    ShippingDetail createAndReturn(ShippingDetail shippingDetail);
+public interface ShippingAddressDao extends Dao<ShippingAddress>{
+    ShippingAddress createAndReturn(ShippingAddress shippingAddress);
 }

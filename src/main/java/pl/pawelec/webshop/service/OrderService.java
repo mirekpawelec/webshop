@@ -8,7 +8,8 @@ package pl.pawelec.webshop.service;
 import java.util.List;
 import pl.pawelec.webshop.model.Customer;
 import pl.pawelec.webshop.model.Order;
-import pl.pawelec.webshop.model.ShippingDetail;
+import pl.pawelec.webshop.model.ShippingAddress;
+import pl.pawelec.webshop.model.ShippingDetails;
 
 /**
  *
@@ -25,7 +26,8 @@ public interface OrderService {
     Long count();
     boolean exists(Long id);
     Order createAndReturn(Order order);
-    void fillCustomerAndShippingAddress(Order order, Customer customer);
-    void fillShippingAddressNewAddress(Order order, ShippingDetail shippingDetail);
+    void fillInCustomerAndShippingAddressInOrder(Order order, Customer customer);
+    void fillInShippingDetailsInOrder(Order order, ShippingDetails shippingDetails);
+    void fillInShippingAddressInOrder(Order order, ShippingAddress shippingAddress);
     Order saveCustomerOrder(Order order);
 }

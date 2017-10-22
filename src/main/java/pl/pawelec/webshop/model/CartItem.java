@@ -179,7 +179,7 @@ public class CartItem implements Serializable{
     
     @Override
     public String toString() {
-        return "CartItem{" + "id=" + id + ", cart=" + cart + ", product=" + product + ", quantity=" + quantity + ", totalPrice=" + totalPrice 
+        return "CartItem{" + "id=" + id + ", cartId=" + cart.getCartId() + ", product=" + product + ", quantity=" + quantity + ", totalPrice=" + totalPrice 
              + ", status=" + status + ", lastModificationDate=" + lastModificationDate + ", createDate=" + createDate + '}';
     }
     

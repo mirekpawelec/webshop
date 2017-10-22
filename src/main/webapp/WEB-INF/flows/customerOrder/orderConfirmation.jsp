@@ -28,8 +28,8 @@
                                     <tr class="primary-background">
                                         <th> Lp.</th>
                                         <th> Nazwa artykułu </th>
-                                        <th class="text-right"> Ilość </th>
-                                        <th class="text-right"> Cena</th>
+                                        <th class="text-right"> Ilość sztuk </th>
+                                        <th class="text-right"> Cena PLN</th>
                                     </tr>
                             </thead>
                             <tbody>
@@ -38,7 +38,7 @@
                                         <td class="text-left"> ${counter.count}</td>
                                         <td class="text-left"> ${item.product.manufacturer} ${item.product.name} </td>
                                         <td> ${item.quantity} </td>
-                                        <td> ${item.totalPrice} </td>
+                                        <td> ${item.totalPrice}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -46,7 +46,7 @@
                                     <tr>
                                         <td> </td>
                                         <td colspan="2"><h4>Łączna wartość zamówienia:</h4></td>
-                                        <td><h4><strong>${order.cart.costOfAllItems}</strong></h4></td>
+                                        <td><h4><strong>${order.cart.costOfAllItems} PLN</strong></h4></td>
                                     </tr>
                             </tfoot>
                         </table>
@@ -55,7 +55,7 @@
 
                 <hr/>
                         
-                <form:form modelAttribute="shippingDetail" class="form-horizontal">
+                <form:form modelAttribute="shippingAddress" class="form-horizontal">
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-7 col-lg-8"> 
                             <div class="panel-primary">
@@ -115,20 +115,30 @@
                                             <tr><td colspan="2"><br></td></tr>
                                             <tr>
                                                 <td>Przesyłka:</td>
-                                                <td>Kurier na terenie Polski (0.00 PLN)</td>
+                                                <td>${order.shippingDetails.deliveryMethod} (${order.shippingDetails.deliveryCost} PLN)</td>
                                             </tr>
                                             <tr>
                                                 <td>Paczki:</td>
-                                                <td>6231168440832 (FedEx.pl)</td>
+                                                <td></td>
+                                                <!--<td>6231168440832 (FedEx.pl)</td>-->
                                             </tr>
                                             <tr><td colspan="2"><br></td></tr>
                                             <tr>
                                                 <td>Sposób płatności:</td>
-                                                <td>System PayPal</td>
+                                                <td>${order.shippingDetails.paymentMethod} (${order.shippingDetails.paymentCost} PLN)</td>
                                             </tr>
                                             <tr>
                                                 <td>Płatność:</td>
-                                                <td>Opłacone (218.00 PLN z 218.00 PLN)</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${order.status!='ED'}">
+                                                            Opłacone (${order.cart.costOfAllItems + order.shippingDetails.totalCost} PLN)
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            Do zapłaty (${order.cart.costOfAllItems + order.shippingDetails.totalCost} PLN)
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -144,6 +154,7 @@
                                 <div class="panel-body text-left">
                                     <spring:bind path="*">
                                         <c:if test="${status.error}">
+                                            <c:set value="${true}" var="isValidationError"/>
                                             <div class="alert alert-danger alert-dismissible" role="alert">
                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                 <h4> Nieprawidłowe dane!</h4>
@@ -152,12 +163,14 @@
                                         </c:if>
                                     </spring:bind>
                                     <address>
-                                        ${order.shippingDetail.name} <br>
-                                        ${order.shippingDetail.shippingAddress.streetName} ${order.shippingDetail.shippingAddress.doorNo} <br>
-                                        ${order.shippingDetail.shippingAddress.zipCode}, ${order.shippingDetail.shippingAddress.areaName}, 
-                                        ${order.shippingDetail.shippingAddress.state} , ${order.shippingDetail.shippingAddress.country} <br>
+                                        ${order.shippingAddress.name} <br>
+                                        ${order.shippingAddress.address.streetName} ${order.shippingAddress.address.doorNo} <br>
+                                        ${order.shippingAddress.address.zipCode}, ${order.shippingAddress.address.areaName}, 
+                                        ${order.shippingAddress.address.state} , ${order.shippingAddress.address.country} <br>
+                                        <span class="glyphicon glyphicon-phone-alt"></span> ${order.shippingAddress.phoneNumber} </br>
                                     </address>
-                                    <button type="button" class="btn btn-default btn-block btn-sm" data-toggle="modal" data-target="#otherAddress">
+                                    <button type="button" data-toggle="modal" data-target="#otherAddress"
+                                            class="btn btn-block btn-sm ${isValidationError ? 'btn-danger' : 'btn-default'}" >
                                         Zmień adres
                                     </button>
                                 </div>
@@ -207,11 +220,11 @@
                                     </div>
 
                                     <div class="row">
-                                        <spring:bind path="shippingAddress.streetName">
+                                        <spring:bind path="address.streetName">
                                             <c:if test="${status.error}"> <c:set value="${true}" var="isErrorStreerName"/> </c:if>
                                         </spring:bind>
                                         
-                                        <spring:bind path="shippingAddress.doorNo">
+                                        <spring:bind path="address.doorNo">
                                             <c:if test="${status.error}"> <c:set value="${true}" var="isErrorDoorNo"/> </c:if>
                                         </spring:bind>
                                         
@@ -221,23 +234,23 @@
                                             </div>
 
                                             <div class="${isErrorStreerName? 'has-error' : ''} col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                                <form:input type="text" id="streetName" path="shippingAddress.streetName" class="form-control" placeholder="ulica"/>
-                                                <form:errors path="shippingAddress.streetName" class="text-danger"/>
+                                                <form:input type="text" id="streetName" path="address.streetName" class="form-control" placeholder="ulica"/>
+                                                <form:errors path="address.streetName" class="text-danger"/>
                                             </div>
 
                                             <div class="${isErrorDoorNo ? 'has-error' : ''} col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                <form:input type="text" id="doorNo" path="shippingAddress.doorNo" class="form-control" placeholder="numer"/>
-                                                <form:errors path="shippingAddress.doorNo" class="text-danger"/>
+                                                <form:input type="text" id="doorNo" path="address.doorNo" class="form-control" placeholder="numer"/>
+                                                <form:errors path="address.doorNo" class="text-danger"/>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row"> 
-                                        <spring:bind path="shippingAddress.zipCode">
+                                        <spring:bind path="address.zipCode">
                                             <c:if test="${status.error}"> <c:set value="${true}" var="isErrorzZipCode"/> </c:if>
                                         </spring:bind>
                                         
-                                        <spring:bind path="shippingAddress.areaName">
+                                        <spring:bind path="address.areaName">
                                             <c:if test="${status.error}"> <c:set value="${true}" var="isErrorAreaName"/> </c:if>
                                         </spring:bind>
                                         
@@ -247,47 +260,62 @@
                                             </div>
 
                                             <div class="${isErrorzZipCode ? 'has-error' : ''} col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <form:input type="text" id="zipCode" path="shippingAddress.zipCode" class="form-control" placeholder="kod pocztowy"/>
-                                                <form:errors path="shippingAddress.zipCode" class="text-danger"/>
+                                                <form:input type="text" id="zipCode" path="address.zipCode" class="form-control" placeholder="kod pocztowy"/>
+                                                <form:errors path="address.zipCode" class="text-danger"/>
                                             </div>
 
                                             <div class="${isErrorAreaName ? 'has-error' : ''} col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <form:input type="text" id="areaName" path="shippingAddress.areaName" class="form-control" placeholder="miasto"/>
-                                                <form:errors path="shippingAddress.areaName" class="text-danger"/>
+                                                <form:input type="text" id="areaName" path="address.areaName" class="form-control" placeholder="miasto"/>
+                                                <form:errors path="address.areaName" class="text-danger"/>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row"> 
-                                        <spring:bind path="shippingAddress.state">
+                                        <spring:bind path="address.state">
                                             <div class="form-group ${status.error ? 'has-error' : ''}">
                                                 <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-right">
                                                     <label class="control-label" for="state"> województwo </label>
                                                 </div>
 
                                                 <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                    <form:input type="text" id="state" path="shippingAddress.state" class="form-control" placeholder="województwo"/>
-                                                    <form:errors path="shippingAddress.state" class="text-danger"/>
+                                                    <form:input type="text" id="state" path="address.state" class="form-control" placeholder="województwo"/>
+                                                    <form:errors path="address.state" class="text-danger"/>
                                                 </div>
                                             </div>
                                         </spring:bind>
                                     </div>
 
                                     <div class="row"> 
-                                        <spring:bind path="shippingAddress.country">
+                                        <spring:bind path="address.country">
                                             <div class="form-group ${status.error ? 'has-error' : ''}">
                                                 <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-right">
                                                     <label class="control-label" for="country"> kraj </label>
                                                 </div>
 
                                                 <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                    <form:input type="text" id="country" path="shippingAddress.country" class="form-control" placeholder="kraj"/>
-                                                    <form:errors path="shippingAddress.country" class="text-danger"/>
+                                                    <form:input type="text" id="country" path="address.country" class="form-control" placeholder="kraj"/>
+                                                    <form:errors path="address.country" class="text-danger"/>
                                                 </div>
                                             </div>
                                         </spring:bind>
                                     </div>
                                     
+                                    <div class="row">
+                                        <spring:bind path="phoneNumber">
+                                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-right">
+                                                    <label class="control-label" for="phoneNumber"> numer telefonu </label>
+                                                </div>
+
+                                                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                    <form:input type="text" id="phoneNumber" path="phoneNumber" class="form-control" placeholder="+__ ___ ___ ___"/>
+                                                    <form:errors path="phoneNumber" class="text-danger"/>
+                                                </div>
+                                            </div>
+                                        </spring:bind>
+                                    </div>
+                                            
                                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}" />
                                 </div>
                                 
@@ -303,7 +331,7 @@
                 </form:form>   
 
                 <div class="row">
-                    <a class="btn btn-primary" href="${flowExecutionUrl}&_eventId=backToCollectCustomerInfo"><span class="glyphicon glyphicon-chevron-left"></span> Wstecz </a>
+                    <a class="btn btn-primary" href="${flowExecutionUrl}&_eventId=backToCollectShippingDetails"><span class="glyphicon glyphicon-chevron-left"></span> Wstecz </a>
                     <a class="btn btn-success" href="${flowExecutionUrl}&_eventId=orderConfirmed"> <span class="glyphicon glyphicon-ok"></span> Zatwierdź </a>
                     <a class="btn btn-danger" href="${flowExecutionUrl}&_eventId=cancel"><span class="glyphicon glyphicon-remove"></span> Anuluj </a>
                 </div>

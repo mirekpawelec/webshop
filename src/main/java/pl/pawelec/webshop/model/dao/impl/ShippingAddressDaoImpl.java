@@ -6,20 +6,20 @@
 package pl.pawelec.webshop.model.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import pl.pawelec.webshop.model.ShippingDetail;
+import pl.pawelec.webshop.model.ShippingAddress;
 import pl.pawelec.webshop.model.dao.AbstrDao;
-import pl.pawelec.webshop.model.dao.ShippingDetailDao;
+import pl.pawelec.webshop.model.dao.ShippingAddressDao;
 
 /**
  *
  * @author mirek
  */
 @Repository
-public class ShippingDetailDaoImpl extends AbstrDao<ShippingDetail> implements ShippingDetailDao{
+public class ShippingAddressDaoImpl extends AbstrDao<ShippingAddress> implements ShippingAddressDao{
     
-    public ShippingDetail createAndReturn(ShippingDetail shippingDetail) {
-        getEntityManager().persist(shippingDetail);
-        return shippingDetail;
+    public ShippingAddress createAndReturn(ShippingAddress shippingAddress) {
+        getEntityManager().persist(shippingAddress);
+        return shippingAddress;
     }
     
 }

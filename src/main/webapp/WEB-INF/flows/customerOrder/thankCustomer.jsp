@@ -30,7 +30,7 @@
                 <div class="row">
                     <p> Dziękujemy za złożenie zamówienia <strong> #${order.orderId} </strong> w sklepie <strong> WebShop </strong>! </p>
                     <p> Potwierdzenie zostało wysłane na adres: ${order.customer.email} </p>
-                    <p> Wartość zamówienia: ${order.cart.costOfAllItems} ${currencyLbl}</p>
+                    <p> Wartość zamówienia: ${order.cart.costOfAllItems + order.shippingDetails.totalCost} PLN </p>
                     <br>
                     <p> O zmianie statusu Twojego zamówienia będziemy Cię informować mailowo. </p>
                     <br>

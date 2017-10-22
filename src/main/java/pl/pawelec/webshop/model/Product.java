@@ -85,8 +85,6 @@ public class Product implements Serializable{
     @Transient
     private MultipartFile productUserManual;
     
-    
-    
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<Repository> repositorySet = new HashSet<Repository>();
     
@@ -295,10 +293,19 @@ public class Product implements Serializable{
     
     @Override
     public String toString() {
-        return "Product{" + "productId=" + productId + ", productNo=" + productNo + ", name=" + name 
-             + ", manufacturer=" + manufacturer + ", category=" + category + ", unitPrice=" + unitPrice // + '}';
-             + ", quantityInBox=" + quantityInBox + ", status=" + status + ", createDate=" + createDate 
-             + ", repositorySet=" + repositorySet.size() + ", deliveryItemSet=" + deliveryItemSet.size() + '}';   
+        return "Product{" 
+                + "productId=" + productId 
+                + ", productNo=" + productNo 
+                + ", name=" + name 
+                + ", manufacturer=" + manufacturer 
+                + ", category=" + category 
+                + ", unitPrice=" + unitPrice // + '}';
+                + ", quantityInBox=" + quantityInBox 
+                + ", status=" + status 
+                + ", createDate=" + createDate 
+                + ", repositorySet=" + repositorySet.size() 
+                + ", deliveryItemSet=" + deliveryItemSet.size() 
+                + '}';   
     }
     
     

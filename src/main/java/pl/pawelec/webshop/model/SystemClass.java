@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 @Entity
 @Table(name = "system_classes", uniqueConstraints = 
         @UniqueConstraint(columnNames= {"symbol", "name"}))
-public class SystemClass {
+public class SystemClass implements Serializable{
         
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -164,13 +165,15 @@ public class SystemClass {
     
     @Override
     public String toString() {
-        return "SystemClass{" + "classId=" + classId 
-                              + ", symbol=" + symbol 
-                              + ", name=" + name 
-                              + ", value=" + value 
-                              + ", description=" + description
-                              + ", lastModificationDate=" + lastModificationDate 
-                              + ", createDate=" + createDate + '}';
+        return "SystemClass{" 
+                + " classId=" + classId 
+                + ", symbol=" + symbol 
+                + ", name=" + name 
+                + ", value=" + value 
+                + ", description=" + description
+                + ", lastModificationDate=" + lastModificationDate 
+                + ", createDate=" + createDate
+                + '}';
     }
 
 }

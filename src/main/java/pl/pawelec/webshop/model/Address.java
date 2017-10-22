@@ -8,6 +8,7 @@ package pl.pawelec.webshop.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
@@ -61,13 +63,11 @@ public class Address implements Serializable{
     @Column(name = "c_date")
     private LocalDateTime createDate;
    
-    
-    
     @OneToOne(mappedBy = "address", fetch = FetchType.EAGER)
     private Customer customer;
     
-    @OneToOne(mappedBy = "shippingAddress", fetch = FetchType.EAGER)
-    private ShippingDetail shippingDetail;
+    @OneToMany(mappedBy = "address", fetch = FetchType.EAGER)
+    private Set<ShippingAddress> shippingAddressSet;
     
     
     
@@ -176,12 +176,12 @@ public class Address implements Serializable{
         this.customer = customer;
     }
 
-    public ShippingDetail getShippingDetail() {
-        return shippingDetail;
+    public Set<ShippingAddress> getShippingAddressSet() {
+        return shippingAddressSet;
     }
 
-    public void setShippingDetail(ShippingDetail shippingDetail) {
-        this.shippingDetail = shippingDetail;
+    public void setShippingAddressSet(Set<ShippingAddress> shippingAddressSet) {
+        this.shippingAddressSet = shippingAddressSet;
     }
 
     

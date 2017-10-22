@@ -232,8 +232,20 @@ public class Storageplace implements Serializable{
     
     @Override
     public String toString() {        
-        return "Storageplace{" + "placeId=" + placeId + ", placeNo=" + placeNo + ", placaName=" + placaName + ", areaId=" + areaId 
-             + ", type=" + type + ", height=" + height + ", width=" + width + ", depth=" + depth + ", volume=" + volume 
-             + ", status=" + status + ", createDate=" + createDate + ", repositorySet=" + repositorySet.size() + ", deliverySet=" + deliverySet.size() + '}';
+        return "Storageplace{" 
+                + " placeId=" + placeId 
+                + ", placeNo=" + placeNo 
+                + ", placaName=" + placaName 
+                + ", areaId=" + areaId 
+                + ", type=" + type 
+                + ", height=" + height 
+                + ", width=" + width 
+                + ", depth=" + depth 
+                + ", volume=" + volume 
+                + ", status=" + status 
+                + ", createDate=" + createDate 
+                + ", repositorySet=" + repositorySet.size() 
+                + ", deliverySet=" + deliverySet.size() 
+                + '}';
     }
 }

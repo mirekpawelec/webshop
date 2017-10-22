@@ -5,13 +5,15 @@
  */
 package pl.pawelec.webshop.test;
 
+import java.math.BigDecimal;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import pl.pawelec.webshop.model.Address;
 import pl.pawelec.webshop.model.Cart;
 import pl.pawelec.webshop.model.Customer;
 import pl.pawelec.webshop.model.Order;
-import pl.pawelec.webshop.model.ShippingDetail;
+import pl.pawelec.webshop.model.ShippingAddress;
+import pl.pawelec.webshop.model.ShippingDetails;
 import pl.pawelec.webshop.service.AddressService;
 import pl.pawelec.webshop.service.CartItemService;
 import pl.pawelec.webshop.service.CartService;
@@ -21,9 +23,10 @@ import pl.pawelec.webshop.service.DeliveryService;
 import pl.pawelec.webshop.service.OrderService;
 import pl.pawelec.webshop.service.ProductService;
 import pl.pawelec.webshop.service.RepositoryService;
-import pl.pawelec.webshop.service.ShippingDetailService;
 import pl.pawelec.webshop.service.StorageareaService;
 import pl.pawelec.webshop.service.StorageplaceService;
+import pl.pawelec.webshop.service.ShippingAddressService;
+import pl.pawelec.webshop.service.ShippingDetailsService;
 
 /**
  *
@@ -61,7 +64,8 @@ public class tests {
         OrderService os = context.getBean(OrderService.class);
         AddressService as = context.getBean(AddressService.class);
         CustomerService cuss = context.getBean(CustomerService.class);
-        ShippingDetailService sds = context.getBean(ShippingDetailService.class);
+        ShippingAddressService sadds = context.getBean(ShippingAddressService.class);
+        ShippingDetailsService sds = context.getBean(ShippingDetailsService.class);
 //      
 //        Product product = new Product.Builder()
 //                .withProductNo("123.321.10")
@@ -322,18 +326,18 @@ public class tests {
     
 //        cis.deleteById(18l);
         
-//        Cart cart = new Cart("123123123123123123123");
+        Cart cart = new Cart("123123123123123123123");
 //        cs.create( cart );
 //        cart = cs.getBySessionId("123123123123123123123").get(0);
 //        cart.setCartId(22l);
 //        System.out.println(cs.getOneById(22l));
 //        
-//        Customer customer = new Customer("firstName", "lastName", "phoneNumber", "email");
+        Customer customer = new Customer("firstName", "lastName", "+48 321 321 321", "email@email.pl", as.getOneById(2l));
 //        customer.setCustomerId(1l);
 //        cuss.create(customer);
 //        System.out.println(cuss.getAll());
         
-        Address address = new Address("doorNo", "streetName", "areaName", "state", "country", "zipCode");
+        Address address = new Address("doorNo", "streetName", "areaName", "state", "country", "55-555");
 //        address.setAddressId(1l);
 //        as.create(address);  
 
@@ -344,10 +348,26 @@ public class tests {
 //        System.out.println( os.getOneById(2l) );
     
         
-        ShippingDetail sd = new ShippingDetail("Janek z konopi", as.getOneById(1l));
-        sds.create(sd);
+        ShippingAddress sa = new ShippingAddress();
+        sa.setName("Jurek z konopi");
+        sa.setPhoneNumber("+48 123 123 123");
+        sa.setAddress(as.getOneById(1l));
+//        sadds.create(sa);
+        System.out.println(sadds.count());
+        sadds.getAll().forEach(System.out::println);
+        
+        
+        ShippingDetails sDetails = new ShippingDetails();
+        sDetails.setDeliveryMethod("Kurier");
+        sDetails.setDeliveryCost(new BigDecimal("20"));
+        sDetails.setPaymentMethod("Karta kredytowa");
+        sDetails.setPaymentCost(new BigDecimal("5"));
+                
+//        sds.create(sDetails);
         System.out.println(sds.count());
         sds.getAll().forEach(System.out::println);
-    
+        
+//        os.create(new Order(cs.getOneById(1l), cuss.getOneById(1l), sadds.getOneById(1l), sds.getOneById(1l)));
+        os.getAll().forEach(System.out::println); 
     }
 }

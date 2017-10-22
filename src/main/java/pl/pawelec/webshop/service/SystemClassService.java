@@ -23,4 +23,5 @@ public interface SystemClassService {
     Long count();
     boolean exists(Long id);
     SystemClass getByUniqueKey(String symbol, String name);
+    List<SystemClass> getBySymbol(String symbol);
 }

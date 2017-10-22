@@ -45,9 +45,13 @@ public class Order implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
     
-    @JoinColumn(name = "shipping_detail_id", referencedColumnName = "sd_id")
+    @JoinColumn(name = "shipping_address_id", referencedColumnName = "ship_address_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    private ShippingDetail shippingDetail;
+    private ShippingAddress shippingAddress;
+    
+    @JoinColumn(name = "shipping_details_id", referencedColumnName = "ship_detail_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ShippingDetails shippingDetails;
     
     @Column(length = 2)
     private String status;
@@ -65,17 +69,19 @@ public class Order implements Serializable{
     public Order() {
         this.cart = new Cart();
         this.customer = new Customer();
-        this.shippingDetail = new ShippingDetail();
+        this.shippingAddress = new ShippingAddress();
+        this.shippingDetails = new ShippingDetails();
         this.status = OrderStatus.ED.name();
         this.lastModyficationDate = LocalDateTime.now();
         this.createDate = LocalDateTime.now();
     }
     
-    public Order(Cart cart, Customer customer, ShippingDetail shippingDetail){
+    public Order(Cart cart, Customer customer, ShippingAddress shippingAddress, ShippingDetails shippingDetails){
         this();
         this.cart = cart;
         this.customer = customer;
-        this.shippingDetail = shippingDetail;
+        this.shippingAddress = shippingAddress;
+        this.shippingDetails = shippingDetails;
     }
     
     
@@ -106,18 +112,27 @@ public class Order implements Serializable{
     }
 
     @Valid
-    public ShippingDetail getShippingDetail() {
-        return shippingDetail;
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
     }
 
-    public void setShippingDetail(ShippingDetail shippingDetail) {
-        this.shippingDetail = shippingDetail;
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+    
+    @Valid
+    public ShippingDetails getShippingDetails() {
+        return shippingDetails;
+    }
+
+    public void setShippingDetails(ShippingDetails shippingDetails) {
+        this.shippingDetails = shippingDetails;
     }
 
     public String getStatus() {
         return status;
     }
-
+        
     public void setStatus(String status) {
         this.status = status;
     }
@@ -170,9 +185,10 @@ public class Order implements Serializable{
     @Override
     public String toString() {
         return "Order{" + "orderId=" + orderId
-                        + ", cartId=" + cart.getCartId()
-                        + ", customerId=" + customer.getCustomerId()
-                        + ", shippingDetailId=" + shippingDetail.getShippingDetailId()
+                        + ", cart=" + cart
+                        + ", customer=" + customer
+                        + ", shippingAddress=" + shippingAddress
+                        + ", shippingDetails=" + shippingDetails
                         + ", status=" + status 
                         + ", lastModyficationDate=" + lastModyficationDate
                         + ", createDate=" + createDate + '}';
