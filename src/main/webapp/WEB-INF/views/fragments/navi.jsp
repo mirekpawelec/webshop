@@ -4,12 +4,13 @@
     Author     : mirek
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <spring:url value="/admin/repository" var="warehouseUrl"/>
 <spring:url value="/admin/deliveries" var="deliveriesUrl"/>
-<spring:url value="/delivery" var="newDeliveryUrl"/>
+<spring:url value="/admin/delivery" var="newDeliveryUrl"/>
 <spring:url value="/admin/products" var="allProductUrl"/>
 <spring:url value="/admin/products/add" var="addNewProductUrl"/>
 <spring:url value="/admin/classes" var="systemClassUrl"/>

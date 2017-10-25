@@ -87,7 +87,7 @@
                         </button>
                     </div>
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        <a ng-if="totalQuantity" class="btn btn-success pull-right" href='/webshop/customerOrder?cartId={{cart.cartId}}'" >
+                        <a ng-if="totalQuantity" class="btn btn-success pull-right" href='/webshop/user/customerOrder?cartId={{cart.cartId}}'" >
                             <span class="glyphicon glyphicon-shopping-cart"></span> Kupuję 
                         </a>
                     </div>

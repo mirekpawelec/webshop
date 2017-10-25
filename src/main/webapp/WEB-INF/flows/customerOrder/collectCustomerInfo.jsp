@@ -43,7 +43,7 @@
                                         <label class="control-label" for="email"> e-mail </label>
                                     </div>
 
-                                    <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                    <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                         <form:input type="email" id="email" path="email" class="form-control" placeholder="e-mail"/>
                                         <form:errors path="email" class="text-danger"/>
                                     </div>
@@ -62,7 +62,7 @@
                                         <label class="control-label" for="firstName"> imię </label>
                                     </div>
 
-                                    <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                    <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                         <form:input type="text" id="firstName" path="firstName" class="form-control" placeholder="imię"/>
                                         <form:errors path="firstName" class="text-danger"/>
                                     </div>
@@ -81,7 +81,7 @@
                                         <label class="control-label" for="firstName"> nazwisko </label>
                                     </div>
 
-                                    <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                    <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                         <form:input type="text" id="lastName" path="lastName" class="form-control" placeholder="nazwisko"/>
                                         <form:errors path="lastName" class="text-danger"/>
                                     </div>
@@ -113,7 +113,7 @@
                                     </div>
                                 </div>
 
-                                <div class="${isErrorStreerName ? 'has-error' : ''} col-xs-offset-1 col-xs-7 col-sm-6 col-md-4 col-lg-4">
+                                <div class="${isErrorStreerName ? 'has-error' : ''} col-xs-offset-1 col-xs-7 col-sm-offset-0 col-sm-6 col-md-4 col-lg-4">
                                     <form:input type="text" id="streetName" path="address.streetName" class="form-control" placeholder="ulica"/>
                                     <form:errors path="address.streetName" class="text-danger"/>
                                 </div>
@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
 
-                                <div class="${isErrorZipCode ? 'has-error' : ''} col-xs-offset-1 col-xs-5 col-sm-3 col-md-2 col-lg-2">
+                                <div class="${isErrorZipCode ? 'has-error' : ''} col-xs-offset-1 col-xs-5 col-sm-offset-0 col-sm-3 col-md-2 col-lg-2">
                                     <form:input type="text" id="zipCode" path="address.zipCode" class="form-control" placeholder="kod pocztowy"/>
                                     <form:errors path="address.zipCode" class="text-danger"/>
                                 </div>
@@ -172,7 +172,7 @@
                                         <label class="control-label" for="state"> województwo </label>
                                     </div>
 
-                                    <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                    <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                         <form:input type="text" id="state" path="address.state" class="form-control" placeholder="województwo"/>
                                         <form:errors path="address.state" class="text-danger"/>
                                     </div>
@@ -191,7 +191,7 @@
                                         <label class="control-label" for="country"> kraj </label>
                                     </div>
 
-                                    <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                    <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                         <form:input type="text" id="country" path="address.country" class="form-control" placeholder="kraj"/>
                                         <form:errors path="address.country" class="text-danger"/>
                                     </div>
@@ -210,7 +210,7 @@
                                         <label class="control-label" for="phoneNumber"> numer telefonu </label>
                                     </div>
 
-                                    <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                    <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                         <form:input type="text" id="phoneNumber" path="phoneNumber" class="form-control" placeholder="+__ ___ ___ ___"/>
                                         <form:errors path="phoneNumber" class="text-danger"/>
                                     </div>

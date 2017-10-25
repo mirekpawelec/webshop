@@ -7,6 +7,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="pl" ng-app="cartApp">
@@ -53,11 +54,15 @@
             <spring:url value="/home" var="homePage"/>
             <spring:url value="" var="contact" />
             <spring:url value="/cart" var="cartUrl"/>
+            <spring:url value="/login" var="logInUrl"/>
+            <spring:url value="/logout" var="logOutUrl"/>
             <spring:message code="header.navi.nameHomePage.label" var="homepageLbl"/>
             <spring:message code="header.navi.home.label" var="homeLbl"/> 
             <spring:message code="header.navi.contact.label" var="contactLbl"/>
             <spring:message code="header.navi.cart.label" var="cartLbl" />
-
+            <spring:message code="header.navi.logIn.label" var="logInLbl" />
+            <spring:message code="header.navi.logOut.label" var="logOutLbl" />
+            
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container" style="margin: 10px auto; font-size: 17px;">
                     <div class="navbar-header">
@@ -72,6 +77,38 @@
                                 <span id="itemCounterOfCart" class="badge" style="margin-top: -22px; font-size: 20px;" ng-bind="numberOfItems"></span>
                             </a>
                         </li>
+                        <security:authorize access="isAuthenticated()"> 
+                            <li>
+                                <a>
+                                    <span class="glyphicon glyphicon-user" style="margin-top: -3px; font-size: 22px;"></span> 
+                                    <span class="badge" style="margin-top: -10px; font-size: 14px;"> 
+                                        <security:authentication property="principal.fullName" />
+                                    </span> 
+                                </a>
+                            </li>
+                        </security:authorize>
+                        <security:authorize access="isAnonymous()">
+                            <li>
+                                <a href="${logInUrl}">
+                                    <span class="glyphicon glyphicon-log-in" style="margin-top: -3px; font-size: 22px;"></span> 
+                                    <span class="badge" style="margin-top: -10px; font-size: 14px;"> ${logInLbl} </span>
+                                </a>
+                            </li>
+                        </security:authorize>
+                        <security:authorize access="isAuthenticated()">  
+                            <li>
+                                <a href="${logOutUrl}">
+                                    <span class="glyphicon glyphicon-log-out" style="margin-top: -3px; font-size: 22px;"></span> 
+                                    <span class="badge" style="margin-top: -10px; font-size: 14px;"> ${logOutLbl} </span> 
+                                </a>
+                            </li>
+                        </security:authorize>
+                        <%--<security:authorize access="hasRole('USER')">--%>
+                            <!--<i> USER </i>-->
+                        <%--</security:authorize>--%>
+                        <%--<security:authorize access="hasRole('ADMIN')">--%>
+                            <!--<i> ADMIN </i>-->
+                        <%--</security:authorize>--%>
                     </ul>
                 </div>
             </nav>    

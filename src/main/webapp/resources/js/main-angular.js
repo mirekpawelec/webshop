@@ -81,9 +81,13 @@ app.controller('cartController', ['$scope', '$log', '$http' ,function ($scope, $
                 url:'/webshop/rest/cart/items/'+sessionId
         }).then(
         function(response){
-            $scope.numberOfItems = response.data;
+            if(isNaN(response.data) || response.data === 0){
+                $scope.numberOfItems = "";
+            }else{
+                $scope.numberOfItems = response.data;
+            }
             setItemCounter($scope.numberOfItems);
-            $log.info('Liczba przedmiotów to '+response.data+'. Status= '+response.status+'.');
+            $log.info('Liczba przedmiotów to '+ response.data +'. Status= '+response.status+'.');
         },
         function(response){
             $log.error('Pobranie ilości dla koszyka '+sessionId+' zakończyło się niepowodzeniem! Błąd: '+response.data+' , status: '+response.status+'!');

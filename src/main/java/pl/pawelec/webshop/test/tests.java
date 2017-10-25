@@ -8,12 +8,13 @@ package pl.pawelec.webshop.test;
 import java.math.BigDecimal;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.pawelec.webshop.model.Address;
 import pl.pawelec.webshop.model.Cart;
 import pl.pawelec.webshop.model.Customer;
-import pl.pawelec.webshop.model.Order;
 import pl.pawelec.webshop.model.ShippingAddress;
 import pl.pawelec.webshop.model.ShippingDetails;
+import pl.pawelec.webshop.model.UserInfo;
 import pl.pawelec.webshop.service.AddressService;
 import pl.pawelec.webshop.service.CartItemService;
 import pl.pawelec.webshop.service.CartService;
@@ -27,6 +28,7 @@ import pl.pawelec.webshop.service.StorageareaService;
 import pl.pawelec.webshop.service.StorageplaceService;
 import pl.pawelec.webshop.service.ShippingAddressService;
 import pl.pawelec.webshop.service.ShippingDetailsService;
+import pl.pawelec.webshop.service.UserInfoService;
 
 /**
  *
@@ -66,6 +68,7 @@ public class tests {
         CustomerService cuss = context.getBean(CustomerService.class);
         ShippingAddressService sadds = context.getBean(ShippingAddressService.class);
         ShippingDetailsService sds = context.getBean(ShippingDetailsService.class);
+        UserInfoService uis = context.getBean(UserInfoService.class);
 //      
 //        Product product = new Product.Builder()
 //                .withProductNo("123.321.10")
@@ -351,10 +354,10 @@ public class tests {
         ShippingAddress sa = new ShippingAddress();
         sa.setName("Jurek z konopi");
         sa.setPhoneNumber("+48 123 123 123");
-        sa.setAddress(as.getOneById(1l));
+//        sa.setAddress(as.getOneById(1l));
 //        sadds.create(sa);
-        System.out.println(sadds.count());
-        sadds.getAll().forEach(System.out::println);
+//        System.out.println(sadds.count());
+//        sadds.getAll().forEach(System.out::println);
         
         
         ShippingDetails sDetails = new ShippingDetails();
@@ -364,10 +367,17 @@ public class tests {
         sDetails.setPaymentCost(new BigDecimal("5"));
                 
 //        sds.create(sDetails);
-        System.out.println(sds.count());
-        sds.getAll().forEach(System.out::println);
+//        System.out.println(sds.count());
+//        sds.getAll().forEach(System.out::println);
         
 //        os.create(new Order(cs.getOneById(1l), cuss.getOneById(1l), sadds.getOneById(1l), sds.getOneById(1l)));
-        os.getAll().forEach(System.out::println); 
+//        os.getAll().forEach(System.out::println); 
+
+        BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
+        System.out.println( encrypt.encode("m123"));
+
+//        uis.create(new UserInfo("admin","root123","ROLE_ADMIN")); //"admin" password="root123" authorities="ROLE_USER,ROLE_ADMIN"
+//        uis.getAll().forEach(System.out::println); 
+        System.out.println( uis.getByLogin("mirekk") );
     }
 }

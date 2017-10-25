@@ -45,7 +45,7 @@
                                     <label class="control-label" for="paymentMethod"> metody płatności </label>
                                 </div>
 
-                                <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                     <form:select id="paymentMethod" path="paymentMethod" class="form-control">
                                             <option value="NONE"> -------------------- </option> 
                                         <c:forEach items="${paymentMethod}" var="payment">
@@ -71,7 +71,7 @@
                                     <label class="control-label" for="deliveryMethod"> sposób dostawy </label>
                                 </div>
 
-                                <div class="col-xs-offset-1 col-xs-11 col-sm-8 col-md-6 col-lg-6">
+                                <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                     <form:select id="deliveryMethod" path="deliveryMethod" class="form-control">
                                             <option value="NONE"> -------------------- </option> 
                                         <c:forEach items="${deliveryMethod}" var="delivery">

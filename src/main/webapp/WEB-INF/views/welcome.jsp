@@ -32,7 +32,7 @@
                                 <a href="#" class="btn btn-primary"> ${buttonBuyNowLbl} <span class="glyphicon glyphicon-shopping-cart"></span></a>
                             </div>
                         </div>
-                        
+                                
                         <div class="col-xs-12 col-sm-8 hidden-md hidden-lg text-left">
                             <h3> SAMSUNG NOTE 8 <span class="label label-warning"> ${promotionLbl} </span> </h3> 
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem distinctio sapiente nemo odio amet alias.</p>
@@ -41,6 +41,7 @@
                                 <a href="#" class="btn btn-default"> ${buttonDetailsLbl} <span class="glyphicon glyphicon-chevron-right"></span></a>
                                 <a href="#" class="btn btn-primary"> ${buttonBuyNowLbl} <span class="glyphicon glyphicon-shopping-cart"></span></a>
                             </div>
+                            
                         </div>
                         
                         <div class="hidden-xs col-sm-4 col-md-3 col-lg-3">

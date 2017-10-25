@@ -64,7 +64,7 @@
                                         <td>${item.createDate}</td>
                                         <td>${item.finishDate}</td>
                                         <td>
-                                            <spring:url value="/delivery?deliveryId=${item.deliveryId}" var="deliveryUrl" />                                        
+                                            <spring:url value="/admin/delivery?deliveryId=${item.deliveryId}" var="deliveryUrl" />                                        
                                             <spring:message code="deliveries.button.selectDelivery.label" var="selectLbl" /> 
                                             <a href="${deliveryUrl}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-check"> </span> ${selectLbl} </a>
                                         </td>
