@@ -5,8 +5,8 @@
  */
 package pl.pawelec.webshop.service;
 
-import java.io.Serializable;
 import java.util.List;
+import org.springframework.webflow.execution.RequestContext;
 import pl.pawelec.webshop.model.Delivery;
 import pl.pawelec.webshop.model.Storageplace;
 
@@ -33,4 +33,5 @@ public interface DeliveryService {
     void deleteByIdAndStatus(Long id, String status);
     String setWhereComeFrom(String view);
     String whatView(String view);
+    void setFlowModelAttribute(RequestContext context);
 }

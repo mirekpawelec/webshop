@@ -7,9 +7,11 @@ package pl.pawelec.webshop.service.impl;
 
 import java.util.List;
 import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.webflow.execution.RequestContext;
 import pl.pawelec.webshop.exception.InvalidDeliveryException;
 import pl.pawelec.webshop.model.Delivery;
 import pl.pawelec.webshop.model.DeliveryItem;
@@ -156,4 +158,12 @@ public class DeliveryServiceImpl implements DeliveryService{
         return view;
     }
 
+    public void setFlowModelAttribute(RequestContext context){
+        HttpServletRequest req = (HttpServletRequest)context.getExternalContext().getNativeRequest(); 
+        String url = context.getFlowExecutionUrl();
+        url = url.substring(url.indexOf("/", 1), url.length()) + "&";
+        System.out.println(url);
+        req.getSession().setAttribute("lastRequestUrl", url);
+    }
+    
 }

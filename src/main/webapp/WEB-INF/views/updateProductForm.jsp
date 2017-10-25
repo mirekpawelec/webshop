@@ -9,6 +9,13 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<spring:url value="/admin/products/update" var="updateUrl" />
+<spring:url value="/admin/products" var="toArticlesUrl"/>
+
+<spring:message code="updateProductForm.pageHeader.label" arguments="${sessionScope.productNumber}" var="headerLbl"/>
+<spring:message code="updateProductForm.form.button.submit.label" var="buttonLbl" />
+<spring:message code="updateProductForm.form.link.toArticles.label" var="toArticlesLbl"/>
+
     <jsp:include page="./fragments/header.jsp" /> 
 
         <section class="main">         
@@ -16,15 +23,11 @@
             <hr>
             <div class="container text-left">
                 <div class="row">
-                    <div class="page-header">
-                        <h2> 
-                            <spring:message code="updateProductForm.pageHeader.label" arguments="${sessionScope.productNumber}"/>
-                        </h2>
+                    <div class="page-header text-center">
+                        <h2> ${headerLbl} </h2>
                     </div>
                 </div>
                
-                <spring:url value="/admin/products/update" var="updateUrl" />
-                 
                 <form:form modelAttribute="updateProductForm" method="post" action="${updateUrl}" class="form-horizontal" enctype="multipart/form-data">
                     <fildset>
                         <div class="row text-danger">
@@ -90,7 +93,7 @@
                                 </div>
                             </div>
                         </div>
-                                
+                        
                         <div class="row">
                             <div class="form-group">
                                 <label for="status" class="col-xs-12 col-sm-3 control-label"><spring:message code="updateProductForm.form.status.label"/></label>
@@ -100,14 +103,12 @@
                                 </div>
                             </div>
                         </div>      
+                        <hr> 
                         
                         <div class="row">
-                            <div class="form-group">
-                                <div class="col-xs-12 col-sm-3"></div>
-                                <div class="col-xs-12 col-sm-9 col-md-8 col-lg-7">
-                                    <spring:message code="updateProductForm.form.button.label" var="buttonForm" />
-                                    <input type="submit" value="${buttonForm}" class="btn btn-primary btn-lg pull-right"/>
-                                </div>
+                            <div class="col-xs-11 col-sm-12 col-md-11 col-lg-10 text-right">
+                                <a href="${toArticlesUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${toArticlesLbl}</a>
+                                <button type="submit" class="btn btn-primary"> ${buttonLbl} </button>
                             </div>
                         </div>
          

@@ -35,13 +35,10 @@ import pl.pawelec.webshop.service.ProductService;
 public class CartRestController {
     private static int DEFAULT_QUANTITY = 1;
     Logger logger = Logger.getLogger(CartRestController.class);
-    
     @Autowired
     private ProductService productService;
-    
     @Autowired
     private CartService cartService;
-    
     @Autowired    
     private CartItemService cartItemService;
     
@@ -76,19 +73,16 @@ public class CartRestController {
         Product addingProduct = null;
         CartItem cartItem = null;
         String sessionId = request.getSession(true).getId();
-        
         if(cartService.existsBySessionId(sessionId, CartStatus.RE.name())){
             cart = getCurrentCart(sessionId, CartStatus.RE.name());
         } else {
             cart = cartService.createAndGetCart(new Cart(sessionId));
         }
-        
         try{
             addingProduct = productService.getOneById(Long.valueOf(productId));
         }catch(NoProductIdFoundException npi){
             throw new IllegalArgumentException(String.format("The product about ID %d is not exists!", npi.getProductId()));
         }
-        
         cartItem = cart.getCartItemSet().stream().filter(ci->ci.getProduct().getProductId().equals(Long.valueOf(productId))).findFirst().orElse(new CartItem(addingProduct));
         if(cartItem.getId()==null){
             cartItem.getCart().setCartId(cart.getCartId());
@@ -107,13 +101,11 @@ public class CartRestController {
         logger.info("### deleteItemFromCart {productId="+productId+" , sessionId="+request.getSession(true).getId()+'}');
         Cart cart = null;
         String sessionId = request.getSession(true).getId();
-        
         if(cartService.existsBySessionId(sessionId, CartStatus.RE.name())){
             cart = getCurrentCart(sessionId, CartStatus.RE.name());
         } else {
             throw new InvalidCartException(sessionId);
         }
-        
         CartItem deletingCartItem = cart.getCartItemSet().stream().filter(ci->ci.getProduct().getProductId().equals(Long.valueOf(productId))).findFirst().orElse(null);
         if(deletingCartItem!=null){
             cartItemService.delete(deletingCartItem);

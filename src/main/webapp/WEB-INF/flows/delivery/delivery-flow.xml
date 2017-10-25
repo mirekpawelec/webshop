@@ -16,6 +16,9 @@
     </action-state>
     
     <view-state id="addDetailsToDelivery" model="delivery">
+        <on-render>
+            <evaluate expression="deliveryServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition on="toDeliveries" to="sendToDeliveries" validate="false">
             <evaluate expression="deliveryServiceImpl.deleteByIdAndStatus(delivery.deliveryId, delivery.status)" />
         </transition>
@@ -29,6 +32,9 @@
     </view-state>
             
         <view-state id="deliveryDropConfirmation" model="delivery">
+            <on-render>
+                <evaluate expression="deliveryServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+            </on-render>
             <transition on="no" to="addDetailsToDelivery" validate="false"/>
             <transition on="yes" to="deleteDelivery" validate="false"/>
         </view-state>
@@ -50,6 +56,9 @@
     </action-state>
     
     <view-state id="addItemToDelivery" model="deliveryItem">
+        <on-render>
+            <evaluate expression="deliveryServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition on="edit" to="editDeliveryItem" validate="false"/>
         <transition on="delete" to="deleteDeliveryItem" validate="false"/>
         <transition on="add" to="saveDeliveryItem"/>
@@ -86,7 +95,9 @@
             </action-state>
     
     <view-state id="summaryOfDelivery" model="delivery">
-
+        <on-render>
+            <evaluate expression="deliveryServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition on="back" to="decisionWhereGo" validate="false" />
         <transition on="close" to="moveItemsToRepository" validate="false" />
     </view-state>
@@ -103,6 +114,9 @@
     </action-state>
     
     <view-state id="displayError" view="invalidDeliveryWarning.jsp">
+        <on-render>
+            <evaluate expression="deliveryServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition to="endState"/>
     </view-state>
     

@@ -29,30 +29,26 @@ import pl.pawelec.webshop.model.UserDetailsAdapter;
 import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.service.CartService;
 import pl.pawelec.webshop.service.ProductService;
+import pl.pawelec.webshop.utils.AtributesModel;
 
 /**
  *
  * @author mirek
  */
-@SessionAttributes(names = {"sessionId", "loggedInUser"})
+@SessionAttributes(names = {"sessionId"})
 @RequestMapping("/home")
 @Controller
 public class HomeController {
-    
     private Logger logger = Logger.getLogger(HomeController.class);
-    
     @Autowired
     private ProductService productService;
-    
     @Autowired
     private CartService cartService;
     
     
-    
     @RequestMapping
     public String getAllProducts(@ModelAttribute("filterOfProducts") ProductFilter filterOfProducts, Model model
-                               , BindingResult result, HttpServletRequest request){
-        
+                                 , BindingResult result, HttpServletRequest request){
         logger.info("### getAllProducts - " + (SecurityContextHolder.getContext().getAuthentication().getName()!="anonymousUser" ? 
                 ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getFullName() : "") );
         
@@ -88,34 +84,34 @@ public class HomeController {
                 .sorted( (o1, o2) -> {  return o1.getCategory().compareTo( o2.getCategory() ); 
                     })
                 .collect(Collectors.toList());
-        
+
         model.addAttribute("allProducts", afterFilteringProducts);
         model.addAttribute("sessionId", request.getSession(true).getId());
         model.addAttribute("jspFile", "welcome");
-        addAtributesToModel(model);
+        AtributesModel.addGlobalAtributeToModel(model, request);
+        addLocalAtributesToModel(model);
         return "welcome";
     }
     
-    
     @RequestMapping("/product")
-    public String getProductByNo(@RequestParam String productNo, Model model){
+    public String getProductByNo(@RequestParam String productNo, Model model, HttpServletRequest request){
         logger.info("### getProductByNo");
         Product product;
         product = productService.getOneByProductNo(productNo); 
         product.setStatus( ProductStatus.valueOf(product.getStatus()).getDescription() );
         model.addAttribute("product", product);
         model.addAttribute("jspFile", "product");
+        AtributesModel.addGlobalAtributeToModel(model, request);
+        addLocalAtributesToModel(model);
         return "product";
     }
-    
     
     @InitBinder(value = "filterOfProducts")
     public void initializeBinder(WebDataBinder binder){
         binder.setAllowedFields("manufacturer", "category", "minUnitPrice", "maxUnitPrice", "inStock", "language", "loggedInUser", "role");
     }
 
-    
-    private Model addAtributesToModel(Model model){        
+    private Model addLocalAtributesToModel(Model model){
         model.addAttribute("manufacturers", productService.getAllManufacturers());
         model.addAttribute("categories", productService.getAllCategories());
         return model;

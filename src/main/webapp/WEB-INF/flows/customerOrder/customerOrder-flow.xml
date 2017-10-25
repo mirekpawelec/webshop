@@ -16,6 +16,9 @@
     </action-state>
     
     <view-state id="collectCustomerInfo" model="customer">
+        <on-render>
+            <evaluate expression="orderServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition on="keepGoing" to="collectShippingDetails">
             <evaluate expression="orderServiceImpl.fillInCustomerAndShippingAddressInOrder(order, customer)"/>
             <evaluate expression="systemClassServiceImpl.getBySymbol('payment_method')" result="flowScope.paymentMethod"/>
@@ -24,6 +27,9 @@
     </view-state>
     
     <view-state id="collectShippingDetails" model="shippingDetails">
+        <on-render>
+            <evaluate expression="orderServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition on="backToCollectCustomerInfo" to="collectCustomerInfo" validate="false"/>
         <transition on="goToOrderConfirmation" to="orderConfirmation">
             <evaluate expression="orderServiceImpl.fillInShippingDetailsInOrder(order, shippingDetails)"/>
@@ -31,6 +37,9 @@
     </view-state>
     
     <view-state id="orderConfirmation" model="shippingAddress" >
+        <on-render>
+            <evaluate expression="orderServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition on="backToCollectShippingDetails" to="collectShippingDetails" validate="false"/>
         <transition on="changeAddress" to="orderConfirmation">
             <evaluate expression="orderServiceImpl.fillInShippingAddressInOrder(order, shippingAddress)"/>
@@ -44,10 +53,16 @@
     </action-state>
     
     <view-state id="thankCustomer" model="order">
+        <on-render>
+            <evaluate expression="orderServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition to="endState"/>
     </view-state>
     
     <view-state id="invalidCustomerOrderWarning">
+        <on-render>
+            <evaluate expression="orderServiceImpl.setFlowModelAttribute(flowRequestContext)"/>
+        </on-render>
         <transition to="endState" />
     </view-state>
     

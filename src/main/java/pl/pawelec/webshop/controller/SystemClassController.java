@@ -6,6 +6,7 @@
 package pl.pawelec.webshop.controller;
 
 import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pawelec.webshop.model.SystemClass;
 import pl.pawelec.webshop.service.SystemClassService;
+import pl.pawelec.webshop.utils.AtributesModel;
 import pl.pawelec.webshop.validator.SystemClassValidator;
 
 /**
@@ -33,35 +35,36 @@ import pl.pawelec.webshop.validator.SystemClassValidator;
 @Controller
 @RequestMapping("admin/classes")
 public class SystemClassController {
-    
     @Autowired
     private SystemClassService systemClassService;
-    
     @Autowired
     private SystemClassValidator systemClassValidator;
-    
     Logger logger = Logger.getLogger(SystemClassController.class);
     
+    
     @RequestMapping
-    public String getAll(Model model){
+    public String getAll(Model model, HttpServletRequest request){
         logger.info("getAll()");
         model.addAttribute("systemClasses", systemClassService.getAll());
         model.addAttribute("jspFile", "systemClasses");
+        AtributesModel.addGlobalAtributeToModel(model, request);
         return "systemClasses";
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String addClass(Model model){
+    public String addClass(Model model, HttpServletRequest request){
         logger.info("addClass()");
         model.addAttribute("newSystemClass", new SystemClass());
         model.addAttribute("jspFile", "addSystemClass");
+        AtributesModel.addGlobalAtributeToModel(model, request);
         return "addSystemClass";
     }
     
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String processAddClass(@ModelAttribute("newSystemClass") @Valid SystemClass systemClassToBeAdd, 
-                                  BindingResult result, final RedirectAttributes redirectAttributes){
+    public String processAddClass(@ModelAttribute("newSystemClass") @Valid SystemClass systemClassToBeAdd, BindingResult result
+                                  , Model model, final RedirectAttributes redirectAttributes, HttpServletRequest request){
         if(result.hasErrors()){
+            AtributesModel.addGlobalAtributeToModel(model, request);
             return "addSystemClass";
         }
         logger.info("processAddClass()");
@@ -78,19 +81,21 @@ public class SystemClassController {
     }
     
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
-    public String updateClass(@PathVariable("id") String classId, Model model){
+    public String updateClass(@PathVariable("id") String classId, Model model, HttpServletRequest request){
         logger.info("updateClass()");
         SystemClass systemClass = systemClassService.getOneById(Long.valueOf(classId));
         model.addAttribute("updateSystemClass", systemClass);
         model.addAttribute("updateInfo", systemClass.getSymbol()+" - "+systemClass.getName());
         model.addAttribute("jspFile", "updateSystemClass");
+        AtributesModel.addGlobalAtributeToModel(model, request);
         return "updateSystemClass"; 
     }
     
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String processUpdateClass(@ModelAttribute("updateSystemClass") @Valid SystemClass systemClassToBeUpdate, 
-                              BindingResult result, final RedirectAttributes redirectAttributes ){
+    public String processUpdateClass(@ModelAttribute("updateSystemClass") @Valid SystemClass systemClassToBeUpdate, BindingResult result
+                                     , final RedirectAttributes redirectAttributes, Model model, HttpServletRequest request){
         if(result.hasErrors()){
+            AtributesModel.addGlobalAtributeToModel(model, request);
             return "updateSystemClass";
         }
         logger.info("updateClass()");

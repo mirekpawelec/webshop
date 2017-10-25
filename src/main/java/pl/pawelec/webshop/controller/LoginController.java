@@ -7,6 +7,7 @@ package pl.pawelec.webshop.controller;
 
 import java.util.Arrays;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.pawelec.webshop.model.UserInfo;
 import pl.pawelec.webshop.model.enum_.RoleUser;
 import pl.pawelec.webshop.service.UserInfoService;
+import pl.pawelec.webshop.utils.AtributesModel;
 import pl.pawelec.webshop.validator.UserInfoValidator;
 
 /**
@@ -34,15 +36,11 @@ import pl.pawelec.webshop.validator.UserInfoValidator;
 @SessionAttributes(names = {"loggedInUser","role"})
 @Controller
 public class LoginController {
-    
     @Autowired
     private UserInfoService userInfoService;
-    
     @Autowired
     private UserInfoValidator userInfoValidator;
-    
     private Logger logger = Logger.getLogger(ProductController.class);
-    
     
     
     @RequestMapping(value = "/*")
@@ -52,32 +50,37 @@ public class LoginController {
     }
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model){
+    public String login(Model model, HttpServletRequest request){
         logger.info("### login");
         model.addAttribute("jspFile", "login");
-        addAtributesToModel(model);
+        AtributesModel.addGlobalAtributeToModel(model, request);
+        addLocalAtributesToModel(model);
         return "login";
     }
     
     @RequestMapping(value = "/user/add", method = RequestMethod.GET)
-    public String createUser(Model model){
+    public String createUser(Model model, HttpServletRequest request){
         logger.info("### createUser");
         model.addAttribute("newUser", new UserInfo());
         model.addAttribute("jspFile", "newUser");
-        addAtributesToModel(model);
+        AtributesModel.addGlobalAtributeToModel(model, request);
+        addLocalAtributesToModel(model);
         return "addUser"; 
     }
     
     @RequestMapping(value = "/user/add", method = RequestMethod.POST)
-    public String processCreateUser(@ModelAttribute("newUser") @Valid UserInfo userInfoToBeAdd, BindingResult result, Model model){
+    public String processCreateUser(@ModelAttribute("newUser") @Valid UserInfo userInfoToBeAdd
+                                    , BindingResult result, Model model, HttpServletRequest request){
         logger.info("### processCreateUser");
         if(result.hasErrors()){
-            addAtributesToModel(model);
+            AtributesModel.addGlobalAtributeToModel(model, request);
+            addLocalAtributesToModel(model);
             return "addUser";
         }
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0){
-            throw new RuntimeException("It has occurred an attempt bind the illegal fields: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
+            throw new RuntimeException("It has occurred an attempt bind the illegal fields: " 
+                                + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         }
         BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
         userInfoToBeAdd.setPassword(encrypt.encode(userInfoToBeAdd.getPassword()));
@@ -91,7 +94,7 @@ public class LoginController {
         webDataBinder.setValidator(userInfoValidator); 
     }
     
-    private Model addAtributesToModel(Model model){
+    private Model addLocalAtributesToModel(Model model){
         model.addAttribute("role", Arrays.asList(RoleUser.values()));
         return model;
     }

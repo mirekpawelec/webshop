@@ -9,12 +9,29 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
+<spring:url value="/resource/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resource/css/style.css" var="styleCss" />
+<spring:url value="/home" var="homePage"/>
+<spring:url value="" var="contact" />
+<spring:url value="/cart" var="cartUrl"/>
+<spring:url value="/login" var="logInUrl"/>
+<spring:url value="/logout" var="logOutUrl"/>
+<spring:url value="${lastRequestUrl}language=pl" var="polishLanguageUrl"/>
+<spring:url value="${lastRequestUrl}language=en" var="englishLanguageUrl"/>
+
+<spring:message code="header.navi.nameHomePage.label" var="homepageLbl"/>
+<spring:message code="header.navi.home.label" var="homeLbl"/> 
+<spring:message code="header.navi.contact.label" var="contactLbl"/>
+<spring:message code="header.navi.cart.label" var="cartLbl" />
+<spring:message code="header.navi.logIn.label" var="logInLbl" />
+<spring:message code="header.navi.logOut.label" var="logOutLbl" />
+<spring:message code="navi.button.selectLanguages.label" var="selectLanguageLbl"/>
+<spring:message code="navi.button.polishLanguage.label" var="polishLbl" />
+<spring:message code="navi.button.englishLanguage.label" var="englishLbl" />
+            
 <!DOCTYPE html>
 <html lang="pl" ng-app="cartApp">
     <head>
-        <spring:url value="/resource/css/bootstrap.min.css" var="bootstrapCss" />
-        <spring:url value="/resource/css/style.css" var="styleCss" />
-
         <c:choose>
             <c:when test="${not empty jspFile}">
                 <title>
@@ -50,19 +67,7 @@
         </style>
     </head>
     <body>
-        <header>
-            <spring:url value="/home" var="homePage"/>
-            <spring:url value="" var="contact" />
-            <spring:url value="/cart" var="cartUrl"/>
-            <spring:url value="/login" var="logInUrl"/>
-            <spring:url value="/logout" var="logOutUrl"/>
-            <spring:message code="header.navi.nameHomePage.label" var="homepageLbl"/>
-            <spring:message code="header.navi.home.label" var="homeLbl"/> 
-            <spring:message code="header.navi.contact.label" var="contactLbl"/>
-            <spring:message code="header.navi.cart.label" var="cartLbl" />
-            <spring:message code="header.navi.logIn.label" var="logInLbl" />
-            <spring:message code="header.navi.logOut.label" var="logOutLbl" />
-            
+        <header>            
             <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container" style="margin: 10px auto; font-size: 17px;">
                     <div class="navbar-header">
@@ -103,12 +108,15 @@
                                 </a>
                             </li>
                         </security:authorize>
-                        <%--<security:authorize access="hasRole('USER')">--%>
-                            <!--<i> USER </i>-->
-                        <%--</security:authorize>--%>
-                        <%--<security:authorize access="hasRole('ADMIN')">--%>
-                            <!--<i> ADMIN </i>-->
-                        <%--</security:authorize>--%>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                 ${selectLanguageLbl} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="${polishLanguageUrl}"> ${polishLbl} </a></li>
+                                <li><a href="${englishLanguageUrl}"> ${englishLbl} </a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </nav>    

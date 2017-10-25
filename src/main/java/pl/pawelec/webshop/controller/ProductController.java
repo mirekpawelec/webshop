@@ -34,6 +34,7 @@ import pl.pawelec.webshop.model.Product.newForm;
 import pl.pawelec.webshop.model.Product.updateForm;
 import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
+import pl.pawelec.webshop.utils.AtributesModel;
 import pl.pawelec.webshop.validator.ProductValidator;
 
 
@@ -45,33 +46,28 @@ import pl.pawelec.webshop.validator.ProductValidator;
 @RequestMapping(value = "/admin/products")
 @Controller
 public class ProductController {
-
     @Autowired
     private ProductService productService;
-    
     @Autowired
     private ProductValidator productValidator;
-    
     private Logger logger = Logger.getLogger(ProductController.class);
     
+    
     @RequestMapping
-    public String allProducts(Model model){
+    public String allProducts(Model model, HttpServletRequest request){
         logger.info("### allProducts");
-        
         List<Product> products = productService.getAll();
         products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getDescription()));
-        
         model.addAttribute("products", products);
         model.addAttribute("jspFile", "products");
-        
+        AtributesModel.addGlobalAtributeToModel(model, request);
         return "products";
     }
     
     
     @RequestMapping("/product")
-    public String getProductById(@RequestParam("id") String productId, Model model){
+    public String getProductById(@RequestParam("id") String productId, Model model, HttpServletRequest request){
         logger.info("### getProductById");
-        
         Product product;
         String regex = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}";
         if(productId.matches(regex)){
@@ -81,24 +77,22 @@ public class ProductController {
             product = productService.getOneById(Long.valueOf(productId)); 
         }
         product.setStatus(ProductStatus.valueOf(product.getStatus()).getDescription());
-        
         model.addAttribute("product", product);
         model.addAttribute("jspFile", "product");
-        
+        AtributesModel.addGlobalAtributeToModel(model, request);
         return "product";
     }
     
     
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
-    public String updateProductForm(@PathVariable("id") String productId, Model model){
+    public String updateProductForm(@PathVariable("id") String productId, Model model, HttpServletRequest request){
         logger.info("### updateProductForm");
-        
         Product updateProduct = productService.getOneById(Long.valueOf(productId));
         model.addAttribute("updateProductForm", updateProduct);
         model.addAttribute("productId", updateProduct.getProductId());
         model.addAttribute("productNumber", updateProduct.getProductNo());
         model.addAttribute("jspFile", "updateProductForm");
-        
+        AtributesModel.addGlobalAtributeToModel(model, request);
         return "updateProductForm";
     }
     
@@ -110,21 +104,16 @@ public class ProductController {
         if(result.hasErrors()){
             return "updateProductForm";
         }
-        
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0){
             throw new RuntimeException("It has occurred an attempt bind the illegal fields: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         }
-        
         productToBeUpdate.setProductId((Long) request.getSession().getAttribute("productId"));
         productToBeUpdate.setProductNo((String) request.getSession().getAttribute("productNumber"));
-        
-        System.out.println("### Update: " + productToBeUpdate);
+        logger.info("Update: " + productToBeUpdate);
         productService.update(productToBeUpdate);
-        
         redirect.addFlashAttribute("typeProcess", "update");
         redirect.addFlashAttribute("css", "success");
-        
         return "redirect:/admin/products/product?id=" + productToBeUpdate.getProductNo() ;
     }
     
@@ -132,11 +121,10 @@ public class ProductController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addProductForm(Model model, HttpServletRequest request){
         logger.info("### addProductForm");
-        
         Product product = new Product();
         model.addAttribute("newProductForm", product);
         model.addAttribute("jspFile", "newProductForm");
-        
+        AtributesModel.addGlobalAtributeToModel(model, request);
         return "newProductForm";
     }
 
@@ -145,19 +133,15 @@ public class ProductController {
     public String processAddProductForm(@ModelAttribute("newProductForm") @Validated({newForm.class}) Product productToBeAdd, 
                                                 BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
         logger.info("### processAddProductForm"); 
-
         if(result.hasErrors()){
             return "newProductForm";
         }
-
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0){
             throw new RuntimeException("It has occurred an attempt bind the illegal fields: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         }
-        
         MultipartFile productImage, productUserManual;
         String mainPath = request.getSession().getServletContext().getRealPath("");
-        
         File createFolderImage = new File(mainPath+"resources\\img\\");
         if(!createFolderImage.isDirectory())
             createFolderImage.mkdirs();
@@ -169,7 +153,6 @@ public class ProductController {
                 throw new RuntimeException("It's has occurred an error while saving the image!");
             } 
         }
-
         File createFolderPdf = new File(mainPath+"resources\\pdf\\");
         if(!createFolderPdf.isDirectory())
             createFolderPdf.mkdirs();
@@ -181,13 +164,10 @@ public class ProductController {
                 throw new RuntimeException("It's has occurred an error while saving the pdf file!");
             }
         }
-        
-        System.out.println("Save: " + productToBeAdd);
+        logger.info("Save: " + productToBeAdd);
         productService.create(productToBeAdd);
-        
         redirect.addFlashAttribute("typeProcess", "create");
-        redirect.addFlashAttribute("css", "success");
-        
+        redirect.addFlashAttribute("css", "success");  
         return "redirect:/admin/products/product?id=" + productToBeAdd.getProductNo() ;
     }
 
@@ -210,13 +190,11 @@ public class ProductController {
         logger.info("### deleteProductById");
         Long deleteId = Long.parseLong(paramList.get("id").get(0));
         String deleteProductNo = paramList.get("productNo").get(0);
-        
+        logger.info("Delete:" + deleteId);
         productService.deleteById( deleteId );
-        
         redirect.addFlashAttribute("css", "success");
         redirect.addFlashAttribute("success", true);
         redirect.addFlashAttribute("deletedProductNo", deleteProductNo);
-
         return "redirect:/admin/products";
     }
     

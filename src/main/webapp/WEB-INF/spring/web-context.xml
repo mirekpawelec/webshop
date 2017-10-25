@@ -60,7 +60,7 @@
     </bean>
     
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" p:defaultLocale="pl" />
-
+    
     <mvc:interceptors>
         <bean class="pl.pawelec.webshop.interceptor.PerformanceMonitorInterceptor" />
         <bean class= "org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="language" />
