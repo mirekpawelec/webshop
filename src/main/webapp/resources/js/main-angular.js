@@ -81,7 +81,7 @@ app.controller('cartController', ['$scope', '$log', '$http' ,function ($scope, $
                 url:'/webshop/rest/cart/items/'+sessionId
         }).then(
         function(response){
-            if(isNaN(response.data) || response.data === 0){
+            if(isNaN(response.data) || response.data == 0){
                 $scope.numberOfItems = "";
             }else{
                 $scope.numberOfItems = response.data;

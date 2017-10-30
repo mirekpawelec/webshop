@@ -43,7 +43,7 @@ public class SystemClassController {
     
     
     @RequestMapping
-    public String getAll(Model model, HttpServletRequest request){
+    public String getAllClass(Model model, HttpServletRequest request){
         logger.info("getAll()");
         model.addAttribute("systemClasses", systemClassService.getAll());
         model.addAttribute("jspFile", "systemClasses");

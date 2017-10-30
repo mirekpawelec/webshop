@@ -6,12 +6,10 @@
 package pl.pawelec.webshop.controller;
 
 import java.util.Arrays;
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,6 +82,7 @@ public class LoginController {
         }
         BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
         userInfoToBeAdd.setPassword(encrypt.encode(userInfoToBeAdd.getPassword()));
+        logger.info("Save user: " + userInfoToBeAdd);
         userInfoService.create(userInfoToBeAdd);
         return "redirect:/login"; 
     }

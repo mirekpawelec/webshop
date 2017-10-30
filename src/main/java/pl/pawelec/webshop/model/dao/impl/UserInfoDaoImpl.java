@@ -6,7 +6,7 @@
 package pl.pawelec.webshop.model.dao.impl;
 
 import javax.persistence.NoResultException;
-import org.jboss.logging.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import pl.pawelec.webshop.model.UserInfo;

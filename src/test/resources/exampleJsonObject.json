@@ -1,0 +1,16 @@
+{
+    "cartId": 46,
+    "sessiontId": "ABC123456789",
+    "status": "RE",
+    "costOfAllItems": 6098,
+    "cartItemSet": [
+        {
+            "manufacturer": "ASUS",
+            "productId": 32,
+            "productName": "Zenbook Flip UX360CA-C4194T - Złoty",
+            "productNo": "333.222.01",
+            "quantity": 1,
+            "totalPrice": 3499
+        }
+    ]
+}

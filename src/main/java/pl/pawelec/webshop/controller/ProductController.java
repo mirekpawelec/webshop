@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pawelec.webshop.model.Product;
 import pl.pawelec.webshop.model.Product.newForm;
@@ -54,7 +57,7 @@ public class ProductController {
     
     
     @RequestMapping
-    public String allProducts(Model model, HttpServletRequest request){
+    public String getAllProducts(Model model, HttpServletRequest request){
         logger.info("### allProducts");
         List<Product> products = productService.getAll();
         products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getDescription()));
@@ -132,7 +135,7 @@ public class ProductController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddProductForm(@ModelAttribute("newProductForm") @Validated({newForm.class}) Product productToBeAdd, 
                                                 BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
-        logger.info("### processAddProductForm"); 
+        logger.info("### processAddProductForm" + productToBeAdd); 
         if(result.hasErrors()){
             return "newProductForm";
         }
@@ -140,15 +143,15 @@ public class ProductController {
         if(suppresedFields.length > 0){
             throw new RuntimeException("It has occurred an attempt bind the illegal fields: " + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         }
-        MultipartFile productImage, productUserManual;
+        Optional<MultipartFile> productImage, productUserManual;
         String mainPath = request.getSession().getServletContext().getRealPath("");
         File createFolderImage = new File(mainPath+"resources\\img\\");
         if(!createFolderImage.isDirectory())
             createFolderImage.mkdirs();
-        productImage = productToBeAdd.getProductImage();
-        if(productImage != null && !productImage.isEmpty()){
+        productImage = Optional.ofNullable(productToBeAdd.getProductImage());
+        if(productImage.isPresent()){
             try {
-                productImage.transferTo(new File(createFolderImage.getAbsolutePath()+"\\"+ productToBeAdd.getProductNo() + ".jpg"));
+                productImage.get().transferTo(new File(createFolderImage.getAbsolutePath()+"\\"+ productToBeAdd.getProductNo() + ".jpg"));
             } catch (IOException ex) {
                 throw new RuntimeException("It's has occurred an error while saving the image!");
             } 
@@ -156,10 +159,10 @@ public class ProductController {
         File createFolderPdf = new File(mainPath+"resources\\pdf\\");
         if(!createFolderPdf.isDirectory())
             createFolderPdf.mkdirs();
-        productUserManual = productToBeAdd.getProductUserManual();
-        if(productUserManual != null & !productUserManual.isEmpty()){
+        productUserManual = Optional.ofNullable(productToBeAdd.getProductUserManual());
+        if(productUserManual.isPresent()){
             try {
-                productUserManual.transferTo(new File(createFolderPdf.getAbsolutePath()+"\\"+productToBeAdd.getProductNo()+".pdf"));
+                productUserManual.get().transferTo(new File(createFolderPdf.getAbsolutePath()+"\\"+productToBeAdd.getProductNo()+".pdf"));
             } catch (IOException ex) {
                 throw new RuntimeException("It's has occurred an error while saving the pdf file!");
             }
@@ -169,20 +172,7 @@ public class ProductController {
         redirect.addFlashAttribute("typeProcess", "create");
         redirect.addFlashAttribute("css", "success");  
         return "redirect:/admin/products/product?id=" + productToBeAdd.getProductNo() ;
-    }
-
-    
-    @InitBinder(value = "newProductForm")
-    public void newProductBinder(WebDataBinder webDataBinder){
-        webDataBinder.setDisallowedFields("productId", "createDate");
-        webDataBinder.setValidator(productValidator);
-    }
-    
-    
-    @InitBinder(value = "updateProductForm")
-    public void updateProductBinder(WebDataBinder webDataBinder){
-        webDataBinder.setDisallowedFields("productId", "productNo", "productImage", "productUserManual", "createDate");
-    }
+    }    
     
     
     @RequestMapping(value = "/{params}/delete")
@@ -196,6 +186,19 @@ public class ProductController {
         redirect.addFlashAttribute("success", true);
         redirect.addFlashAttribute("deletedProductNo", deleteProductNo);
         return "redirect:/admin/products";
+    }
+    
+    
+    @InitBinder(value = "newProductForm")
+    public void newProductBinder(WebDataBinder webDataBinder){
+        webDataBinder.setDisallowedFields("productId", "createDate");
+        webDataBinder.setValidator(productValidator);
+    }
+    
+    
+    @InitBinder(value = "updateProductForm")
+    public void updateProductBinder(WebDataBinder webDataBinder){
+        webDataBinder.setDisallowedFields("productId", "productNo", "productImage", "productUserManual", "createDate");
     }
     
     

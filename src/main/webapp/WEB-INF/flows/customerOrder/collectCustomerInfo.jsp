@@ -13,7 +13,14 @@
         <section class="main">
             <div class="container pull-down">
                 <form:form modelAttribute="customer" class="form-horizontal">
-                    
+                    <div class="row">
+                        <div class="well text-left">
+                            <h3> Dane kupującego </h3>
+                            <p> Tutaj wpisz dane osoby, która zawiera transakcje </p>
+                            <p> Adres do wysyłki będziesz mógł podać w ostatnim kroku </p>
+                        </div>
+                    </div>
+
                     <spring:bind path="*">
                         <c:if test="${status.error}">
                             <div class="alert alert-danger alert-dismissible" role="alert">
@@ -23,15 +30,7 @@
                         </c:if>
                     </spring:bind>
                     
-                    <fieldset>
-                        <div class="row">
-                            <div class="well text-left">
-                                <h3> Dane kupującego </h3>
-                                <p> Tutaj wpisz dane osoby, która zawiera transakcje </p>
-                                <p> Adres do wysyłki będziesz mógł podać w ostatnim kroku </p>
-                            </div>
-                        </div>
-                        
+                    <fieldset>    
                         <div class="row"> 
                             <spring:bind path="email">
                                 <div class="form-group ${status.error ? 'has-error' : ''}">

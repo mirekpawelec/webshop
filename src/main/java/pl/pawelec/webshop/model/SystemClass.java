@@ -60,6 +60,14 @@ public class SystemClass implements Serializable{
         this.lastModificationDate = LocalDateTime.now();
         this.createDate = LocalDateTime.now();
     }
+
+    public SystemClass(String symbol, String name, String value, String description) {
+        this();
+        this.symbol = symbol;
+        this.name = name;
+        this.value = value;
+        this.description = description;
+    }
     
     
     
@@ -130,13 +138,14 @@ public class SystemClass implements Serializable{
         this.createDate = createDate;
     }
 
-
-
+    
+    
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.name);
-        hash = 59 * hash + Objects.hashCode(this.value);
+        int hash = 5;
+        hash = 13 * hash + Objects.hashCode(this.symbol);
+        hash = 13 * hash + Objects.hashCode(this.name);
+        hash = 13 * hash + Objects.hashCode(this.value);
         return hash;
     }
 
@@ -152,6 +161,9 @@ public class SystemClass implements Serializable{
             return false;
         }
         final SystemClass other = (SystemClass) obj;
+        if (!Objects.equals(this.symbol, other.symbol)) {
+            return false;
+        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -161,8 +173,8 @@ public class SystemClass implements Serializable{
         return true;
     }
 
-    
-    
+
+
     @Override
     public String toString() {
         return "SystemClass{" 

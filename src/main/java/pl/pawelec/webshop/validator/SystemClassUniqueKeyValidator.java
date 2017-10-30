@@ -39,7 +39,7 @@ public class SystemClassUniqueKeyValidator implements Validator{
                 errors.rejectValue("symbol", "pl.pawelec.webshop.validator.SystemClassUniqueKeyValidator.message");
             }
         }catch(NoSystemClassKeyFoundException sce){
-            logger.info("The system class about key do not exist");
+            logger.info("The given key do not exist");
         }
     }
     

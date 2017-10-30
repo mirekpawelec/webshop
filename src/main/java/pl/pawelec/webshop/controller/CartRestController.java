@@ -31,7 +31,7 @@ import pl.pawelec.webshop.service.ProductService;
  * @author mirek
  */
 @Controller
-@RequestMapping("rest/cart")
+@RequestMapping("/rest/cart")
 public class CartRestController {
     private static int DEFAULT_QUANTITY = 1;
     Logger logger = Logger.getLogger(CartRestController.class);

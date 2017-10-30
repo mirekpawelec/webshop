@@ -13,7 +13,7 @@ import pl.pawelec.webshop.model.UserInfo;
  *
  * @author mirek
  */
-public class UserPsswordValidator implements Validator{
+public class UserPasswordValidator implements Validator{
 
     @Override
     public boolean supports(Class<?> type) {
@@ -23,6 +23,9 @@ public class UserPsswordValidator implements Validator{
     @Override
     public void validate(Object validationClass, Errors errors) {
         UserInfo userInfo = (UserInfo) validationClass;
+        if(userInfo.getPassword()==null && userInfo.getRepeatPassword()==null){
+            return;
+        }
         if(!userInfo.getPassword().equals(userInfo.getRepeatPassword())){
             errors.rejectValue("repeatPassword", "pl.pawelec.webshop.validator.UserPsswordValidator.message");
         }

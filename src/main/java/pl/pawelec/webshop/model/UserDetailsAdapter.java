@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,7 @@ import pl.pawelec.webshop.model.enum_.UserStatus;
  *
  * @author mirek
  */
-public class UserDetailsAdapter implements UserDetails{
+public class UserDetailsAdapter implements UserDetails, Serializable{
     private UserInfo userInfo;
     
     

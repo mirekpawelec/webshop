@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -27,7 +28,7 @@ import pl.pawelec.webshop.validator.UserLogin;
  */
 @Entity
 @Table(name = "users")
-public class UserInfo {
+public class UserInfo implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
@@ -77,12 +78,18 @@ public class UserInfo {
         this.createDate = LocalDateTime.now();
     }
 
-    public UserInfo(String login, String password, String role) {
+    public UserInfo(String login, String password, String repeatPassword, String firstName, String lastName, String email, String role) {
         this();
         this.login = login;
         this.password = password;
+        this.repeatPassword = repeatPassword;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.role = role;
     }
+
+
 
     
     
@@ -93,7 +100,7 @@ public class UserInfo {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
+    
     @NotEmpty(message = "{NotEmpty.UserInfo.login.validation}")
     @Size(max = 50, message = "{Size.UserInfo.login.validation}")
     @UserLogin
@@ -201,8 +208,7 @@ public class UserInfo {
     
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.userId);
+        int hash = 5;
         return hash;
     }
 
@@ -218,7 +224,19 @@ public class UserInfo {
             return false;
         }
         final UserInfo other = (UserInfo) obj;
-        if (!Objects.equals(this.userId, other.userId)) {
+        if (!Objects.equals(this.login, other.login)) {
+            return false;
+        }
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.role, other.role)) {
             return false;
         }
         return true;

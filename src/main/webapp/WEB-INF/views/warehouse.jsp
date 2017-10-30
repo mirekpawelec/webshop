@@ -69,13 +69,14 @@
                                         <td>${loadunit.state}</td>
                                         <td>${loadunit.qualityStatus}</td>
                                         <td>${loadunit.status}</td>                              
-                                             <c:set var="cleanedDateTime" value="${fn:replace(loadunit.lastModifikationDate, 'T' , ' ')}" />
-                                             <fmt:parseDate value="${cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
-                                        <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
-                                             <c:set var="cleanedDateTime" value="${fn:replace(loadunit.createDate, 'T' , ' ')}" />
-                                             <fmt:parseDate value="${cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
-                                        <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
-
+                                             <%--<c:set var="cleanedDateTime" value="${fn:replace(loadunit.lastModifikationDate, 'T' , ' ')}" />--%>
+                                             <%--<fmt:parseDate value="${cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />--%>
+                                        <!--<td> <fmt :formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>-->
+                                        <td>${fn:replace(loadunit.lastModifikationDate, 'T' , ' ')}</td>
+                                             <%--<c:set var="cleanedDateTime" value="${fn:replace(loadunit.createDate, 'T' , ' ')}" />--%>
+                                             <%--<fmt:parseDate value="$ {cleanedDateTime}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />--%>
+                                        <!--<td> <fmt :formatDate pattern="dd.MM.yyyy HH:mm:ss" value="$ {parsedDateTime}" /> </td>-->
+                                        <td>${fn:replace(loadunit.createDate, 'T' , ' ')}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>

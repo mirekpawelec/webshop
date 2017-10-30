@@ -32,6 +32,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
+import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.validator.ProductNo;
 
 /**
@@ -96,7 +97,10 @@ public class Product implements Serializable{
     
     
     
-    public Product(){}
+    public Product(){
+        this.status = ProductStatus.ED.name();
+        this.createDate = LocalDateTime.now();
+    }
 
     
     
@@ -257,17 +261,21 @@ public class Product implements Serializable{
     public Set<CartItem> getCartItemSet() {
         return cartItemSet;
     }
-    
+
     
     
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 29 * hash + Objects.hashCode(this.productId);
-        hash = 29 * hash + Objects.hashCode(this.productNo);
+        hash = 97 * hash + Objects.hashCode(this.productNo);
+        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.manufacturer);
+        hash = 97 * hash + Objects.hashCode(this.category);
+        hash = 97 * hash + Objects.hashCode(this.unitPrice);
+        hash = 97 * hash + Objects.hashCode(this.quantityInBox);
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -283,12 +291,24 @@ public class Product implements Serializable{
         if (!Objects.equals(this.productNo, other.productNo)) {
             return false;
         }
-        if (!Objects.equals(this.productId, other.productId)) {
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.manufacturer, other.manufacturer)) {
+            return false;
+        }
+        if (!Objects.equals(this.category, other.category)) {
+            return false;
+        }
+        if (!Objects.equals(this.unitPrice, other.unitPrice)) {
+            return false;
+        }
+        if (!Objects.equals(this.quantityInBox, other.quantityInBox)) {
             return false;
         }
         return true;
     }
-
+    
     
     
     @Override
@@ -302,9 +322,7 @@ public class Product implements Serializable{
                 + ", unitPrice=" + unitPrice // + '}';
                 + ", quantityInBox=" + quantityInBox 
                 + ", status=" + status 
-                + ", createDate=" + createDate 
-                + ", repositorySet=" + repositorySet.size() 
-                + ", deliveryItemSet=" + deliveryItemSet.size() 
+                + ", createDate=" + createDate
                 + '}';   
     }
     

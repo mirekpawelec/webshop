@@ -30,10 +30,10 @@ public class DeliveryController {
     
     
     @RequestMapping
-    public String displayAllDeliveries(Model model, HttpServletRequest request){ 
-        logger.info("### displayAllDeliveries");
+    public String getAllDeliveries(Model model, HttpServletRequest request){ 
+        logger.info("### getAllDeliveries");
         List<Delivery> deliveries = deliveryService.getAll();
-        deliveries.stream().forEach( d -> d.setStatus(DeliveryStatus.valueOf(d.getStatus()).getDescription()) );
+        deliveries.stream().forEach( delivery -> delivery.setStatus(DeliveryStatus.valueOf(delivery.getStatus()).getDescription()) );
         model.addAttribute("deliveries", deliveries);
         model.addAttribute("jspFile", "deliveries");
         AtributesModel.addGlobalAtributeToModel(model, request);

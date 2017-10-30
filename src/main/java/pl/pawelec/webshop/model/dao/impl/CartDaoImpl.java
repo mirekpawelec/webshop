@@ -5,11 +5,11 @@
  */
 package pl.pawelec.webshop.model.dao.impl;
 
-import java.io.Serializable;
 import java.util.List;
 import javax.persistence.NoResultException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
+import pl.pawelec.webshop.converter.CartNotFoundException;
 import pl.pawelec.webshop.model.Cart;
 import pl.pawelec.webshop.model.dao.AbstrDao;
 import pl.pawelec.webshop.model.dao.CartDao;
@@ -27,7 +27,7 @@ public class CartDaoImpl extends AbstrDao<Cart> implements CartDao{
     @Override
     public Cart createAndGetCart(Cart cart) {
         Cart newCart = null;
-        String cartSessionId = cart.getSessiontId();
+        String cartSessionId = cart.getSessionId();
         if(existsBySessionId(cartSessionId, CartStatus.RE.name())){
             newCart = getBySessionId(cartSessionId).stream().filter(c->c.getStatus().equals(CartStatus.RE.name())).findFirst().get();
         } else {
@@ -52,8 +52,12 @@ public class CartDaoImpl extends AbstrDao<Cart> implements CartDao{
 
     @Override
     public List<Cart> getBySessionId(String sessionId) {
-        return getEntityManager().createQuery("from Cart WHERE session_id = :sessionId")
+        List<Cart> listCart = getEntityManager().createQuery("from Cart WHERE session_id = :sessionId")
                 .setParameter("sessionId", sessionId).getResultList();
+        if(listCart.isEmpty()){
+            throw new CartNotFoundException("", sessionId);
+        }
+        return listCart;
     }
 
     @Override

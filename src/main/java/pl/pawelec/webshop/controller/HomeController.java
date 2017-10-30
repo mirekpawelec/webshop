@@ -7,6 +7,7 @@ package pl.pawelec.webshop.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
@@ -49,8 +50,7 @@ public class HomeController {
     @RequestMapping
     public String getAllProducts(@ModelAttribute("filterOfProducts") ProductFilter filterOfProducts, Model model
                                  , BindingResult result, HttpServletRequest request){
-        logger.info("### getAllProducts - " + (SecurityContextHolder.getContext().getAuthentication().getName()!="anonymousUser" ? 
-                ((UserDetailsAdapter)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getFullName() : "") );
+        logger.info("### getAllProducts");
         
         if(result.getSuppressedFields().length > 0){
             throw new RuntimeException("Próba wiązania niedozwolonych pól: " + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));

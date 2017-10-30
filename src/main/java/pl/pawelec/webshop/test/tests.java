@@ -51,7 +51,7 @@ public class tests {
 //        
 //        JpaTransactionManager jtm = new JpaTransactionManager();
         
-        ApplicationContext context = new FileSystemXmlApplicationContext("src/main/webapp/WEB-INF/spring/applicationContext.xml");
+        ApplicationContext context = new FileSystemXmlApplicationContext("src/main/webapp/WEB-INF/spring/application-context.xml");
         //ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
         //TestBean test = context.getBean(TestBean.class);
         //System.out.println(test);

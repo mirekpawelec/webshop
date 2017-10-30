@@ -44,7 +44,7 @@ public class Cart implements Serializable{
     private Long cartId;
     
     @Column(name = "session_id", nullable = false, length = 100)
-    private String sessiontId;
+    private String sessionId;
     
     @Column(name = "user_id")
     private Long userId;
@@ -72,17 +72,19 @@ public class Cart implements Serializable{
     
     
     public Cart() {
+        this.status = CartStatus.RE.name();
         this.costOfAllItems = new BigDecimal(0);
+        this.lastModificationDate = LocalDateTime.now();
+        this.createDate = LocalDateTime.now();
     }
 
     public Cart(String sessiontId) {
         this();
-        this.sessiontId = sessiontId;
-        this.status = CartStatus.RE.name();
-        this.lastModificationDate = LocalDateTime.now();
-        this.createDate = LocalDateTime.now();
+        this.sessionId = sessiontId;
     }   
 
+    
+    
     public Long getCartId() {
         return cartId;
     }
@@ -91,12 +93,12 @@ public class Cart implements Serializable{
         this.cartId = cartId;
     }
     
-    public String getSessiontId() {
-        return sessiontId;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setSessiontId(String sessiontId) {
-        this.sessiontId = sessiontId;
+    public void setSessionId(String sessiontId) {
+        this.sessionId = sessiontId;
     }
     
     @JsonIgnore
@@ -146,6 +148,7 @@ public class Cart implements Serializable{
         return costOfAllItems;
     }       
     
+    @JsonIgnore
     public Order getOrder() {
         return order;
     }
@@ -168,7 +171,10 @@ public class Cart implements Serializable{
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 37 * hash + Objects.hashCode(this.cartId);
+        hash = 29 * hash + Objects.hashCode(this.sessionId);
+        hash = 29 * hash + Objects.hashCode(this.userId);
+        hash = 29 * hash + Objects.hashCode(this.status);
+        hash = 29 * hash + Objects.hashCode(this.costOfAllItems);
         return hash;
     }
 
@@ -184,14 +190,23 @@ public class Cart implements Serializable{
             return false;
         }
         final Cart other = (Cart) obj;
-        if (!Objects.equals(this.cartId, other.cartId)) {
+        if (!Objects.equals(this.sessionId, other.sessionId)) {
+            return false;
+        }
+        if (!Objects.equals(this.status, other.status)) {
+            return false;
+        }
+        if (!Objects.equals(this.userId, other.userId)) {
+            return false;
+        }
+        if (!Objects.equals(this.costOfAllItems, other.costOfAllItems)) {
             return false;
         }
         return true;
     }
 
     
-
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -202,7 +217,7 @@ public class Cart implements Serializable{
         
         return "Cart{"
                  + " cartId=" + cartId 
-                 + ", sessiontId=" + sessiontId 
+                 + ", sessionId=" + sessionId 
                  + ", userId=" + userId 
                  + ", status=" + status 
                  + ", lastModificationDate=" + lastModificationDate 

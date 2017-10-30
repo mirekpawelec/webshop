@@ -5,7 +5,6 @@
  */
 package pl.pawelec.webshop.controller;
 
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.pawelec.webshop.model.Cart;
 import pl.pawelec.webshop.service.CartService;
 import pl.pawelec.webshop.utils.AtributesModel;
 
@@ -37,7 +35,7 @@ public class CartController {
     
     @RequestMapping("/{cartId}")
     public String getCartBySessionId(@PathVariable String cartId, Model model, HttpServletRequest request){
-        model.addAttribute("sessionId", request.getSession(true).getId());
+        model.addAttribute("sessionId", cartId);
         model.addAttribute("jspFile", "cart");
         AtributesModel.addGlobalAtributeToModel(model, request);
         return "cart";

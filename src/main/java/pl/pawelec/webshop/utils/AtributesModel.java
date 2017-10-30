@@ -15,8 +15,9 @@ import org.springframework.ui.Model;
 public class AtributesModel {
     public static Model addGlobalAtributeToModel(Model model, HttpServletRequest request){
         String currentPath = request.getRequestURI();
-        currentPath = currentPath.substring(currentPath.indexOf("/",1), currentPath.length());
-
+        if(currentPath.startsWith("/web")){
+            currentPath = currentPath.substring(currentPath.indexOf("/",1), currentPath.length());
+        }
         String requestParameters = request.getQueryString();
         if(requestParameters==null){
             requestParameters = "?";
