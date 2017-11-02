@@ -72,9 +72,9 @@ public class HomeControllerTest {
         this.mockMvc.perform( get("/home").secure(true) )
                 .andExpect( model().attributeExists("allProducts") )
                 .andExpect( model().attributeExists("jspFile") )
-                .andExpect( model().attribute("jspFile", "welcome") )
+                .andExpect( model().attribute("jspFile", "homepage") )
                 .andExpect( model().attributeExists("lastRequestUrl") )
-                .andExpect( view().name("welcome") );
+                .andExpect( view().name("homepage") );
     }
     
     @Test

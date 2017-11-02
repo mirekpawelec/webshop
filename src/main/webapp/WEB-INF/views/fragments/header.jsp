@@ -12,7 +12,7 @@
 <spring:url value="/resource/css/bootstrap.min.css" var="bootstrapCss" />
 <spring:url value="/resource/css/style.css" var="styleCss" />
 <spring:url value="/home" var="homePage"/>
-<spring:url value="" var="contact" />
+<spring:url value="#contact" var="contact" />
 <spring:url value="/cart" var="cartUrl"/>
 <spring:url value="/login" var="logInUrl"/>
 <spring:url value="/logout" var="logOutUrl"/>
@@ -46,78 +46,74 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="${bootstrapCss}" />
         <link rel="stylesheet" href="${styleCss}" />
-        <style>
-            section.main{
-                min-height: 850px;
-                text-align: center;
-            }
-            hr.gray{
-                margin: 15px;
-                border-top: 1px solid #ccc;
-                width: 100%;
-            }
-            footer{
-                font-size: 17px;
-                padding: 25px 0;
-                margin: 10px 0;
-                text-align: center;
-                color: #FFFFFF;
-                background-color: #000000;
-            }
-        </style>
     </head>
     <body>
         <header>            
             <nav class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container" style="margin: 10px auto; font-size: 17px;">
+                <div class="container">
                     <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#me-menu">
+                            <span class="sr-only">Nawigacja</span> 
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        
                         <a class="navbar-brand" href="${homePage}"> ${homepageLbl} </a>
                     </div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="active"><a href="${homePage}"> ${homeLbl} </a></li>
-                        <li><a href="${contact}"> ${contactLbl} </a></li>
-                        <li>
-                            <a href="${cartUrl}"> 
-                                <span class="glyphicon glyphicon-shopping-cart" style="margin-top: -9px; font-size: 35px;" ></span> 
-                                <span id="itemCounterOfCart" class="badge" style="margin-top: -22px; font-size: 20px;" ng-bind="numberOfItems"></span>
-                            </a>
-                        </li>
+                    
+                    <div class="collapse navbar-collapse" id="me-menu">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="active"><a href="${homePage}"> ${homeLbl} </a></li>
+                            <li><a href="${contact}"> ${contactLbl} </a></li>
+                            <li>
+                                <a href="${cartUrl}"> 
+                                    <span class="glyphicon glyphicon-shopping-cart"></span> 
+                                    <span id="itemCounterOfCart" class="badge" ng-bind="numberOfItems"></span>
+                                </a>
+                            </li>
+                            
                         <security:authorize access="isAuthenticated()"> 
                             <li>
                                 <a>
-                                    <span class="glyphicon glyphicon-user" style="margin-top: -3px; font-size: 22px;"></span> 
-                                    <span class="badge" style="margin-top: -10px; font-size: 14px;"> 
+                                    <span class="glyphicon glyphicon-user nav-sign"></span> 
+                                    <span class="badge nav-text"> 
                                         <security:authentication property="principal.fullName" />
                                     </span> 
                                 </a>
                             </li>
                         </security:authorize>
+                            
                         <security:authorize access="isAnonymous()">
                             <li>
                                 <a href="${logInUrl}">
-                                    <span class="glyphicon glyphicon-log-in" style="margin-top: -3px; font-size: 22px;"></span> 
-                                    <span class="badge" style="margin-top: -10px; font-size: 14px;"> ${logInLbl} </span>
+                                    <span class="glyphicon glyphicon-log-in nav-sign"></span> 
+                                    <span class="badge nav-text"> ${logInLbl} </span>
                                 </a>
                             </li>
                         </security:authorize>
+                            
                         <security:authorize access="isAuthenticated()">  
                             <li>
                                 <a href="${logOutUrl}">
-                                    <span class="glyphicon glyphicon-log-out" style="margin-top: -3px; font-size: 22px;"></span> 
-                                    <span class="badge" style="margin-top: -10px; font-size: 14px;"> ${logOutLbl} </span> 
+                                    <span class="glyphicon glyphicon-log-out nav-sign"></span> 
+                                    <span class="badge nav-text"> ${logOutLbl} </span> 
                                 </a>
                             </li>
                         </security:authorize>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                 ${selectLanguageLbl} <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="${polishLanguageUrl}"> ${polishLbl} </a></li>
-                                <li><a href="${englishLanguageUrl}"> ${englishLbl} </a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                            
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                     ${selectLanguageLbl} <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="${polishLanguageUrl}"> ${polishLbl} </a></li>
+                                    <li><a href="${englishLanguageUrl}"> ${englishLbl} </a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>    
         </header>

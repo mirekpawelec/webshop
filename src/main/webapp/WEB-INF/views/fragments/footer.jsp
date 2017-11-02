@@ -12,13 +12,45 @@
 <spring:url value="/resource/js/table_sorting.js" var="tableSortingJs" />
 <spring:url value="/resource/js/jquery.min.js" var="jQueryJs" />
 <spring:url value="/resource/js/bootstrap.min.js" var="bootstrapJs" />
-<spring:message code="footer.footer.copyright.label" var="copyright"/>
+<spring:message code="footer.footer.copyright.label" var="copyrightLbl"/>
+<spring:message code="footer.contact.contactetails.label" var="contactDetailLbl"/>
+<spring:message code="footer.contact.links.label" var="linksLbl"/>
 
-<div class="container-fluid">
-    <footer class="container-fluid">
-        ${copyright}
-    </footer>
-</div>
+<footer>
+    <div id="contact" class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 text-left">
+                <h4> ${contactDetailLbl} </h4>
+                <address>
+                    <strong>WebSHOP</strong><br>
+                    al. Wojska Polskiego 0<br>
+                    00-000 Kalisz<br>
+                    <abbr title="Phone">tel:</abbr> +48 000-000-000
+                </address>
+
+                <address>
+                    <strong>Jan Nowak</strong><br>
+                    <a href="mailto:szkolenia@eduweb.pl">jan.nowak@webshop.pl</a>
+                </address>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-sm-offset-4 text-left">
+                <h4> ${linksLbl} </h4>
+
+                <ul class="list-unstyled">
+                    <li><a href="">FAQ</a></li>
+                    <li><a href="">Regulamin</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <hr>
+        <div class="row">
+            ${copyrightLbl}
+        </div>
+    </div>
+</footer>
     
 <script src="${ownJs}" ></script>
 <script src="${angularJs}" ></script>

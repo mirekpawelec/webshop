@@ -6,6 +6,7 @@
 package pl.pawelec.webshop.controller;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import pl.pawelec.webshop.exception.InvalidCartException;
+import pl.pawelec.webshop.converter.CartNotFoundException;
 import pl.pawelec.webshop.exception.NoProductIdFoundException;
 import pl.pawelec.webshop.model.Cart;
 import pl.pawelec.webshop.model.CartItem;
@@ -52,10 +53,14 @@ public class CartRestController {
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
     public @ResponseBody Cart read(@PathVariable String sessionId){
         logger.info("### read {sessionId="+sessionId+'}');
-        Cart cart = cartService.getBySessionId(sessionId).stream().filter(ci->ci.getStatus().equals(CartStatus.RE.name()))
-                .sorted((o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate())).findFirst().orElse( new Cart(sessionId) );
-        cart.updateCostOfAllItems();
-        return cart;
+        Cart cart = null; 
+        try{
+            cart = cartService.getBySessionId(sessionId).stream().filter(ci->ci.getStatus().equals(CartStatus.RE.name()))
+                .sorted((o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate())).findFirst().orElse(new Cart(sessionId));
+        }catch(CartNotFoundException cnfe){
+            logger.info("No found cart for sessionId=" + sessionId);
+        }
+        return cart==null ? new Cart(sessionId) : cart;
     }
     
     @RequestMapping(value = "/{cartId}", method = RequestMethod.DELETE)
@@ -104,7 +109,7 @@ public class CartRestController {
         if(cartService.existsBySessionId(sessionId, CartStatus.RE.name())){
             cart = getCurrentCart(sessionId, CartStatus.RE.name());
         } else {
-            throw new InvalidCartException(sessionId);
+            throw new CartNotFoundException("", sessionId);
         }
         CartItem deletingCartItem = cart.getCartItemSet().stream().filter(ci->ci.getProduct().getProductId().equals(Long.valueOf(productId))).findFirst().orElse(null);
         if(deletingCartItem!=null){
@@ -116,8 +121,13 @@ public class CartRestController {
     
     @RequestMapping(value = "/items/{sessionId}", method = RequestMethod.GET)
     public @ResponseBody String getNumberOfItemsFromCart(@PathVariable String sessionId){
-        Cart cart = cartService.getBySessionId(sessionId).stream().filter(c->c.getStatus().equals(CartStatus.RE.name())).findFirst().orElse( new Cart(sessionId) );
-        return cart.getCartItemSet().size() + "";
+        Cart cart = null;
+        try{
+            cart = cartService.getBySessionId(sessionId).stream().filter(c->c.getStatus().equals(CartStatus.RE.name())).findFirst().orElse(new Cart(sessionId));
+        } catch (CartNotFoundException cnfe){
+            logger.info("No found cart for sessionId=" + sessionId);
+        }
+        return cart==null ? "0" : String.valueOf(cart.getCartItemSet().size());
     }
     
     private Cart getCurrentCart(String sessionId, String status){

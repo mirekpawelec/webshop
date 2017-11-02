@@ -128,7 +128,7 @@ public class ProductController {
         model.addAttribute("newProductForm", product);
         model.addAttribute("jspFile", "newProductForm");
         AtributesModel.addGlobalAtributeToModel(model, request);
-        return "newProductForm";
+        return "addProductForm";
     }
 
             

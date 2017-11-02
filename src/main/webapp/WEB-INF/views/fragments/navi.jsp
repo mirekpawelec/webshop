@@ -16,6 +16,7 @@
 <spring:url value="/admin/products/add" var="addNewProductUrl"/>
 <spring:url value="/admin/classes" var="systemClassUrl"/>
 <spring:url value="/admin/classes/add" var="addSystemClassUrl"/>
+<spring:url value="/admin/messages" var="clientMessagesUrl"/>
 
 <spring:message code="navi.button.newDelivery.label" var="newDeliveryLbl" />
 <spring:message code="navi.button.warehouse.label" var="warehouseLbl" />
@@ -24,15 +25,24 @@
 <spring:message code="navi.button.newProduct.label" var="newProductLbl" />
 <spring:message code="navi.button.systemClasses.label" var="systemClassLbl" />
 <spring:message code="navi.button.addSystemClasses.label" var="addSystemClassLbl" />
-
+<spring:message code="navi.button.clientMessages.label" var="clientMessagesLbl" />
     
 <div class="container" ng-controller="cartController" ng-init="getNumberOfItemsFromCart('${sessionId}')">
     <div class="row" style="padding-top: 100px;">
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
             <div class="btn-group pull-right" role="group" >
                 <security:authorize access="hasRole('ADMIN')">
-                    <button type="button" class="btn btn-default" onclick="location.href='${warehouseUrl}'"> ${warehouseLbl} </button>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          ${warehouseLbl}
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="${warehouseUrl}">${warehouseLbl}</a></li>
+                        </ul>
+                    </div>
                 </security:authorize>
+                
                 <security:authorize access="hasRole('ADMIN') or hasRole('USER')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,6 +55,7 @@
                         </ul>
                     </div>
                 </security:authorize>
+                
                 <security:authorize access="hasRole('ADMIN')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -57,6 +68,7 @@
                         </ul>
                     </div>
                 </security:authorize>
+                
                 <security:authorize access="hasRole('ADMIN')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,6 +78,18 @@
                         <ul class="dropdown-menu">
                           <li><a href="${systemClassUrl}">${systemClassLbl}</a></li>
                           <li><a href="${addSystemClassUrl}">${addSystemClassLbl}</a></li>
+                        </ul>
+                    </div>
+                </security:authorize>
+                
+                <security:authorize access="hasRole('ADMIN')">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          ${clientMessagesLbl}
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="${clientMessagesUrl}">${clientMessagesLbl}</a></li>
                         </ul>
                     </div>
                 </security:authorize>
