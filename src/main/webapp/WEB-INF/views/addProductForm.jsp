@@ -20,6 +20,9 @@
 <spring:message code="newProductForm.form.description.label" var="descriptionLbl"/>
 <spring:message code="newProductForm.form.unitPrice.label" var="unitPriceLbl"/>
 <spring:message code="newProductForm.form.quantityInBox.label" var="quantityInBoxLbl"/>
+<spring:message code="newProductForm.form.promotion.label" var="promotionLbl"/>
+<spring:message code="newProductForm.form.select.promotion.yes.message" var="promotionYesMsg"/>
+<spring:message code="newProductForm.form.select.promotion.no.message" var="promotionNoMsg"/>
 <spring:message code="newProductForm.form.status.label" var="statusLbl"/>
 <spring:message code="newProductForm.form.productImage.label" var="productImageLbl"/>
 <spring:message code="newProductForm.form.productUserManual.label" var="productUserManualLbl"/>
@@ -129,7 +132,10 @@
                                         <label for="unitPrice" class="control-label"> ${unitPriceLbl} </label>
                                     </div>
                                     <div class="col-xs-8 col-sm-8 col-md-7 col-lg-7">
-                                        <form:input type="number" step="any" id="unitPrice" path="unitPrice" class="form-control"/>
+                                        <div class="input-group">
+                                            <form:input type="number" step="any" id="unitPrice" path="unitPrice" class="form-control"/>
+                                            <span class="input-group-addon">PLN</span>
+                                        </div>
                                         <form:errors path="unitPrice" class="text-danger"/>
                                     </div>
                                 </div>
@@ -148,6 +154,36 @@
                                     </div>
                                 </div>
                             </spring:bind>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group">
+                                <spring:bind path="discount">
+                                    <c:if test="${status.error}"> <c:set value="${true}" var="isDiscountError"/> </c:if>
+                                </spring:bind>
+                                
+                                <div class="col-xs-3 ${isDiscountError?'has-error':''} text-right">
+                                    <label for="promotion" class="control-label"> ${promotionLbl}</label>
+                                </div>
+                                
+                                <div class="col-xs-2">
+                                    <form:select id="promotion" path="promotion" class="form-control">
+                                        <option value="N" selected> ${promotionNoMsg} </option>
+                                        <option value="T"> ${promotionYesMsg} </option>
+                                    </form:select>
+                                    <form:errors path="promotion" class="text-danger"/>
+                                </div>
+                                
+                                <div class="${isDiscountError?'has-error':''}">
+                                    <div class="col-xs-6 col-sm-6 col-md-5 col-lg-5">
+                                        <div class="input-group">
+                                            <form:input type="number" id="discount" path="discount" class="form-control"/>
+                                            <span class="input-group-addon">%</span>
+                                        </div>
+                                        <form:errors path="discount" class="text-danger"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                                 
                         <div class="row">

@@ -88,7 +88,7 @@
                                         <a href="${updateUrl}" class="btn btn-primary btn-xs">
                                             <span class="glyphicon glyphicon-edit"> </span> ${tabBtnUpdateLbl} 
                                         </a> 
-                                        <a href="${deleteUrl}" class="btn btn-danger btn-xs">
+                                        <a href="#delete${item.classId}" class="btn btn-danger btn-xs" data-toggle="modal">
                                             <span class="glyphicon glyphicon-remove"> </span> ${tabBtnDeleteLbl} 
                                         </a>
                                     </td>
@@ -103,5 +103,34 @@
         
     <jsp:include page="./fragments/footer.jsp"/>
         
+    <spring:message code="systemClasses.modal.deleteItem.header.label" var="headerDeleteModalLbl" />
+    <spring:message code="systemClasses.modal.deleteItem.question.part1.message" var="questionDeleteModalMsg_1" />
+    <spring:message code="systemClasses.modal.deleteItem.question.part2.message" var="questionDeleteModalMsg_2" />
+    <spring:message code="systemClasses.modal.deleteItem.confirmYes.label" var="confirmYesDeleteModalLbl" />
+    <spring:message code="systemClasses.modal.deleteItem.confirmNo.label" var="confirmNoDeleteModalLbl" />
+    
+    <c:forEach items="${systemClasses}" var="item">
+        <div id="delete${item.classId}" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4><strong> ${headerDeleteModalLbl} </strong></h4>
+                </div>
+                <div class="modal-body">
+                    <h4> ${item.symbol} - ${item.name} </h4> <br>
+                    <p> ${questionDeleteModalMsg_1} </p>
+                    <p> ${questionDeleteModalMsg_2} </p>
+                </div>
+                <div class="modal-footer">
+                        <spring:url value="/admin/classes/${item.classId}/delete" var="deleteUrl"/>  
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" > ${confirmNoDeleteModalLbl} </button>
+                        <a href="${deleteUrl}" class="btn btn-danger btn-sm"> ${confirmYesDeleteModalLbl} </a>
+                </div>
+              </div>
+            </div>
+        </div>            
+    </c:forEach>
+    
     </body>
 </html>

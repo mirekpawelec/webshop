@@ -15,4 +15,5 @@ import pl.pawelec.webshop.model.Repository;
 public interface RepositoryDao extends Dao<Repository>{
     Repository getByLoadunitNo(String loadunitNo);
     List<Repository> getByStatus(String status);
+    List<Repository> getByProductNo(String productNo);
 }

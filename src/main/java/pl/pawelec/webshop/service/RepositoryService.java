@@ -24,4 +24,5 @@ public interface RepositoryService {
     boolean exists(Long id);
     Repository getByLoadunitNo(String loadunitNo);
     List<Repository> getByStatus(String status);
+    List<Repository> getByProductNo(String productNo);
 }

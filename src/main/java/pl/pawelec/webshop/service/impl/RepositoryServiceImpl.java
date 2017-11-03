@@ -78,5 +78,10 @@ public class RepositoryServiceImpl implements RepositoryService{
     public List<Repository> getByStatus(String status) {
         return repositoryDao.getByStatus(status);
     }
+
+    @Override
+    public List<Repository> getByProductNo(String productNo) {
+        return repositoryDao.getByProductNo(productNo);
+    }
     
 }

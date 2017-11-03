@@ -3,7 +3,7 @@
     Created on : 2017-09-05, 20:52:13
     Author     : mirek
 --%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -51,7 +51,7 @@
                                 <spring:message code="product.list.productNo.label"/>
                             </label>
                             <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
-                                <span class="label label-warning" style="font-size: 20px;">${product.productNo}</span>
+                                <span class="label label-warning" style="font-size: 17px;">${product.productNo}</span>
                             </div>
                         </div>
                             <br>
@@ -96,7 +96,7 @@
                                 <spring:message code="product.list.unitPrice.label"/>
                             </label>
                             <div class="col-xs-12 col-sm-7 col-md-8 col-lg-8">
-                                <span class="label label-default" style="font-size: 20px;">${product.unitPrice}</span>
+                                <span class="label label-default" style="font-size: 17px;">${product.unitPrice}</span> PLN
                             </div>
                         </div>
                             <br>
@@ -123,16 +123,23 @@
                 <hr class="gray">
                 
                 <div class="row" ng-controller="cartController" ng-init="refreshCart('${sessionId}')">
-                        <spring:url value="/home" var="homePageUrl"/>
-                        
-                        <div class="pull-right">
-                            <a href="${homePageUrl}" class="btn btn-default">
-                                <span class="glyphicon glyphicon-hand-left"></span> <spring:message code="product.button.backHomePage.label"/> 
-                            </a>
-                            <a class="btn btn-primary" ng-click="addItemToCart('${product.productId}')">
-                                <span class="glyphicon glyphicon-shopping-cart"></span> <spring:message code="product.button.addToCart.label"/> 
-                            </a>
-                        </div>
+                    <c:choose>
+                        <c:when test="${not empty returnPageUrl}">
+                            <spring:url value="${returnPageUrl}" var="homePageUrl"/>
+                        </c:when>
+                        <c:otherwise>
+                            <spring:url value="/home" var="homePageUrl"/>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <div class="pull-right">
+                        <a href="${homePageUrl}" class="btn btn-default">
+                            <span class="glyphicon glyphicon-hand-left"></span> <spring:message code="product.button.backHomePage.label"/> 
+                        </a>
+                        <a class="btn btn-primary ${fn:length(product.repositorySet)==0?'disabled':''}" ng-click="addItemToCart('${product.productId}')">
+                            <span class="glyphicon glyphicon-shopping-cart"></span> <spring:message code="product.button.addToCart.label"/> 
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>

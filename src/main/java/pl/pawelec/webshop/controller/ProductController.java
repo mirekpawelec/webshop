@@ -7,10 +7,12 @@ package pl.pawelec.webshop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
@@ -37,6 +39,7 @@ import pl.pawelec.webshop.model.Product.newForm;
 import pl.pawelec.webshop.model.Product.updateForm;
 import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.service.ProductService;
+import pl.pawelec.webshop.service.RepositoryService;
 import pl.pawelec.webshop.utils.AtributesModel;
 import pl.pawelec.webshop.validator.ProductValidator;
 
@@ -61,7 +64,7 @@ public class ProductController {
         logger.info("### allProducts");
         List<Product> products = productService.getAll();
         products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getDescription()));
-        model.addAttribute("products", products);
+        model.addAttribute("products", products); 
         model.addAttribute("jspFile", "products");
         AtributesModel.addGlobalAtributeToModel(model, request);
         return "products";
@@ -113,10 +116,14 @@ public class ProductController {
         }
         productToBeUpdate.setProductId((Long) request.getSession().getAttribute("productId"));
         productToBeUpdate.setProductNo((String) request.getSession().getAttribute("productNumber"));
+        if(productToBeUpdate.getDiscount()==null){
+            productToBeUpdate.setDiscount(0);
+        }
         logger.info("Update: " + productToBeUpdate);
         productService.update(productToBeUpdate);
         redirect.addFlashAttribute("typeProcess", "update");
         redirect.addFlashAttribute("css", "success");
+        redirect.addFlashAttribute("returnPageUrl", "/admin/products");
         return "redirect:/admin/products/product?id=" + productToBeUpdate.getProductNo() ;
     }
     
@@ -137,7 +144,7 @@ public class ProductController {
                                                 BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
         logger.info("### processAddProductForm" + productToBeAdd); 
         if(result.hasErrors()){
-            return "newProductForm";
+            return "addProductForm";
         }
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0){
@@ -167,10 +174,14 @@ public class ProductController {
                 throw new RuntimeException("It's has occurred an error while saving the pdf file!");
             }
         }
+        if(productToBeAdd.getDiscount()==null){
+            productToBeAdd.setDiscount(0);
+        }
         logger.info("Save: " + productToBeAdd);
         productService.create(productToBeAdd);
         redirect.addFlashAttribute("typeProcess", "create");
-        redirect.addFlashAttribute("css", "success");  
+        redirect.addFlashAttribute("css", "success"); 
+        redirect.addFlashAttribute("returnPageUrl", "/admin/products");
         return "redirect:/admin/products/product?id=" + productToBeAdd.getProductNo() ;
     }    
     

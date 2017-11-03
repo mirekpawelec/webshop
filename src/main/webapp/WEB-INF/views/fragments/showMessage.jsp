@@ -11,10 +11,10 @@
 
 <div class="row">
     <div class="form-group">
-        <div class="col-xs-2 text-right">
+        <div class="col-xs-offset-1 col-xs-10">
             <label class="control-label"><strong> ${subjectLbl} </strong></label>
         </div>
-        <div class="col-xs-10">
+        <div class="col-xs-offset-1 col-xs-10">
             <input type="text" class="form-control" readonly value="${param.subject}"/>
         </div>
     </div>
@@ -24,10 +24,10 @@
 
 <div class="row">
     <div class="form-group">
-        <div class="col-xs-2 text-right">
+        <div class="col-xs-offset-1 col-xs-10">
             <label class="control-label"><strong> ${contentLbl} </strong></label>
         </div>
-        <div class="col-xs-10">
+        <div class="col-xs-offset-1 col-xs-10">
             <textarea type="text" class="form-control" rows="6" readonly="true">${param.content}</textarea>
         </div>
     </div>

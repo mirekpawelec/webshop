@@ -121,7 +121,7 @@ public class ProductControllerTest {
                 .andExpect( model().attributeExists("jspFile") )
                 .andExpect( model().attribute("jspFile","newProductForm") )
                 .andExpect( model().attributeExists("lastRequestUrl") )
-                .andExpect( view().name("newProductForm") );
+                .andExpect( view().name("addProductForm") );
     }
     
     @Test

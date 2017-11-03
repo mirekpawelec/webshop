@@ -54,26 +54,32 @@ public class Product implements Serializable{
     @Column(name = "product_no", unique = true)
     private String productNo;
     
-    @Column //(nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String name;
     
-    @Column //(nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String manufacturer;
     
-    @Column //(nullable = false, length = 25)
+    @Column(nullable = false, length = 25)
     private String category;
     
     @Lob
-    @Column //(nullable = false)
+    @Column(nullable = false)
     private String description;
     
-    @Column //(nullable = false, precision = 7, scale = 2)
+    @Column(nullable = false, precision = 9, scale = 2)
     private BigDecimal unitPrice;
     
-    @Column //(nullable = false, precision = 4, scale = 0)
+    @Column(nullable = false, precision = 4, scale = 0)
     private Integer quantityInBox;
     
-    @Column //(nullable = true, length = 2)
+    @Column(name = "is_promotion", length = 1)
+    private String promotion;
+    
+    @Column(precision = 3, scale = 0)
+    private Integer discount;
+    
+    @Column(length = 2)
     private String status;
     
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
@@ -203,6 +209,25 @@ public class Product implements Serializable{
     public void setQuantityInBox(Integer quantityInBox) {
         this.quantityInBox = quantityInBox;
     }
+
+    @Size(groups = {newForm.class, updateForm.class}, max = 1, message = "{Size.Product.promotion.validation}")
+    public String getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(String promotion) {
+        this.promotion = promotion;
+    }
+    
+    @Min(groups = {newForm.class, updateForm.class}, value = 0, message = "{Min.Product.discount.validation}")
+    @Digits(groups = {newForm.class, updateForm.class}, integer = 3, fraction = 0, message = "{Digits.Product.discount.validation}")
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
+    }
     
     public String getStatus() {
         return status;
@@ -321,10 +346,12 @@ public class Product implements Serializable{
                 + ", category=" + category 
                 + ", unitPrice=" + unitPrice // + '}';
                 + ", quantityInBox=" + quantityInBox 
+                + "promotion=" + promotion 
+                + ", discount=" + discount
                 + ", status=" + status 
                 + ", createDate=" + createDate
                 + '}';   
-    }
+    } 
     
     
     
@@ -337,6 +364,8 @@ public class Product implements Serializable{
             private String description;
             private BigDecimal unitPrice;
             private Integer quantityInBox;
+            private String promotion;
+            private Integer discount;
             private String status;
             private LocalDateTime createDate;
             private Set<Repository> repositorySet;
@@ -372,6 +401,14 @@ public class Product implements Serializable{
             }
             public Builder withQuantityInBox(Integer quantityInBox){
                 this.quantityInBox=quantityInBox;
+                return this;
+            }
+            public Builder withPromotion(String promotion){
+                this.promotion=promotion;
+                return this;
+            }
+            public Builder withDiscount(Integer discount){
+                this.discount=discount;
                 return this;
             }
             public Builder withStatus(String status){

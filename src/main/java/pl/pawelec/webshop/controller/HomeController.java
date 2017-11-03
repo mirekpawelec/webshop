@@ -16,9 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -110,6 +108,12 @@ public class HomeController {
                     })
                 .collect(Collectors.toList());
         model.addAttribute("allProducts", afterFilteringProducts);
+        
+        List<Product> promotionProducts = productService.getAll().stream()
+                                                .filter(p->p.getPromotion().equals("T") && p.getStatus().equals(ProductStatus.OK.name()))
+                                                .collect(Collectors.toList());
+        model.addAttribute("promotionProducts", promotionProducts);
+        
         AtributesModel.addGlobalAtributeToModel(model, request);
         addLocalAtributesToModel(model, request, "homepage");
         return "homepage";

@@ -21,17 +21,11 @@
 <spring:message code="clientMessage.table.button.show.label" var="showTabBtn" />
 <spring:message code="clientMessage.table.button.delete.label" var="deleteTabBtn" />
 <spring:message code="clientMessage.delete.message" arguments="${infoDeletedMessage}" var="deleteMsg" />
-<spring:message code="clientMessage.modal.header.label" var="modalHeaderLbl" />
-<spring:message code="clientMessage.modal.button.delete.label" var="modalDeleteBtn" />
-<spring:message code="clientMessage.modal.button.answer.label" var="modalAnswerBtn" />
-<spring:message code="clientMessage.modal.button.read.label" var="modalReadBtn" />
-<spring:message code="clientMessage.modal.button.forLater.label" var="modalForLaterBtn" />
-<spring:message code="clientMessage.modal.button.close.label" var="modalCloseBtn" />
-<spring:message code="clientMessage.modal.deleteItem.header.label" var="headerDeleteModalLbl" />
-<spring:message code="clientMessage.modal.deleteItem.question.part1.message" var="questionDeleteModalMsg_1" />
-<spring:message code="clientMessage.modal.deleteItem.question.part2.message" var="questionDeleteModalMsg_2" />
-<spring:message code="clientMessage.modal.deleteItem.confirmYes.label" var="confirmYesDeleteModalLbl" />
-<spring:message code="clientMessage.modal.deleteItem.confirmNo.label" var="confirmNoDeleteModalLbl" />
+<spring:message code="clientMessage.table.status.new.label" var="statusNewMsg"/> 
+<spring:message code="clientMessage.table.status.read.label" var="statusReadMsg"/>
+<spring:message code="clientMessage.table.status.wait.label" var="statusWaitMsg"/>
+<spring:message code="clientMessage.table.status.answered.label" var="statusAnsweredMsg"/>
+<spring:message code="clientMessage.table.status.undefined.label" var="statusUndefinedMsg"/>
 
     <jsp:include page="./fragments/header.jsp" />
         
@@ -78,27 +72,31 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${item.status=='NE'}">
-                                                    <spring:message code="clientMessage.table.status.new.label"/>
+                                                    ${statusNewMsg}
                                                 </c:when>
                                                 <c:when test="${item.status=='RE'}">
-                                                    <spring:message code="clientMessage.table.status.read.label"/>
+                                                    ${statusReadMsg}
                                                 </c:when>
                                                 <c:when test="${item.status=='WT'}">
-                                                    <spring:message code="clientMessage.table.status.wait.label"/>
+                                                     ${statusWaitMsg}
                                                 </c:when>
                                                 <c:when test="${item.status=='OK'}">
-                                                    <spring:message code="clientMessage.table.status.answered.label"/>
+                                                     ${statusAnsweredMsg}
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <spring:message code="clientMessage.table.status.undefined.label"/>
+                                                     ${statusUndefinedMsg}
                                                 </c:otherwise>  
                                             </c:choose>
                                         </td>
                                         <td>${fn:replace(item.createDate, 'T' , ' ')}</td>
                                         
                                         <td>
-                                            <a href="#message${item.messageId}" data-toggle="modal" class="btn btn-primary btn-xs"> ${showTabBtn} </a>
-                                            <a href="#delete${item.messageId}" data-toggle="modal" class="btn btn-danger btn-xs"> ${deleteTabBtn} </a>
+                                            <a href="#message${item.messageId}" data-toggle="modal" class="btn btn-primary btn-xs"> 
+                                                <span class="glyphicon glyphicon-check"> </span> ${showTabBtn} 
+                                            </a>
+                                            <a href="#delete${item.messageId}" data-toggle="modal" class="btn btn-danger btn-xs"> 
+                                                <span class="glyphicon glyphicon-remove"> </span> ${deleteTabBtn} 
+                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -111,6 +109,20 @@
         </section>
     
     <jsp:include page="./fragments/footer.jsp" />
+    
+    
+    <spring:message code="clientMessage.modal.header.label" var="modalHeaderLbl" />
+    <spring:message code="clientMessage.modal.button.delete.label" var="modalDeleteBtn" />
+    <spring:message code="clientMessage.modal.button.answer.label" var="modalAnswerBtn" />
+    <spring:message code="clientMessage.modal.button.read.label" var="modalReadBtn" />
+    <spring:message code="clientMessage.modal.button.forLater.label" var="modalForLaterBtn" />
+    <spring:message code="clientMessage.modal.button.close.label" var="modalCloseBtn" />
+    <spring:message code="clientMessage.modal.deleteItem.header.label" var="headerDeleteModalLbl" />
+    <spring:message code="clientMessage.modal.deleteItem.question.message" var="questionDeleteModalMsg_0" />
+    <spring:message code="clientMessage.modal.deleteItem.question.part1.message" var="questionDeleteModalMsg_1" />
+    <spring:message code="clientMessage.modal.deleteItem.question.part2.message" var="questionDeleteModalMsg_2" />
+    <spring:message code="clientMessage.modal.deleteItem.confirmYes.label" var="confirmYesDeleteModalLbl" />
+    <spring:message code="clientMessage.modal.deleteItem.confirmNo.label" var="confirmNoDeleteModalLbl" />
     
     <c:forEach items="${messages}" var="item">
         <div id="message${item.messageId}" class="modal fade" tabindex="-1">
@@ -148,7 +160,8 @@
                   <h4><strong> ${headerDeleteModalLbl} </strong></h4>
                 </div>
                 <div class="modal-body">
-                    <h4> ${questionDeleteModalMsg_1} </h4>
+                    <h4> ${questionDeleteModalMsg_0} <strong> ${item.name} </strong> ( <i> ${item.email} </i> ) </h4> <br>
+                    <p> ${questionDeleteModalMsg_1} </p>
                     <p> ${questionDeleteModalMsg_2} </p>
                 </div>
                 <div class="modal-footer">

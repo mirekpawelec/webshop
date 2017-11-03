@@ -31,5 +31,10 @@ public class RepositoryDaoImpl extends AbstrDao<Repository> implements Repositor
     public Repository getByLoadunitNo(String loadunitNo) {
         return (Repository) getEntityManager().createQuery("from Repository WHERE loadunit_no = :loadunit_no").setParameter("loadunit_no", loadunitNo).getSingleResult();
     }
+
+    @Override
+    public List<Repository> getByProductNo(String productNo) {
+        return getEntityManager().createQuery("from Repository WHERE product.productNo = :productNo").setParameter("productNo", productNo).getResultList();
+    }
     
 }

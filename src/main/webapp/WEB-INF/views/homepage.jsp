@@ -9,7 +9,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     
-<spring:url value="/resource/img/111.555.08.jpg" var="jumbotroneImageUrl"/>
+
 <spring:url value="/filter" var="filterActionUrl" />
 <spring:message code="homepage.jumbotron.promotion.label" var="promotionLbl" />
 <spring:message code="homepage.jumbotron.button.details.label" var="buttonDetailsLbl" />
@@ -41,10 +41,9 @@
     <jsp:include page="./fragments/header.jsp"/>
     
     <section class="main">
+        
         <jsp:include page="./fragments/navi.jsp"/>
-        
-        <hr>
-        
+            
         <div class="container">
             <div class="row">
                 <c:choose>
@@ -52,47 +51,67 @@
                         <div class="alert alert-${successMsgSent} alert-dismissable" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong> ${infoMsg} </strong>
-                        </div>  
+                        </div> 
                     </c:when>
                     <c:when test="${not empty validationError}">
                         <div class="alert alert-${validationError} alert-dismissable" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <strong> ${validationMsg} </strong>
-                        </div>  
+                        </div>
                     </c:when>
                 </c:choose>
             </div>
-            
-            <div class="jumbotron min-width">
-                <div class="row">
-                    <div class="hidden-xs hidden-sm col-md-9 col-lg-9 text-left">
-                        <h2> SAMSUNG NOTE 8 <span class="label label-warning"> ${promotionLbl} </span> </h2> 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem distinctio sapiente nemo odio amet alias.</p>
+        </div>
+        
+    <!--CAROUSEL-->
+        <div id="carousel-promotion-products" class="carousel slide" data-ride="carousel" ng-controller="cartController" ng-init="refreshCart('${sessionId}')">
+            <ol class="carousel-indicators">
+                <c:forEach items="${promotionProducts}" var="item" varStatus="counter">
+                    <li data-target="#carousel-promotion-products" data-slide-to="${counter.count-1}" class="${counter.count-1==0?'active':''}"></li>
+                </c:forEach>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <c:forEach items="${promotionProducts}" var="item" varStatus="counter">
+                    <div class="item ${counter.count==1?'active':''}">
+                        <div class="container">
+                            <div class="well-lg">
+                                <div class="row min-height">
+                                    <div class="col-xs-12 col-sm-7 col-md-8 col-lg-9 text-left">
+                                        <h3> ${item.manufacturer} ${item.name} <span class="label label-warning"> ${promotionLbl} </span> </h3>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem distinctio sapiente nemo odio amet alias.</p>
 
-                        <div class="btn-group btn-group-lg">
-                            <a href="#" class="btn btn-default"> ${buttonDetailsLbl} <span class="glyphicon glyphicon-chevron-right"></span></a>
-                            <a href="#" class="btn btn-primary"> ${buttonBuyNowLbl} <span class="glyphicon glyphicon-shopping-cart"></span></a>
+                                        <div class="btn-group btn-group-sm">
+                                            <spring:url value="/home/product?productNo=${item.productNo}" var="detailsUrl"/>
+                                            <a href="${detailsUrl}" class="btn btn-default"> ${buttonDetailsLbl} <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                            <a class="btn btn-primary" ng-click="addItemToCart('${item.productId}')"> ${buttonBuyNowLbl} <span class="glyphicon glyphicon-shopping-cart"></span></a>
+                                        </div>
+                                    </div> 
+
+                                    <div class="hidden-xs col-sm-5 col-md-4 col-lg-3">
+                                        <spring:url value="/resource/img/${item.productNo}.jpg" var="jumbotroneImageUrl"/>
+                                        <img class="img-carousel" src="${jumbotroneImageUrl}" alt="image">                                
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-xs-12 col-sm-8 hidden-md hidden-lg text-left">
-                        <h3> SAMSUNG NOTE 8 <span class="label label-warning"> ${promotionLbl} </span> </h3> 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem distinctio sapiente nemo odio amet alias.</p>
-
-                        <div class="btn-group btn-group-sm">
-                            <a href="#" class="btn btn-default"> ${buttonDetailsLbl} <span class="glyphicon glyphicon-chevron-right"></span></a>
-                            <a href="#" class="btn btn-primary"> ${buttonBuyNowLbl} <span class="glyphicon glyphicon-shopping-cart"></span></a>
-                        </div>
-                    </div>
-
-                    <div class="hidden-xs col-sm-4 col-md-3 col-lg-3">
-                        <img class="img-reponsive img-thumbnail" src="${jumbotroneImageUrl}" alt="image">                                
-                    </div>
-                </div>
+                </c:forEach>
             </div>
-
-            <div class="row min-width">
+            <!--<a class="left carousel-control" href="#carousel-promotion-products" role="button" data-slide="prev">-->
+                <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
+                <!--<span class="sr-only">Previous</span>-->
+            <!--</a>-->
+            <!--<a class="right carousel-control" href="#carousel-promotion-products" role="button" data-slide="next">-->
+                <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
+                <!--<span class="sr-only">Next</span>-->
+            <!--</a>-->
+        </div>
+        <br>
+        <div class="container min-width">
+            <div class="row">
                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    
+    <!--SEARCH PANEL-->
                     <div class="panel panel-primary panel-min-height">
                         <div class="panel-heading">
                             <h6 class="panel-title"> ${browsingOptionsLbl} </h6>
@@ -158,7 +177,8 @@
                         </div>
                     </div>
                 </div>
-                        
+                   
+    <!--PRODUCTS-->
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" ng-controller="cartController" ng-init="refreshCart('${sessionId}')">    
                     <c:forEach items="${allProducts}" var="product">
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                                
@@ -218,7 +238,8 @@
                     </c:forEach> 
                 </div>
             </div>
-            
+                    
+    <!--OUR LOCATION - MAP-->        
             <div class="row">
                 <div class="page-header text-left">
                         <h2> ${headerMapOneLbl} <small> ${headerMapTwoLbl} </small></h2>
@@ -233,6 +254,7 @@
         </div>
     </div>
 
+    <!--FORM CONTACT-->
     <div class="container">
         <div class="row">
             <div class="page-header">

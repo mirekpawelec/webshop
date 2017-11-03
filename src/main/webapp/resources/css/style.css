@@ -42,6 +42,18 @@
     background-color: #337AB7;
     color: #FFF;
 }
+.min-height{
+    height: 225px;
+}
+.img-carousel{
+    max-height: 200px;
+    max-width: 100%;
+    margin-top: 0px;
+}
+.carousel-indicators{
+    /*color: gray;*/
+    /*background-color: gray;*/
+}
 
 /*#####################################################################################################################*/
 /* for table in the bootstrap class 'container-fluid'  */
@@ -141,3 +153,13 @@ footer{
     color: #FFFFFF;
     background-color: #000000;
 }
+
+/*
+.modal-dialog .modal-lg{
+    position: fixed;
+    top: 5%;
+    right: 10%;
+    outline: none;
+    overflow: hidden;
+} 
+*/
