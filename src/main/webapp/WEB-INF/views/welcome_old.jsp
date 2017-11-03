@@ -14,6 +14,7 @@
     <jsp:include page="./fragments/header.jsp"/>
     
         <section class="main">
+            
             <jsp:include page="./fragments/navi.jsp"/>
             
             <div class="container">

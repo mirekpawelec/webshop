@@ -46,13 +46,11 @@ public class CartRestController {
     
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.POST)
     public @ResponseBody Cart create(@PathVariable String sessionId){
-        logger.info("### create {sessionId="+sessionId+'}');
         return cartService.createAndGetCart(new Cart(sessionId));
     }
     
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
     public @ResponseBody Cart read(@PathVariable String sessionId){
-        logger.info("### read {sessionId="+sessionId+'}');
         Cart cart = null; 
         try{
             cart = cartService.getBySessionId(sessionId).stream().filter(ci->ci.getStatus().equals(CartStatus.RE.name()))
@@ -66,14 +64,12 @@ public class CartRestController {
     @RequestMapping(value = "/{cartId}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String cartId){
-        logger.info("### delete {cartId="+cartId+'}');
         cartService.deleteById(Long.valueOf(cartId));
     }
     
     @RequestMapping(value = "/add/{productId}", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void addItemToCart(@PathVariable String productId, HttpServletRequest request){
-        logger.info("### addItemToCart {productId="+productId+" , sessionId="+request.getSession(true).getId()+'}');
         Cart cart = null;
         Product addingProduct = null;
         CartItem cartItem = null;
@@ -103,7 +99,6 @@ public class CartRestController {
     @RequestMapping(value = "/delete/{productId}", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteItemFromCart(@PathVariable String productId, HttpServletRequest request){
-        logger.info("### deleteItemFromCart {productId="+productId+" , sessionId="+request.getSession(true).getId()+'}');
         Cart cart = null;
         String sessionId = request.getSession(true).getId();
         if(cartService.existsBySessionId(sessionId, CartStatus.RE.name())){

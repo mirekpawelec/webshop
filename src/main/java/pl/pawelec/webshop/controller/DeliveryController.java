@@ -24,14 +24,12 @@ import pl.pawelec.webshop.utils.AtributesModel;
 @Controller
 @RequestMapping("/admin/deliveries")
 public class DeliveryController {
-    private Logger logger = Logger.getLogger(ProductController.class);
     @Autowired
     private DeliveryService deliveryService;
     
     
     @RequestMapping
     public String getAllDeliveries(Model model, HttpServletRequest request){ 
-        logger.info("### getAllDeliveries");
         List<Delivery> deliveries = deliveryService.getAll();
         deliveries.stream().forEach( delivery -> delivery.setStatus(DeliveryStatus.valueOf(delivery.getStatus()).getDescription()) );
         model.addAttribute("deliveries", deliveries);

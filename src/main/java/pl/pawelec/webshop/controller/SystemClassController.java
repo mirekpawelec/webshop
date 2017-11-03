@@ -35,16 +35,16 @@ import pl.pawelec.webshop.validator.SystemClassValidator;
 @Controller
 @RequestMapping("admin/classes")
 public class SystemClassController {
+    Logger logger = Logger.getLogger(SystemClassController.class);
     @Autowired
     private SystemClassService systemClassService;
     @Autowired
     private SystemClassValidator systemClassValidator;
-    Logger logger = Logger.getLogger(SystemClassController.class);
+    
     
     
     @RequestMapping
     public String getAllClass(Model model, HttpServletRequest request){
-        logger.info("getAll()");
         model.addAttribute("systemClasses", systemClassService.getAll());
         model.addAttribute("jspFile", "systemClasses");
         AtributesModel.addGlobalAtributeToModel(model, request);
@@ -53,7 +53,6 @@ public class SystemClassController {
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addClass(Model model, HttpServletRequest request){
-        logger.info("addClass()");
         model.addAttribute("newSystemClass", new SystemClass());
         model.addAttribute("jspFile", "addSystemClass");
         AtributesModel.addGlobalAtributeToModel(model, request);
@@ -67,7 +66,6 @@ public class SystemClassController {
             AtributesModel.addGlobalAtributeToModel(model, request);
             return "addSystemClass";
         }
-        logger.info("processAddClass()");
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0){
             throw new RuntimeException("It has occurred an attempt bind the illegal fields:" + StringUtils.arrayToCommaDelimitedString(suppresedFields));
@@ -82,7 +80,6 @@ public class SystemClassController {
     
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String updateClass(@PathVariable("id") String classId, Model model, HttpServletRequest request){
-        logger.info("updateClass()");
         SystemClass systemClass = systemClassService.getOneById(Long.valueOf(classId));
         model.addAttribute("updateSystemClass", systemClass);
         model.addAttribute("updateInfo", systemClass.getSymbol()+" - "+systemClass.getName());
@@ -98,9 +95,8 @@ public class SystemClassController {
             AtributesModel.addGlobalAtributeToModel(model, request);
             return "updateSystemClass";
         }
-        logger.info("updateClass()");
         systemClassToBeUpdate.setLastModificationDate(LocalDateTime.now());
-        logger.info("Update: " + systemClassToBeUpdate);
+        logger.info("Save...["+systemClassToBeUpdate+']');
         systemClassService.update(systemClassToBeUpdate);
         redirectAttributes.addFlashAttribute("css", "success");
         redirectAttributes.addFlashAttribute("update", true);
@@ -110,7 +106,6 @@ public class SystemClassController {
     
     @RequestMapping("/{id}/delete")
     public String deleteClass(@PathVariable("id") String classId, final RedirectAttributes redirectAttributes){
-        logger.info("deleteClass()");
         SystemClass systemClass = systemClassService.getOneById(Long.valueOf(classId));
         systemClassService.deleteById(Long.valueOf(classId));
         redirectAttributes.addFlashAttribute("css", "danger");

@@ -44,6 +44,8 @@ public class HomeControllerTest {
     private static final String DESCRIPTION = "Some description";
     private static final BigDecimal UNIT_PRICE = new BigDecimal("99.99");
     private static final int QUANTITY = 1;
+    private static final String PROMOTION = "N";
+    private static final int DISCOUNT = 0;
     
     @Before
     public void setup(){
@@ -56,6 +58,8 @@ public class HomeControllerTest {
                 .withDescription(DESCRIPTION)
                 .withUnitPrice(UNIT_PRICE)
                 .withQuantityInBox(QUANTITY)
+                .withPromotion(PROMOTION)
+                .withDiscount(DISCOUNT) 
                 .withStatus(ProductStatus.ED.name())
                 .build();
         productService.create(testProduct);

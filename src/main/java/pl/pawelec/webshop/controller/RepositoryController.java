@@ -28,12 +28,11 @@ import pl.pawelec.webshop.utils.AtributesModel;
 public class RepositoryController {
     @Autowired
     private RepositoryService repositoryService;
-    private Logger logger = Logger.getLogger(RepositoryController.class);
+    
     
     
     @RequestMapping
     public String getAllStock(Model model, HttpServletRequest request){
-        logger.info("### getWholeStock");
 //        System.out.println("User=" + request.getRemoteUser());
 //        System.out.println("Principal name=" + SecurityContextHolder.getContext().getAuthentication().getName());
 //        System.out.println("Principal principal=" + SecurityContextHolder.getContext().getAuthentication().getPrincipal());

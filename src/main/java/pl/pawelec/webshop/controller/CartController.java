@@ -6,7 +6,6 @@
 package pl.pawelec.webshop.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,14 +21,12 @@ import pl.pawelec.webshop.utils.AtributesModel;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
-    private Logger logger = Logger.getLogger(CartController.class);
     @Autowired
     private CartService cartService;
     
     
     @RequestMapping
     public String getSessionId(HttpServletRequest request){
-        logger.info("### getSessionId, sessionId=" + request.getSession(true).getId());
         return "redirect:/cart/" + request.getSession(true).getId();
     } 
     

@@ -17,7 +17,8 @@
           http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.4.xsd">
     
     <mvc:annotation-driven enable-matrix-variables="true" validator="validator" />
-    <context:component-scan base-package="pl.pawelec.webshop.controller ; pl.pawelec.webshop.validator"/>
+    <context:component-scan base-package="pl.pawelec.webshop.controller ; pl.pawelec.webshop.validator ; pl.pawelec.webshop.aop"/>
+    <aop:aspectj-autoproxy/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />

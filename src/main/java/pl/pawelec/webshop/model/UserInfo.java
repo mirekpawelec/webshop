@@ -249,8 +249,8 @@ public class UserInfo implements Serializable{
         return "UserInfo{" 
                 + " userId=" + userId 
                 + ", login=" + login 
-                + ", password=" + password
-                + ", repeatPassword=" + repeatPassword
+//                + ", password=" + password
+//                + ", repeatPassword=" + repeatPassword
                 + ", firstName=" + firstName 
                 + ", lastName=" + lastName 
                 + ", email=" + email 

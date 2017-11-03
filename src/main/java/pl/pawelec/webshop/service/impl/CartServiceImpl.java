@@ -54,7 +54,7 @@ public class CartServiceImpl implements CartService{
     public Cart getOneById(Long id) {
         Cart cart = cartDao.getOneById(id);
         cart.updateCostOfAllItems();
-        System.out.println("id=" + id +", cart="+ cart);
+//        System.out.println("id=" + id +", cart="+ cart);
         return cart;
     }
 

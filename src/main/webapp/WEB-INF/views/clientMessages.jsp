@@ -29,10 +29,9 @@
 
     <jsp:include page="./fragments/header.jsp" />
         
-        <section class="main">       
-            <jsp:include page="./fragments/navi.jsp"/>
+        <section class="main"> 
             
-            <hr>
+            <jsp:include page="./fragments/navi.jsp"/>
             
             <div class="container">
                 <div class="row">

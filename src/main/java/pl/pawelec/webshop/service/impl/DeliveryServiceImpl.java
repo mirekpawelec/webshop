@@ -162,7 +162,7 @@ public class DeliveryServiceImpl implements DeliveryService{
         HttpServletRequest req = (HttpServletRequest)context.getExternalContext().getNativeRequest(); 
         String url = context.getFlowExecutionUrl();
         url = url.substring(url.indexOf("/", 1), url.length()) + "&";
-        System.out.println(url);
+//        System.out.println(url);
         req.getSession().setAttribute("lastRequestUrl", url);
     }
     

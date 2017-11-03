@@ -26,14 +26,14 @@
 <jsp:include page="./fragments/header.jsp"/>      
 
     <section class="main">
+        
         <jsp:include page="./fragments/navi.jsp"/>
-        <hr>
 
         <div class="container">
             <br><br><br><br><br><br>
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
-                    <div class="panel panel-default">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h3 class="panel-title"> ${panelTitleMsg} </h3>
                         </div>

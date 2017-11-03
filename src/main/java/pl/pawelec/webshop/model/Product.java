@@ -119,6 +119,8 @@ public class Product implements Serializable{
         this.description = builder.description;
         this.unitPrice = builder.unitPrice;
         this.quantityInBox = builder.quantityInBox;
+        this.promotion = builder.promotion;
+        this.discount = builder.discount;
         this.status = builder.status;
         this.createDate = builder.createDate;
         this.repositorySet = builder.repositorySet;
@@ -346,7 +348,7 @@ public class Product implements Serializable{
                 + ", category=" + category 
                 + ", unitPrice=" + unitPrice // + '}';
                 + ", quantityInBox=" + quantityInBox 
-                + "promotion=" + promotion 
+                + ", promotion=" + promotion 
                 + ", discount=" + discount
                 + ", status=" + status 
                 + ", createDate=" + createDate

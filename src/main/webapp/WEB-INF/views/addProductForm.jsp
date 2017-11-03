@@ -35,8 +35,9 @@
     <jsp:include page="./fragments/header.jsp" /> 
 
         <section class="main">
+            
             <jsp:include page="./fragments/navi.jsp"/>
-            <hr>
+   
             <div class="container">
                 <div class="row">
                     <div class="page-header text-center">

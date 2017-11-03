@@ -10,9 +10,10 @@
     
     <jsp:include page="./fragments/header.jsp" />
         
-        <section class="main">      
+        <section class="main"> 
+            
             <jsp:include page="./fragments/navi.jsp"/>
-            <hr>
+
             <div class="container">
             
                 <hr class="gray">

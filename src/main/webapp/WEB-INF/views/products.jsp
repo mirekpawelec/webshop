@@ -90,9 +90,10 @@
                                         </td>
                                         <td> ${product.discount} </td>
                                         <td> ${product.status} </td>
-                                             <c:set var="createDate" value="${fn:replace(product.createDate, 'T' , ' ')}" />
-                                             <fmt:parseDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />
-                                        <td> <fmt:formatDate pattern="dd.MM.yyyy HH:mm:ss" value="${parsedDateTime}" /> </td>
+                                             <%--<c:set var="createDate" value="${fn:replace(product.createDate, 'T' , ' ')}" />--%>
+                                             <%--<fmt:parseDate value="${createDate}" pattern="yyyy-MM-dd HH:mm:ss" var="parsedDateTime" type="both" />--%>
+                                        <!--<td> <fmt :formatDate pattern="dd.MM.yyyy HH:mm:ss" value="$ {parsedDateTime}" /> </td>-->
+                                        <td>${fn:replace(product.createDate, 'T' , ' ')}</td>
                                         <td>
                                             <a href="#product${product.productId}" data-toggle="modal" class="btn btn-primary btn-xs">
                                                 <span class="glyphicon glyphicon-check"> </span> ${showTabBtnLbl}

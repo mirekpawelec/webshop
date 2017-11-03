@@ -32,7 +32,6 @@ public class ClientMessageController {
     
     @RequestMapping
     public String getAllMessages(Model model, HttpServletRequest request){
-        logger.info("### getAllMessages");
         model.addAttribute("messages", clientMessageService.getAll());
         model.addAttribute("jspFile", "clientMessage");
         AtributesModel.addGlobalAtributeToModel(model, request);
@@ -41,7 +40,6 @@ public class ClientMessageController {
     
     @RequestMapping(value = "/{id}/delete")
     public String deleteMessage(@PathVariable("id") String messageId, final RedirectAttributes redirectAttributes){
-        logger.info("### deleteMessage");
         ClientMessage deleteMessage = clientMessageService.getOneById(Long.valueOf(messageId));
         clientMessageService.delete(deleteMessage);
         redirectAttributes.addFlashAttribute("deletedMessage", "danger");
@@ -52,7 +50,6 @@ public class ClientMessageController {
     @RequestMapping(value = "/{id}/{status}/modify")
     public String changeStatus(@PathVariable("id") String messageId, @PathVariable("status") String status, 
                                final RedirectAttributes redirectAttributes){
-        logger.info("### changeStatus");
         ClientMessage modifyMessage = clientMessageService.getOneById(Long.valueOf(messageId));
         modifyMessage.setStatus(MessageStatus.valueOf(status).getName());
         clientMessageService.update(modifyMessage);

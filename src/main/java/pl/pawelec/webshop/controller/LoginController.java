@@ -34,22 +34,21 @@ import pl.pawelec.webshop.validator.UserInfoValidator;
 @SessionAttributes(names = {"loggedInUser","role"})
 @Controller
 public class LoginController {
+    private Logger logger = Logger.getLogger(ProductController.class);
     @Autowired
     private UserInfoService userInfoService;
     @Autowired
     private UserInfoValidator userInfoValidator;
-    private Logger logger = Logger.getLogger(ProductController.class);
+    
     
     
     @RequestMapping(value = "/*")
     public String homepage(){
-        logger.info("### homepage");
         return "redirect:/home";
     }
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, HttpServletRequest request){
-        logger.info("### login");
         model.addAttribute("jspFile", "login");
         AtributesModel.addGlobalAtributeToModel(model, request);
         addLocalAtributesToModel(model);
@@ -58,7 +57,6 @@ public class LoginController {
     
     @RequestMapping(value = "/user/add", method = RequestMethod.GET)
     public String createUser(Model model, HttpServletRequest request){
-        logger.info("### createUser");
         model.addAttribute("newUser", new UserInfo());
         model.addAttribute("jspFile", "newUser");
         AtributesModel.addGlobalAtributeToModel(model, request);
@@ -69,7 +67,6 @@ public class LoginController {
     @RequestMapping(value = "/user/add", method = RequestMethod.POST)
     public String processCreateUser(@ModelAttribute("newUser") @Valid UserInfo userInfoToBeAdd
                                     , BindingResult result, Model model, HttpServletRequest request){
-        logger.info("### processCreateUser");
         if(result.hasErrors()){
             AtributesModel.addGlobalAtributeToModel(model, request);
             addLocalAtributesToModel(model);

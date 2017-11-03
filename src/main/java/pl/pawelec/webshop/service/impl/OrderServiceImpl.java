@@ -148,11 +148,11 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Order saveCustomerOrder(Order order) {
-        System.out.println("order=" + order 
-                       +"\n order.cart=" + order.getCart()
-                       +"\n order.customer=" + order.getCustomer()
-                       +"\n order.shippmentDetail=" + order.getShippingAddress()
-                       +"\n order.shippmentDetail=" + order.getShippingDetails());
+//        System.out.println("order=" + order 
+//                       +"\n order.cart=" + order.getCart()
+//                       +"\n order.customer=" + order.getCustomer()
+//                       +"\n order.shippmentDetail=" + order.getShippingAddress()
+//                       +"\n order.shippmentDetail=" + order.getShippingDetails());
         
         Cart cart = cartDao.getOneById(order.getCart().getCartId());
         cart.setLastModificationDate(LocalDateTime.now());
@@ -190,7 +190,7 @@ public class OrderServiceImpl implements OrderService{
         HttpServletRequest req = (HttpServletRequest)context.getExternalContext().getNativeRequest(); 
         String url = context.getFlowExecutionUrl();
         url = url.substring(url.indexOf("/", 1), url.length()) + "&";
-        System.out.println(url);
+//        System.out.println(url);
         req.getSession().setAttribute("lastRequestUrl", url);
     }
 }

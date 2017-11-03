@@ -39,7 +39,6 @@ import pl.pawelec.webshop.utils.AtributesModel;
 @RequestMapping("/home")
 @Controller
 public class HomeController {
-    private Logger logger = Logger.getLogger(HomeController.class);
     @Autowired
     private ProductService productService;
     @Autowired
@@ -58,7 +57,6 @@ public class HomeController {
                                  @ModelAttribute("filterProducts") ProductFilter filterOfProducts, 
                                  Model model, 
                                  HttpServletRequest request){
-        logger.info("### getAllProducts");
         
         if(result.hasErrors() && !message.isNew()){
             AtributesModel.addGlobalAtributeToModel(model, request);
@@ -108,7 +106,7 @@ public class HomeController {
                     })
                 .collect(Collectors.toList());
         model.addAttribute("allProducts", afterFilteringProducts);
-        
+
         List<Product> promotionProducts = productService.getAll().stream()
                                                 .filter(p->p.getPromotion().equals("T") && p.getStatus().equals(ProductStatus.OK.name()))
                                                 .collect(Collectors.toList());
@@ -121,7 +119,6 @@ public class HomeController {
     
     @RequestMapping("/product")
     public String getProductByNo(@RequestParam String productNo, Model model, HttpServletRequest request){
-        logger.info("### getProductByNo");
         Product product;
         product = productService.getOneByProductNo(productNo); 
         product.setStatus( ProductStatus.valueOf(product.getStatus()).getDescription() );
@@ -134,7 +131,6 @@ public class HomeController {
 
     public void initializeBinder(WebDataBinder binder){
         binder.setAllowedFields("manufacturer", "category", "minUnitPrice", "maxUnitPrice", "inStock", "language", "loggedInUser", "role", "subject", "name", "content", "email");
-//        binder.setValidator(clientMessageValidator);
     }
 
     private Model addLocalAtributesToModel(Model model, HttpServletRequest request, String namePage){

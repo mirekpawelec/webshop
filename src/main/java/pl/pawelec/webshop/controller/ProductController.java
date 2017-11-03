@@ -61,7 +61,6 @@ public class ProductController {
     
     @RequestMapping
     public String getAllProducts(Model model, HttpServletRequest request){
-        logger.info("### allProducts");
         List<Product> products = productService.getAll();
         products.stream().forEach(p -> p.setStatus(ProductStatus.valueOf(p.getStatus()).getDescription()));
         model.addAttribute("products", products); 
@@ -73,7 +72,6 @@ public class ProductController {
     
     @RequestMapping("/product")
     public String getProductById(@RequestParam("id") String productId, Model model, HttpServletRequest request){
-        logger.info("### getProductById");
         Product product;
         String regex = "[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{2}";
         if(productId.matches(regex)){
@@ -92,7 +90,6 @@ public class ProductController {
     
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String updateProductForm(@PathVariable("id") String productId, Model model, HttpServletRequest request){
-        logger.info("### updateProductForm");
         Product updateProduct = productService.getOneById(Long.valueOf(productId));
         model.addAttribute("updateProductForm", updateProduct);
         model.addAttribute("productId", updateProduct.getProductId());
@@ -106,7 +103,6 @@ public class ProductController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String processUpdateProductForm(@ModelAttribute("updateProductForm") @Validated({updateForm.class}) Product productToBeUpdate, 
                                                BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
-        logger.info("### processUpdateProductForm");
         if(result.hasErrors()){
             return "updateProductForm";
         }
@@ -119,7 +115,7 @@ public class ProductController {
         if(productToBeUpdate.getDiscount()==null){
             productToBeUpdate.setDiscount(0);
         }
-        logger.info("Update: " + productToBeUpdate);
+        logger.info("Save... ["+productToBeUpdate+']');
         productService.update(productToBeUpdate);
         redirect.addFlashAttribute("typeProcess", "update");
         redirect.addFlashAttribute("css", "success");
@@ -130,7 +126,6 @@ public class ProductController {
     
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addProductForm(Model model, HttpServletRequest request){
-        logger.info("### addProductForm");
         Product product = new Product();
         model.addAttribute("newProductForm", product);
         model.addAttribute("jspFile", "newProductForm");
@@ -142,7 +137,6 @@ public class ProductController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddProductForm(@ModelAttribute("newProductForm") @Validated({newForm.class}) Product productToBeAdd, 
                                                 BindingResult result, HttpServletRequest request, final RedirectAttributes redirect){
-        logger.info("### processAddProductForm" + productToBeAdd); 
         if(result.hasErrors()){
             return "addProductForm";
         }
@@ -177,7 +171,7 @@ public class ProductController {
         if(productToBeAdd.getDiscount()==null){
             productToBeAdd.setDiscount(0);
         }
-        logger.info("Save: " + productToBeAdd);
+        logger.info("Save... ["+productToBeAdd+']');
         productService.create(productToBeAdd);
         redirect.addFlashAttribute("typeProcess", "create");
         redirect.addFlashAttribute("css", "success"); 
@@ -188,7 +182,6 @@ public class ProductController {
     
     @RequestMapping(value = "/{params}/delete")
     public String deleteProductById(@MatrixVariable(pathVar = "params") Map<String, List<String>> paramList, Model model, final RedirectAttributes redirect){
-        logger.info("### deleteProductById");
         Long deleteId = Long.parseLong(paramList.get("id").get(0));
         String deleteProductNo = paramList.get("productNo").get(0);
         logger.info("Delete:" + deleteId);
