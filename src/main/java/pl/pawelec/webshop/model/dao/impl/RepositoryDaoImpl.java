@@ -7,10 +7,12 @@ package pl.pawelec.webshop.model.dao.impl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
 import pl.pawelec.webshop.model.Repository;
 import pl.pawelec.webshop.model.dao.AbstrDao;
 import pl.pawelec.webshop.model.dao.RepositoryDao;
@@ -21,7 +23,8 @@ import pl.pawelec.webshop.model.dao.RepositoryDao;
  */
 @org.springframework.stereotype.Repository
 public class RepositoryDaoImpl extends AbstrDao<Repository> implements RepositoryDao{
-
+    Logger logger = Logger.getLogger(RepositoryDaoImpl.class);
+    
     public List<Repository> getByStatus(String status) {
         return getEntityManager().createQuery("from Repository WHERE status = :status").setParameter("status", status).getResultList();
     }
@@ -57,7 +60,11 @@ public class RepositoryDaoImpl extends AbstrDao<Repository> implements Repositor
 //            System.out.println(sqlQuery);
             result = query.getResultList();
         }catch(NoResultException nre){
-            System.out.println("No data found!");
+            logger.info("No data found!");
+        }catch(DateTimeParseException pe){
+            logger.info("it has occurred an conversion error a date! " + pe.getMessage());
+        }catch(Exception e){
+            logger.info(e.getMessage());
         }
         return result;
     }

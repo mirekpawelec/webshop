@@ -35,7 +35,7 @@
     <div class="row" style="padding-top: 100px;">
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
             <div class="btn-group pull-right" role="group" >
-                <security:authorize access="hasRole('ADMIN')">
+                <security:authorize access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           ${warehouseLbl}
@@ -47,7 +47,7 @@
                     </div>
                 </security:authorize>
                 
-                <security:authorize access="hasRole('ADMIN') or hasRole('USER')">
+                <security:authorize access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           ${deliveriesLbl}
@@ -60,7 +60,7 @@
                     </div>
                 </security:authorize>
                 
-                <security:authorize access="hasRole('ADMIN')">
+                <security:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           ${allProductLbl}
@@ -73,7 +73,7 @@
                     </div>
                 </security:authorize>
                 
-                <security:authorize access="hasRole('ADMIN')">
+                <security:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           ${usersLbl}
@@ -86,7 +86,7 @@
                     </div>
                 </security:authorize>
                 
-                <security:authorize access="hasRole('ADMIN')">
+                <security:authorize access="hasRole('DBA')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           ${systemClassLbl}
@@ -99,7 +99,7 @@
                     </div>
                 </security:authorize>
                 
-                <security:authorize access="hasRole('ADMIN')">
+                <security:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           ${clientMessagesLbl}
