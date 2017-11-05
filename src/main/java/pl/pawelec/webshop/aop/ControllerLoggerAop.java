@@ -9,18 +9,18 @@ import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author mirek
  */
-@Component
+@Controller
 @Aspect
-public class RepositoryControllerAop {
-    private static final Logger log = Logger.getLogger(RepositoryControllerAop.class);
+public class ControllerLoggerAop {
+    private static final Logger log = Logger.getLogger(ControllerLoggerAop.class);
     
-    @Around("execution(* pl.pawelec.webshop.controller.RepositoryController.*(..))")
+    @Around("execution(* pl.pawelec.webshop.controller.**.*(..))")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable{
         Object result = null;
         log.info("[AROUND-BEFORE] Method called: " + joinPoint.getSignature());

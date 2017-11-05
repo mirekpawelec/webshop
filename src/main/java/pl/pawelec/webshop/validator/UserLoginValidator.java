@@ -6,9 +6,9 @@
 package pl.pawelec.webshop.validator;
 
 import java.util.Optional;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import pl.pawelec.webshop.model.UserInfo;
 import pl.pawelec.webshop.service.UserInfoService;
 
@@ -16,24 +16,37 @@ import pl.pawelec.webshop.service.UserInfoService;
  *
  * @author mirek
  */
-public class UserLoginValidator implements ConstraintValidator<UserLogin, String>{
-
+public class UserLoginValidator implements Validator{
     @Autowired
     private UserInfoService userInfoService;
     
     @Override
-    public void initialize(UserLogin constraintAnnotation) {
+    public boolean supports(Class<?> type) {
+        return UserInfo.class.equals(type);
     }
 
     @Override
-    public boolean isValid(String loginNo, ConstraintValidatorContext context) {
-        UserInfo userInfo = null;
+    public void validate(Object validationClass, Errors errors) {
+        UserInfo userInfo, userExist;
+        userInfo = userExist = new UserInfo();
+        String login = "";
+        
+        userInfo = (UserInfo) validationClass;
         try{
-            userInfo = userInfoService.getByLogin(loginNo);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+            if(userInfo.isNew()){
+                userExist = userInfoService.getByLogin(userInfo.getLogin());
+                if(Optional.ofNullable(userExist.getUserId()).isPresent()){
+                    errors.rejectValue("login", "pl.pawelec.webshop.validator.UserLoginValidator.message");
+                }
+            }else{
+                userExist = userInfoService.getByLogin(userInfo.getLogin());
+                if(!userInfo.getUserId().equals(userExist.getUserId())){
+                    errors.rejectValue("login", "pl.pawelec.webshop.validator.UserLoginValidator.message");
+                }
+            }
+        }catch(NullPointerException npe){
+            System.out.println("UserLoginValidator(): It's ok! The login does not exist.");
         }
-        return Optional.ofNullable(userInfo).isPresent()? false : true;
     }
     
 }

@@ -8,6 +8,7 @@ package pl.pawelec.webshop.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -57,7 +58,7 @@ public class UserInfo implements Serializable{
 
     @Column(length = 2)
     private String status;
-    
+
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
     @Column(name = "last_login")
     private LocalDateTime lastLoginDate;
@@ -69,7 +70,7 @@ public class UserInfo implements Serializable{
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
     @Column(name = "c_date")
     private LocalDateTime createDate;
-
+    
     
     
     public UserInfo() {
@@ -91,7 +92,9 @@ public class UserInfo implements Serializable{
 
 
 
-    
+    public boolean isNew(){
+        return !Optional.ofNullable(userId).isPresent();
+    }
     
     public Long getUserId() {
         return userId;
@@ -103,7 +106,7 @@ public class UserInfo implements Serializable{
     
     @NotEmpty(message = "{NotEmpty.UserInfo.login.validation}")
     @Size(max = 50, message = "{Size.UserInfo.login.validation}")
-    @UserLogin
+//    @UserLogin
     public String getLogin() {
         return login;
     }
@@ -112,7 +115,7 @@ public class UserInfo implements Serializable{
         this.login = login;
     }
 
-    @NotEmpty(message = "{NotEmpty.UserInfo.password.validation}")
+//    @NotEmpty(message = "{NotEmpty.UserInfo.password.validation}")
     @Size(max = 100, message = "{Size.UserInfo.password.validation}")
     public String getPassword() {
         return password;
@@ -122,7 +125,7 @@ public class UserInfo implements Serializable{
         this.password = password;
     }
 
-    @NotEmpty(message = "{NotEmpty.UserInfo.repeatPassword.validation}")
+//    @NotEmpty(message = "{NotEmpty.UserInfo.repeatPassword.validation}")
     @Size(max = 100, message = "{Size.UserInfo.repeatPassword.validation}")
     public String getRepeatPassword() {
         return repeatPassword;
@@ -208,7 +211,13 @@ public class UserInfo implements Serializable{
     
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.login);
+        hash = 53 * hash + Objects.hashCode(this.firstName);
+        hash = 53 * hash + Objects.hashCode(this.lastName);
+        hash = 53 * hash + Objects.hashCode(this.email);
+        hash = 53 * hash + Objects.hashCode(this.role);
+        hash = 53 * hash + Objects.hashCode(this.status);
         return hash;
     }
 
@@ -239,6 +248,9 @@ public class UserInfo implements Serializable{
         if (!Objects.equals(this.role, other.role)) {
             return false;
         }
+        if (!Objects.equals(this.status, other.status)) {
+            return false;
+        }
         return true;
     }
 
@@ -249,8 +261,8 @@ public class UserInfo implements Serializable{
         return "UserInfo{" 
                 + " userId=" + userId 
                 + ", login=" + login 
-//                + ", password=" + password
-//                + ", repeatPassword=" + repeatPassword
+                + ", password=" + password
+                + ", repeatPassword=" + repeatPassword
                 + ", firstName=" + firstName 
                 + ", lastName=" + lastName 
                 + ", email=" + email 

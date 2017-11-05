@@ -23,8 +23,14 @@ public class UserPasswordValidator implements Validator{
     @Override
     public void validate(Object validationClass, Errors errors) {
         UserInfo userInfo = (UserInfo) validationClass;
-        if(userInfo.getPassword()==null && userInfo.getRepeatPassword()==null){
-            return;
+        
+        if(userInfo.isNew()){
+            if(userInfo.getPassword().isEmpty()){
+                errors.rejectValue("password", "pl.pawelec.webshop.validator.UserPsswordValidator.NotNull.message");
+            } 
+            if(userInfo.getRepeatPassword().isEmpty()){
+                errors.rejectValue("repeatPassword", "pl.pawelec.webshop.validator.UserPsswordValidator.NotNull.message");
+            }
         }
         if(!userInfo.getPassword().equals(userInfo.getRepeatPassword())){
             errors.rejectValue("repeatPassword", "pl.pawelec.webshop.validator.UserPsswordValidator.message");

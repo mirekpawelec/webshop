@@ -9,20 +9,20 @@ import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author mirek
  */
-@Component
-@Aspect
-public class ClientMessageControllerAop {
-    private static final Logger log = Logger.getLogger(ClientMessageControllerAop.class);
+//@Controller
+//@Aspect
+public class ServiceImplLoggerAop {
+    private static final Logger log = Logger.getLogger(ServiceImplLoggerAop.class);
     
-    @Around("execution(* pl.pawelec.webshop.controller.ClientMessageController.*(..))")
+//    @Around("execution(* pl.pawelec.webshop.service.impl.*.*(..))")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable{
-                Object result = null;
+        Object result = null;
         log.info("[AROUND-BEFORE] Method called: " + joinPoint.getSignature());
         if(joinPoint.getArgs().length==0){
             log.info("[AROUND-BEFORE] No arguments passed.");

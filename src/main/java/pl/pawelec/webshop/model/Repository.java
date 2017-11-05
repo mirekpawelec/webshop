@@ -61,7 +61,7 @@ public class Repository implements Serializable{
     
     @Column(name = "lm_date")
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
-    private LocalDateTime lastModifikationDate;
+    private LocalDateTime lastModificationDate;
     
     @Column(name = "c_date")
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
@@ -139,12 +139,12 @@ public class Repository implements Serializable{
         this.status = status;
     }
 
-    public LocalDateTime getLastModifikationDate() {
-        return lastModifikationDate;
+    public LocalDateTime getLastModificationDate() {
+        return lastModificationDate;
     }
 
-    public void setLastModifikationDate(LocalDateTime lastModifikationDate) {
-        this.lastModifikationDate = lastModifikationDate;
+    public void setLastModificationDate(LocalDateTime lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
     }
 
     public LocalDateTime getCreateDate() {
@@ -199,7 +199,7 @@ public class Repository implements Serializable{
                 + ", state=" + state 
                 + ", qualityStatus=" + qualityStatus 
                 + ", status=" + status 
-                + ", lastModifikationDate=" + lastModifikationDate 
+                + ", lastModificationDate=" + lastModificationDate 
                 + ", createDate=" + createDate 
                 + '}';
     }

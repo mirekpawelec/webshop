@@ -6,6 +6,7 @@
 package pl.pawelec.webshop.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,11 +21,13 @@ import pl.pawelec.webshop.model.enum_.UserStatus;
  */
 public class UserDetailsAdapter implements UserDetails, Serializable{
     private UserInfo userInfo;
+    private LocalDateTime loginDate;
     
     
     
     public UserDetailsAdapter(UserInfo userInfo) {
         this.userInfo = userInfo;
+        this.loginDate = LocalDateTime.now();
     }
     
     
@@ -51,6 +54,10 @@ public class UserDetailsAdapter implements UserDetails, Serializable{
     
     public String getEmail() { 
         return userInfo.getEmail(); 
+    }
+    
+    public LocalDateTime getLoginDate() { 
+        return loginDate; 
     }
     
     @Override
@@ -89,5 +96,9 @@ public class UserDetailsAdapter implements UserDetails, Serializable{
     public boolean isEnabled() {
         return userInfo.getStatus().equals(UserStatus.OK.name());
     }
-    
+
+    @Override
+    public String toString() {
+        return "UserDetailsAdapter{" + "userInfo=" + userInfo + ", loginDate=" + loginDate + '}';
+    }    
 }

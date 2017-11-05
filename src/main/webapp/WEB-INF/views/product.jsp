@@ -14,10 +14,13 @@
             
             <jsp:include page="./fragments/navi.jsp"/>
 
-            <div class="container">
-            
-                <hr class="gray">
-                
+            <div class="container">                
+                <div class="row">
+                    <div class="page-header">
+                        <h2> <spring:message code="product.pageHeader.label"/> ${product.manufacturer} <small>${product.name}</small> </h2>
+                    </div>
+                </div>
+                    
                 <div class="row">
                     <c:if test="${not empty css}">
                         <div class="alert alert-${css} alert-dismissable" role="alert">
@@ -32,14 +35,8 @@
                                 </c:choose>
                         </div>                        
                     </c:if>
-                </div>
-                
-                <div class="row">
-                        <div class="page-header">
-                            <h2> <spring:message code="product.pageHeader.label"/> ${product.manufacturer} <small>${product.name}</small> </h2>
-                        </div>
-                </div>
-                        
+                </div>  
+                    
                 <div class="row">
                     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                         <spring:url value="/resource/img/${product.productNo}.jpg" var="imageUrl"/>

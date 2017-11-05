@@ -14,6 +14,8 @@
 <spring:url value="/admin/delivery" var="newDeliveryUrl"/>
 <spring:url value="/admin/products" var="allProductUrl"/>
 <spring:url value="/admin/products/add" var="addNewProductUrl"/>
+<spring:url value="/admin/users" var="usersUrl"/>
+<spring:url value="/user/add" var="userAddUrl"/>
 <spring:url value="/admin/classes" var="systemClassUrl"/>
 <spring:url value="/admin/classes/add" var="addSystemClassUrl"/>
 <spring:url value="/admin/messages" var="clientMessagesUrl"/>
@@ -23,6 +25,8 @@
 <spring:message code="navi.button.deliveries.label" var="deliveriesLbl" />
 <spring:message code="navi.button.allProduct.label" var="allProductLbl" />
 <spring:message code="navi.button.newProduct.label" var="newProductLbl" />
+<spring:message code="navi.button.users.label" var="usersLbl" />
+<spring:message code="navi.button.userAdd.label" var="userAddLbl" />
 <spring:message code="navi.button.systemClasses.label" var="systemClassLbl" />
 <spring:message code="navi.button.addSystemClasses.label" var="addSystemClassLbl" />
 <spring:message code="navi.button.clientMessages.label" var="clientMessagesLbl" />
@@ -65,6 +69,19 @@
                         <ul class="dropdown-menu">
                           <li><a href="${allProductUrl}">${allProductLbl}</a></li>
                           <li><a href="${addNewProductUrl}">${newProductLbl}</a></li>
+                        </ul>
+                    </div>
+                </security:authorize>
+                
+                <security:authorize access="hasRole('ADMIN')">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          ${usersLbl}
+                          <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="${usersUrl}">${usersLbl}</a></li>
+                          <li><a href="${userAddUrl}">${userAddLbl}</a></li>
                         </ul>
                     </div>
                 </security:authorize>

@@ -51,11 +51,13 @@
         </property>
     </bean>
     
-    <bean id="userPasswordValidator" class="pl.pawelec.webshop.validator.UserPasswordValidator"/> 
+    <bean id="userPasswordValidator" class="pl.pawelec.webshop.validator.UserPasswordValidator"/>
+    <bean id="userLoginValidator" class="pl.pawelec.webshop.validator.UserLoginValidator"/> 
     <bean id="userInfoValidator" class="pl.pawelec.webshop.validator.UserInfoValidator">
         <property name="springValidators">
             <set>
                 <ref bean="userPasswordValidator"/>
+                <ref bean="userLoginValidator"/>
             </set>
         </property>
     </bean>

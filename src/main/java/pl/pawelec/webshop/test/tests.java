@@ -329,18 +329,18 @@ public class tests {
     
 //        cis.deleteById(18l);
         
-        Cart cart = new Cart("123123123123123123123");
+//        Cart cart = new Cart("123123123123123123123");
 //        cs.create( cart );
 //        cart = cs.getBySessionId("123123123123123123123").get(0);
 //        cart.setCartId(22l);
 //        System.out.println(cs.getOneById(22l));
 //        
-        Customer customer = new Customer("firstName", "lastName", "+48 321 321 321", "email@email.pl", as.getOneById(2l));
+//        Customer customer = new Customer("firstName", "lastName", "+48 321 321 321", "email@email.pl", as.getOneById(2l));
 //        customer.setCustomerId(1l);
 //        cuss.create(customer);
 //        System.out.println(cuss.getAll());
         
-        Address address = new Address("doorNo", "streetName", "areaName", "state", "country", "55-555");
+//        Address address = new Address("doorNo", "streetName", "areaName", "state", "country", "55-555");
 //        address.setAddressId(1l);
 //        as.create(address);  
 
@@ -351,20 +351,20 @@ public class tests {
 //        System.out.println( os.getOneById(2l) );
     
         
-        ShippingAddress sa = new ShippingAddress();
-        sa.setName("Jurek z konopi");
-        sa.setPhoneNumber("+48 123 123 123");
+//        ShippingAddress sa = new ShippingAddress();
+//        sa.setName("Jurek z konopi");
+//        sa.setPhoneNumber("+48 123 123 123");
 //        sa.setAddress(as.getOneById(1l));
 //        sadds.create(sa);
 //        System.out.println(sadds.count());
 //        sadds.getAll().forEach(System.out::println);
         
         
-        ShippingDetails sDetails = new ShippingDetails();
-        sDetails.setDeliveryMethod("Kurier");
-        sDetails.setDeliveryCost(new BigDecimal("20"));
-        sDetails.setPaymentMethod("Karta kredytowa");
-        sDetails.setPaymentCost(new BigDecimal("5"));
+//        ShippingDetails sDetails = new ShippingDetails();
+//        sDetails.setDeliveryMethod("Kurier");
+//        sDetails.setDeliveryCost(new BigDecimal("20"));
+//        sDetails.setPaymentMethod("Karta kredytowa");
+//        sDetails.setPaymentCost(new BigDecimal("5"));
                 
 //        sds.create(sDetails);
 //        System.out.println(sds.count());
@@ -373,11 +373,13 @@ public class tests {
 //        os.create(new Order(cs.getOneById(1l), cuss.getOneById(1l), sadds.getOneById(1l), sds.getOneById(1l)));
 //        os.getAll().forEach(System.out::println); 
 
-        BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
-        System.out.println( encrypt.encode("m123"));
+//        BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
+//        System.out.println( encrypt.encode("m123"));
 
 //        uis.create(new UserInfo("admin","root123","ROLE_ADMIN")); //"admin" password="root123" authorities="ROLE_USER,ROLE_ADMIN"
 //        uis.getAll().forEach(System.out::println); 
-        System.out.println( uis.getByLogin("mirekk") );
+//        System.out.println( uis.getByLogin("mirekk") );
+
+//        rs.getByOwnCriteria("from Repository WHERE loadunitNo = '1010166665'", "", "").forEach(System.out::println);
     }
 }

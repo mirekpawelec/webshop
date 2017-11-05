@@ -20,7 +20,7 @@ import javax.validation.Payload;
 @Documented
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserLoginValidator.class)
+@Constraint(validatedBy = UserLoginValidatorOld.class)
 public @interface UserLogin {
     String message() default "{pl.pawelec.webshop.validator.UserLogin.message}";
     Class<?>[] groups() default {};

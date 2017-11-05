@@ -12,34 +12,49 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <spring:url value="/home" var="homeUrl"/>
-<spring:message code="newUser.pageHeader.label" var="headerLbl"/>
-<spring:message code="newUser.form.infoValidationError.label" var="infoValidationErrorLbl"/>
-<spring:message code="newUser.form.login.label" var="loginLbl"/>
-<spring:message code="newUser.form.password.label" var="passwordLbl"/>
-<spring:message code="newUser.form.repeatPassword.label" var="repeatPasswordLbl"/>
-<spring:message code="newUser.form.firstName.label" var="firstNameLbl"/>
-<spring:message code="newUser.form.lastName.label" var="lastNameLbl"/>
-<spring:message code="newUser.form.email.label" var="emailLbl"/>
-<spring:message code="newUser.form.role.label" var="roleLbl"/>
-<spring:message code="newUser.linkToHomepage.button.label" var="backToHomeLbl"/>
-<spring:message code="newUser.form.submitForm.button.label" var="submitFormLbl" />
+<spring:url value="/admin/users" var="usersUrl"/>
+<spring:url value="/user/add" var="addUserUrl"/>
+<spring:url value="/admin/users/update" var="updateUserUrl"/>
+<spring:message code="addUpdateUser.pageHeader.create.anonymous.label" var="headerCreateUserAnonymousLbl"/>
+<spring:message code="addUpdateUser.pageHeader.create.admin.label" var="headerCreateUserAdminLbl"/>
+<spring:message code="addUpdateUser.pageHeader.update.admin.label" arguments="${modelUser.login}" var="headerUpdateUserAdminLbl"/>
+<spring:message code="addUpdateUser.form.infoValidationError.label" var="infoValidationErrorLbl"/>
+<spring:message code="addUpdateUser.form.login.label" var="loginLbl"/>
+<spring:message code="addUpdateUser.form.password.label" var="passwordLbl"/>
+<spring:message code="addUpdateUser.form.repeatPassword.label" var="repeatPasswordLbl"/>
+<spring:message code="addUpdateUser.form.firstName.label" var="firstNameLbl"/>
+<spring:message code="addUpdateUser.form.lastName.label" var="lastNameLbl"/>
+<spring:message code="addUpdateUser.form.email.label" var="emailLbl"/>
+<spring:message code="addUpdateUser.form.role.label" var="roleLbl"/>
+<spring:message code="addUpdateUser.form.status.label" var="statusLbl"/>
+<spring:message code="addUpdateUser.linkToHomepage.button.label" var="backToHomeLbl"/>
+<spring:message code="addUpdateUser.linkToUsers.button.label" var="backToUsersLbl"/>
+<spring:message code="addUpdateUser.form.submitForm.button.create.label" var="submitFormCreateLbl" />
+<spring:message code="addUpdateUser.form.submitForm.button.update.label" var="submitFormUpdateLbl" />
 
 
 <jsp:include page="./fragments/header.jsp" /> 
 
         <section class="main">
             
+            
             <jsp:include page="./fragments/navi.jsp"/>
             
             <div class="container">
                 <div class="row">
                     <div class="page-header text-center">
-                        <h2> ${headerLbl} </h2>
+                        <security:authorize access="isAnonymous()">
+                            <h2> ${headerCreateUserAnonymousLbl} </h2> 
+                        </security:authorize>
+                        <security:authorize access="isAuthenticated()">
+                            <h2> ${modelUser['new']?headerCreateUserAdminLbl:headerUpdateUserAdminLbl} </h2> 
+                        </security:authorize>
+                        
                     </div>
                 </div>
-                        
-                <form:form modelAttribute="newUser" class="form-horizontal">
-                    <fildset>
+                    
+                <form:form modelAttribute="modelUser" action="${modelUser['new']?addUserUrl:updateUserUrl}" method="post" class="form-horizontal">
+                    <fildset>                 
                         <spring:bind path="*">
                             <c:if test="${status.error}">
                                 <div class="alert alert-danger alert-dismissible" role="alert">
@@ -105,25 +120,35 @@
                                 </div>
                             </spring:bind>
                         </div>
-                        
-                        <div class="row">
-                            <spring:bind path="login">
-                                <div class="form-group ${status.error?'has-error':''}">
-                                    <div class="hidden-xs col-sm-3 col-md-3 col-lg-3 text-right">
-                                        <label for="login" class="control-label"> ${loginLbl} </label>
-                                    </div>
-                                    
-                                    <div class="visible-xs col-xs-offset-1 col-xs-10 text-left">
-                                        <label for="login" class="control-label"> ${loginLbl} </label>
-                                    </div>
-                                    
-                                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
-                                        <form:input type="text" id="login" path="login" class="form-control" placeholder="${fn:toLowerCase(loginLbl)}"/>
-                                        <form:errors path="login" class="text-danger"/>
-                                    </div>
+                    
+                        <c:choose>
+                            <c:when test="${modelUser['new']}">
+                                <div class="row">
+                                    <spring:bind path="login">
+                                        <div class="form-group ${status.error?'has-error':''}">
+                                            <div class="hidden-xs col-sm-3 col-md-3 col-lg-3 text-right">
+                                                <label for="login" class="control-label"> ${loginLbl} </label>
+                                            </div>
+
+                                            <div class="visible-xs col-xs-offset-1 col-xs-10 text-left">
+                                                <label for="login" class="control-label"> ${loginLbl} </label>
+                                            </div>
+
+                                            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
+                                                <form:input type="text" id="login" path="login" class="form-control" disabled="${modelUser['new']?false:true}" placeholder="${fn:toLowerCase(loginLbl)}"/>
+                                                <form:errors path="login" class="text-danger"/>
+                                            </div>
+                                        </div>
+                                    </spring:bind>
                                 </div>
-                            </spring:bind>
-                        </div>
+                            </c:when>
+                            <c:otherwise> 
+                                <form:hidden path="userId"/>
+                                <form:hidden path="login"/> 
+                                <form:hidden path="lastLoginDate"/>
+                                <form:hidden path="createDate"/>                           
+                            </c:otherwise>
+                        </c:choose>
                         
                         <div class="row">
                             <spring:bind path="password">
@@ -179,19 +204,46 @@
                                             </form:select>
                                         </security:authorize>
                                         <security:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                                            <form:select id="role" path="role" class="form-control" items="${role}" itemValue="name" itemLabel="description"/>
+                                            <form:select id="role" path="role" class="form-control" items="${roles}" itemValue="name" itemLabel="description"/>
                                         </security:authorize>
                                         <form:errors path="role" class="text-danger"/>
                                     </div>
                                 </div>  
                             </spring:bind>
                         </div>
+                        
+                        <security:authorize access="isAuthenticated()">
+                            <div class="row">
+                                <spring:bind path="status">
+                                    <div class="form-group ${status.error?'has-error':''}">
+                                        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3 text-right">
+                                            <label for="status" class="control-label"> ${statusLbl}  </label>
+                                        </div>
+
+                                        <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
+                                            <form:select id="status" path="status" class="form-control">
+                                                <c:forEach items="${statuses}" var="item">
+                                                    <option value="${item.name}" ${modelUser.status==item.name?'selected':''}> ${item.description} </option>
+                                                </c:forEach>
+                                            </form:select>
+                                            <form:errors path="status" class="text-danger"/>
+                                        </div>
+                                    </div>  
+                                </spring:bind>
+                            </div>
+                        </security:authorize>
+                        
                         <hr>
                         
                         <div class="row">
                             <div class="col-xs-11 col-sm-11 col-md-9 col-lg-9 text-right">
-                                <a href="${homeUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${backToHomeLbl} </a>
-                                <button type="submit" class="btn btn-primary"> ${submitFormLbl} </button>
+                                <security:authorize access="isAnonymous()">
+                                    <a href="${homeUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${backToHomeLbl} </a>
+                                </security:authorize>
+                                <security:authorize access="isAuthenticated()">
+                                    <a href="${usersUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${backToUsersLbl} </a>
+                                </security:authorize>
+                                    <button type="submit" class="btn btn-primary"> ${modelUser['new']?submitFormCreateLbl:submitFormUpdateLbl} </button>
                             </div>
                         </div>
                     </fildset>

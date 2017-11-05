@@ -47,6 +47,7 @@ public class LoginControllerTest {
     private static final String LAST_NAME = "Kowalski";
     private static final String EMAIL = "example@example.com";
     private static final String ROLE = "ROLE_USER";
+
     
     @Before
     public void setup(){

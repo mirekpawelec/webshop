@@ -83,5 +83,10 @@ public class RepositoryServiceImpl implements RepositoryService{
     public List<Repository> getByProductNo(String productNo) {
         return repositoryDao.getByProductNo(productNo);
     }
+
+    @Override
+    public List<Repository> getByOwnCriteria(String sqlQuery, String modificationDate, String createDate) {
+        return repositoryDao.getByOwnCriteria(sqlQuery, modificationDate, createDate);
+    }
     
 }

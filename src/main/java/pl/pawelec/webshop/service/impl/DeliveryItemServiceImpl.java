@@ -7,7 +7,6 @@ package pl.pawelec.webshop.service.impl;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.apache.log4j.Logger;
@@ -117,7 +116,7 @@ public class DeliveryItemServiceImpl implements DeliveryItemService, Serializabl
                 repository.setState( ProductState.NEW.name() );
                 repository.setQualityStatus( QualityStatus._0.getNumer() );
                 repository.setStatus( ProductStatus.OK.name() );
-                repository.setLastModifikationDate( LocalDateTime.now() );
+                repository.setLastModificationDate( LocalDateTime.now() );
                 repository.setCreateDate( item.getCreateDate() );
                 repositoryService.create(repository);
                 item.setStatus(ProductStatus.OK.name());

@@ -25,4 +25,5 @@ public interface RepositoryService {
     Repository getByLoadunitNo(String loadunitNo);
     List<Repository> getByStatus(String status);
     List<Repository> getByProductNo(String productNo);
+    List<Repository> getByOwnCriteria(String sqlQuery, String modificationDate, String createDate);
 }
