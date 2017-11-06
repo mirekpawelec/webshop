@@ -8,22 +8,24 @@ package pl.pawelec.webshop.validator;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pl.pawelec.webshop.model.SystemClass;
+import pl.pawelec.webshop.model.AppParameter;
 
 /**
  *
  * @author mirek
  */
-public class SystemClassValidator implements Validator{
-
+public class AppParameterValidator implements Validator{
+    
     @Autowired
     private javax.validation.Validator beanValidator;
-    private Set<Validator> springValidators;      
+    private Set<Validator> springValidators; 
+    Logger logger = Logger.getLogger(AppParameterValidator.class);
     
-    public SystemClassValidator() {
+    public AppParameterValidator() {
         springValidators = new HashSet<Validator>();
     }
     public void setSpringValidators(Set<Validator> springValidators) {
@@ -32,12 +34,11 @@ public class SystemClassValidator implements Validator{
     
     @Override
     public boolean supports(Class<?> type) {
-        return SystemClass.class.isAssignableFrom(type);
+        return AppParameter.class.equals(type);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(target);
         for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
             String propertyPath = constraintViolation.getPropertyPath().toString();
@@ -49,5 +50,4 @@ public class SystemClassValidator implements Validator{
             validator.validate(target, errors);
         }
     }
-    
 }

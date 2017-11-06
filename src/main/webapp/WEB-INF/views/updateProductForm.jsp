@@ -168,6 +168,9 @@
                             </div>
                         </div> 
                     </spring:bind>
+                                
+                    <form:hidden path="createDate"/>
+                    
                     <hr> 
 
                     <div class="row">

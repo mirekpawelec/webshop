@@ -68,7 +68,7 @@ public class LoginControllerTest {
         this.mockMvc.perform( get("/login") )
                 .andExpect( model().attributeExists("jspFile") )
                 .andExpect( model().attribute("jspFile", "login") )
-                .andExpect( model().attributeExists("role") )
+                .andExpect( model().attributeExists("roles") )
                 .andExpect( model().attributeExists("lastRequestUrl") )
                 .andExpect( view().name("login") );;
     }
@@ -80,12 +80,13 @@ public class LoginControllerTest {
         //when & then
         this.mockMvc.perform( get("/user/add") )
                 .andExpect( model().attributeExists("jspFile") )
-                .andExpect( model().attribute("jspFile", "newUser") )
-                .andExpect( model().attributeExists("newUser") )
-                .andExpect( model().attribute("newUser", patternUser) )
-                .andExpect( model().attributeExists("role") )
+                .andExpect( model().attribute("jspFile", "addUser") )
+                .andExpect( model().attributeExists("modelUser") )
+                .andExpect( model().attribute("modelUser", patternUser) )
+                .andExpect( model().attributeExists("roles") )
+                .andExpect( model().attributeExists("statuses") )
                 .andExpect( model().attributeExists("lastRequestUrl") )
-                .andExpect( view().name("addUser") );
+                .andExpect( view().name("addUpdateUser") );
     }
     
     @Test
@@ -94,8 +95,7 @@ public class LoginControllerTest {
         UserInfo userAdded = new UserInfo();
         UserInfo patternUser = new UserInfo(LOGIN, PASSWORD, REPEAT_PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE);
         //when
-        this.mockMvc.perform( post("/user/add").flashAttr("newUser", patternUser) )
-                .andExpect( redirectedUrl("/login") );
+        this.mockMvc.perform( post("/user/add").flashAttr("modelUser", patternUser) );
         userAdded = userInfoService.getByLogin(LOGIN);
         //then
         assertNotNull(userInfoService.getByLogin(LOGIN));

@@ -29,7 +29,7 @@ import pl.pawelec.webshop.model.enum_.CartStatus;
 import pl.pawelec.webshop.service.OrderService;
 import pl.pawelec.webshop.model.dao.ShippingAddressDao;
 import pl.pawelec.webshop.model.dao.ShippingDetailsDao;
-import pl.pawelec.webshop.service.SystemClassService;
+import pl.pawelec.webshop.service.AppParameterService;
 
 /**
  *
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService{
     private ShippingDetailsDao shippingDetailsDao;
     
     @Autowired
-    private SystemClassService systemClassService;
+    private AppParameterService systemClassService;
     
     private final static String DELIVERY_METHOD_SYMBOL_CLASS = "delivery_method";
     private final static String PAYMENT_METHOD_SYMBOL_CLASS = "payment_method";

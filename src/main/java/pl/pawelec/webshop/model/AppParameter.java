@@ -25,14 +25,14 @@ import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
  * @author mirek
  */
 @Entity
-@Table(name = "system_classes", uniqueConstraints = 
+@Table(name = "app_parameter", uniqueConstraints = 
         @UniqueConstraint(columnNames= {"symbol", "name"}))
-public class SystemClass implements Serializable{
+public class AppParameter implements Serializable{
         
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "class_id", nullable = false)
-    private Long classId;
+    @Column(name = "parameter_id", nullable = false)
+    private Long parameterId;
     
     @Column(nullable = false, length = 50)
     private String symbol;
@@ -56,12 +56,12 @@ public class SystemClass implements Serializable{
 
     
     
-    public SystemClass() {
+    public AppParameter() {
         this.lastModificationDate = LocalDateTime.now();
         this.createDate = LocalDateTime.now();
     }
 
-    public SystemClass(String symbol, String name, String value, String description) {
+    public AppParameter(String symbol, String name, String value, String description) {
         this();
         this.symbol = symbol;
         this.name = name;
@@ -72,19 +72,19 @@ public class SystemClass implements Serializable{
     
     
     public boolean isNew(){
-        return this.getClassId()==null;
+        return this.getParameterId()==null;
     }
     
-    public Long getClassId() {
-        return classId;
+    public Long getParameterId() {
+        return parameterId;
     }
 
-    public void setClassId(Long classId) {
-        this.classId = classId;
+    public void setParameterId(Long parameterId) {
+        this.parameterId = parameterId;
     }
 
-    @NotEmpty(message = "{NotEmpty.SystemClass.symbol.validation}")
-    @Size(max = 50, message = "{Size.SystemClass.symbol.validation}")
+    @NotEmpty(message = "{NotEmpty.AppParameter.symbol.validation}")
+    @Size(max = 50, message = "{Size.AppParameter.symbol.validation}")
     public String getSymbol() {
         return symbol;
     }
@@ -93,8 +93,8 @@ public class SystemClass implements Serializable{
         this.symbol = symbol;
     }
 
-    @NotEmpty(message = "{NotEmpty.SystemClass.name.validation}")
-    @Size(max = 50, message = "{Size.SystemClass.name.validation}")
+    @NotEmpty(message = "{NotEmpty.AppParameter.name.validation}")
+    @Size(max = 50, message = "{Size.AppParameter.name.validation}")
     public String getName() {
         return name;
     }
@@ -103,8 +103,8 @@ public class SystemClass implements Serializable{
         this.name = name;
     }
 
-    @NotEmpty(message = "{NotEmpty.SystemClass.value.validation}")
-    @Size(max = 25, message = "{Size.SystemClass.value.validation}")
+    @NotEmpty(message = "{NotEmpty.AppParameter.value.validation}")
+    @Size(max = 25, message = "{Size.AppParameter.value.validation}")
     public String getValue() {
         return value;
     }
@@ -113,7 +113,7 @@ public class SystemClass implements Serializable{
         this.value = value;
     }
 
-    @Size(max = 250, message = "{Size.SystemClass.description.validation}")
+    @Size(max = 250, message = "{Size.AppParameter.description.validation}")
     public String getDescription() {
         return description;
     }
@@ -160,7 +160,7 @@ public class SystemClass implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final SystemClass other = (SystemClass) obj;
+        final AppParameter other = (AppParameter) obj;
         if (!Objects.equals(this.symbol, other.symbol)) {
             return false;
         }
@@ -177,8 +177,8 @@ public class SystemClass implements Serializable{
 
     @Override
     public String toString() {
-        return "SystemClass{" 
-                + " classId=" + classId 
+        return "AppParameter{" 
+                + " parameterId=" + parameterId 
                 + ", symbol=" + symbol 
                 + ", name=" + name 
                 + ", value=" + value 

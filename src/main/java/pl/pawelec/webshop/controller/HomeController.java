@@ -28,8 +28,8 @@ import pl.pawelec.webshop.model.enum_.ProductStatus;
 import pl.pawelec.webshop.service.CartService;
 import pl.pawelec.webshop.service.ClientMessageService;
 import pl.pawelec.webshop.service.ProductService;
-import pl.pawelec.webshop.service.SystemClassService;
 import pl.pawelec.webshop.utils.AtributesModel;
+import pl.pawelec.webshop.service.AppParameterService;
 
 /**
  *
@@ -44,7 +44,7 @@ public class HomeController {
     @Autowired
     private CartService cartService;
     @Autowired
-    private SystemClassService systemClassService;
+    private AppParameterService systemClassService;
     @Autowired
     private ClientMessageService clientMessageService;
     private static final String SYMBOL_SUBJECT_CLIENT_MESSAGE = "subject_client_message";

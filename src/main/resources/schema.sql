@@ -232,3 +232,16 @@ status varchar(2) default 'OK',
 c_date datetime default current_timestamp,
 PRIMARY KEY (message_id)
 )ENGINE = InnoDB;
+
+
+CREATE TABLE app_parameter(
+parameter_id int not null auto_increment,
+symbol varchar(50) not null,
+name varchar(50) not null,
+value varchar(25) not null,
+description varchar(250),
+lm_date datetime default current_timestamp,
+c_date datetime default current_timestamp,
+PRIMARY KEY (class_id),
+UNIQUE KEY (symbol, name)
+)ENGINE = InnoDB;

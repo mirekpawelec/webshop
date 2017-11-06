@@ -195,14 +195,14 @@ public class ProductController {
     
     @InitBinder(value = "newProductForm")
     public void newProductBinder(WebDataBinder webDataBinder){
-        webDataBinder.setDisallowedFields("productId", "createDate");
+        webDataBinder.setDisallowedFields("productId");
         webDataBinder.setValidator(productValidator);
     }
     
     
     @InitBinder(value = "updateProductForm")
     public void updateProductBinder(WebDataBinder webDataBinder){
-        webDataBinder.setDisallowedFields("productId", "productNo", "productImage", "productUserManual", "createDate");
+        webDataBinder.setDisallowedFields("productId", "productNo", "productImage", "productUserManual");
     }
     
     

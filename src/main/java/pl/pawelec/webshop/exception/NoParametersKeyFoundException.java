@@ -9,11 +9,11 @@ package pl.pawelec.webshop.exception;
  *
  * @author mirek
  */
-public class NoSystemClassKeyFoundException extends RuntimeException{
+public class NoParametersKeyFoundException extends RuntimeException{
     private String symbol;
     private String name;
 
-    public NoSystemClassKeyFoundException(String symbol, String name) {
+    public NoParametersKeyFoundException(String symbol, String name) {
         this.symbol = symbol;
         this.name = name;
     }

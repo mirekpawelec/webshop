@@ -73,7 +73,7 @@ public class UserInfoValidatorTest {
         //then
         assertEquals(1, bindException.getErrorCount());
         assertEquals("login", bindException.getFieldError().getField());
-        assertTrue(bindException.getFieldError("login").getDefaultMessage().contains("Podany login jest już używany"));
+        assertTrue(bindException.getFieldError("login").getCodes()[0].contains("pl.pawelec.webshop.validator.UserLoginValidator.message"));
     }
     
     @Test
@@ -99,9 +99,9 @@ public class UserInfoValidatorTest {
         ValidationUtils.invokeValidator(userInfoValidator, patternUser, bindException);
         //then
         assertEquals(7, bindException.getErrorCount());
-        assertTrue(bindException.getFieldError("password").getDefaultMessage().contains("Hasło jest wymagane"));
+        assertTrue(bindException.getFieldError("password").getCodes()[0].contains("pl.pawelec.webshop.validator.UserPsswordValidator.NotNull.message"));
         assertTrue(bindException.getFieldError("email").getDefaultMessage().contains("Adres email jest wymagany"));
-        assertTrue(bindException.getFieldError("repeatPassword").getDefaultMessage().contains("Hasło jest wymagane"));
+        assertTrue(bindException.getFieldError("repeatPassword").getCodes()[0].contains("pl.pawelec.webshop.validator.UserPsswordValidator.NotNull.message"));
         assertTrue(bindException.getFieldError("role").getDefaultMessage().contains("Wybierz zakres uprawnień"));
         assertTrue(bindException.getFieldError("firstName").getDefaultMessage().contains("Imię jest wymagane"));
         assertTrue(bindException.getFieldError("lastName").getDefaultMessage().contains("Nazwisko jest wymagane"));

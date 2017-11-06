@@ -1,5 +1,5 @@
 <%-- 
-    Document   : addSystemClass
+    Document   : addAppParameter
     Created on : 2017-10-19, 14:24:08
     Author     : mirek
 --%>
@@ -8,24 +8,23 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<spring:url value="/admin/classes" var="classesUrl"/>
-<spring:url value="/admin/classes/update" var="actionUrl"/>
+<spring:url value="/admin/parameters" var="parametersUrl"/>
 
-<spring:message code="updateSystemClass.pageHeader.label" arguments="${sessionScope.updateInfo}" var="headerLbl" /> 
-<spring:message code="updateSystemClass.form.infoValidationError.label" var="infoValidationErrorLbl"/>
-<spring:message code="updateSystemClass.form.symbol.label" var="symbolLbl"/>
-<spring:message code="updateSystemClass.form.name.label" var="nameLbl"/>
-<spring:message code="updateSystemClass.form.value.label" var="valueLbl"/>
-<spring:message code="updateSystemClass.form.description.label" var="descriptionLbl"/>
-<spring:message code="updateSystemClass.linkToClasses.button.label" var="listOfClasses"/>
-<spring:message code="updateSystemClass.form.submitForm.button.label" var="submitFormLbl" />
+<spring:message code="addAppParameter.pageHeader.label" var="headerLbl" /> 
+<spring:message code="addAppParameter.form.infoValidationError.label" var="infoValidationErrorLbl"/>
+<spring:message code="addAppParameter.form.symbol.label" var="symbolLbl"/>
+<spring:message code="addAppParameter.form.name.label" var="nameLbl"/>
+<spring:message code="addAppParameter.form.value.label" var="valueLbl"/>
+<spring:message code="addAppParameter.form.description.label" var="descriptionLbl"/>
+<spring:message code="addAppParameter.linkToAppParameters.button.label" var="listAppParameters"/>
+<spring:message code="addAppParameter.form.submitForm.button.label" var="submitFormLbl" />
 
     <jsp:include page="./fragments/header.jsp"/>
     
     <section class="main">
         
         <jsp:include page="./fragments/navi.jsp"/>
-
+      
         <div class="container">
             <div class="row">
                 <div class="page-header">
@@ -33,8 +32,7 @@
                 </div>
             </div>
             <div class="row">
-                <form:form modelAttribute="updateSystemClass" action="${actionUrl}" class="form-horizontal" type="post">
-                    
+                <form:form modelAttribute="newParameterForm" class="form-horizontal" type="post">
                     <spring:bind path="*">
                         <c:if test="${status.error}">
                             <div class="alert alert-danger alert-dismissible" role="alert">
@@ -43,8 +41,6 @@
                             </div>
                         </c:if>
                     </spring:bind>
-                    
-                    <form:hidden path="classId"/> 
                     
                     <div class="row">
                         <spring:bind path="symbol">
@@ -102,14 +98,10 @@
                         </spring:bind>
                     </div>
                     
-                    <form:hidden path="lastModificationDate"/> 
-                    
-                    <form:hidden path="createDate"/> 
-                    
                     <hr>
                     <div class="row">
                         <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10 text-right">
-                            <a href="${classesUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${listOfClasses}</a>
+                            <a href="${parametersUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${listAppParameters}</a>
                             <button type="submit" class="btn btn-primary"> ${submitFormLbl} </button>
                         </div>
                     </div>

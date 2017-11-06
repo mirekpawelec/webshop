@@ -233,7 +233,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                            
+                        </div>       
+                                    
+                        <form:hidden path="createDate"/>
+                        
                         <hr>
                         
                         <div class="row">

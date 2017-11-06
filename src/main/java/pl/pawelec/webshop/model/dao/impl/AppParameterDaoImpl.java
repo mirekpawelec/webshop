@@ -7,26 +7,26 @@ package pl.pawelec.webshop.model.dao.impl;
 
 import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
-import pl.pawelec.webshop.exception.NoSystemClassKeyFoundException;
-import pl.pawelec.webshop.model.SystemClass;
+import pl.pawelec.webshop.exception.NoParametersKeyFoundException;
+import pl.pawelec.webshop.model.AppParameter;
 import pl.pawelec.webshop.model.dao.AbstrDao;
-import pl.pawelec.webshop.model.dao.SystemClassDao;
+import pl.pawelec.webshop.model.dao.AppParameterDao;
 
 /**
  *
  * @author mirek
  */
 @Repository
-public class SystemClassDaoImpl extends AbstrDao<SystemClass> implements SystemClassDao{
+public class AppParameterDaoImpl extends AbstrDao<AppParameter> implements AppParameterDao{
     
-    public SystemClass getByUniqueKey(String symbol, String name) {
+    public AppParameter getByUniqueKey(String symbol, String name) {
         try{
-            return (SystemClass) getEntityManager().createQuery("from SystemClass WHERE symbol = :symbol AND name = :name")
+            return (AppParameter) getEntityManager().createQuery("from AppParameter WHERE symbol = :symbol AND name = :name")
                     .setParameter("symbol", symbol)
                     .setParameter("name", name)
                     .getSingleResult();
         }catch(NoResultException nre){
-            throw new NoSystemClassKeyFoundException(symbol, name);
+            throw new NoParametersKeyFoundException(symbol, name);
         }
     }
     

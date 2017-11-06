@@ -21,7 +21,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 import pl.pawelec.webshop.model.enum_.UserStatus;
-import pl.pawelec.webshop.validator.UserLogin;
 
 /**
  *
@@ -106,7 +105,6 @@ public class UserInfo implements Serializable{
     
     @NotEmpty(message = "{NotEmpty.UserInfo.login.validation}")
     @Size(max = 50, message = "{Size.UserInfo.login.validation}")
-//    @UserLogin
     public String getLogin() {
         return login;
     }

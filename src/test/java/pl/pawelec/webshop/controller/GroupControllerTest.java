@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({CartControllerTest.class, DeliveryControllerTest.class, 
                     HomeControllerTest.class, LoginControllerTest.class, 
                     ProductControllerTest.class, RepositoryControllerTest.class, 
-                    SystemClassControllerTest.class, CartRestControllerTest.class})
+                    AppParameterControllerTest.class, CartRestControllerTest.class})
 public class GroupControllerTest {
     
 }

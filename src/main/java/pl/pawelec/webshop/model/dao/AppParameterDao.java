@@ -5,12 +5,12 @@
  */
 package pl.pawelec.webshop.model.dao;
 
-import pl.pawelec.webshop.model.SystemClass;
+import pl.pawelec.webshop.model.AppParameter;
 
 /**
  *
  * @author mirek
  */
-public interface SystemClassDao extends Dao<SystemClass>{
-    SystemClass getByUniqueKey(String symbol, String name);
+public interface AppParameterDao extends Dao<AppParameter>{
+    AppParameter getByUniqueKey(String symbol, String name);
 }

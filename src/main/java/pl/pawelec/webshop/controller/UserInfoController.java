@@ -97,7 +97,7 @@ public class UserInfoController {
     @InitBinder(value = "modelUser")
     public void updateProductBinder(WebDataBinder webDataBinder){
         webDataBinder.setDisallowedFields("lastModificationDate");
-        webDataBinder.setValidator(userInfoValidator); 
+        webDataBinder.setValidator(userInfoValidator);
     }
     
     private Model addLocalAtributesToModel(Model model){

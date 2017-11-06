@@ -11,8 +11,8 @@
         <intercept-url pattern="/admin/delivery*" access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')" />
         <intercept-url pattern="/admin/deliveries*" access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')" />
         <intercept-url pattern="/admin/repository" access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')"/>
-        <intercept-url pattern="/admin/classes/*" access="hasRole('DBA')" />
-        <intercept-url pattern="/admin/classes*" access="hasRole('DBA')" />
+        <intercept-url pattern="/admin/parameters/*" access="hasRole('DBA')" />
+        <intercept-url pattern="/admin/parameters*" access="hasRole('DBA')" />
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN') or hasRole('DBA')" />
         <form-login login-page="/login"
                     authentication-failure-url="/login?error"   

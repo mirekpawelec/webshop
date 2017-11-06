@@ -42,15 +42,6 @@
         </property>
     </bean>
     
-    <bean id="systemClassUniqueKeyValidator" class="pl.pawelec.webshop.validator.SystemClassUniqueKeyValidator"/> 
-    <bean id="systemClassValidator" class="pl.pawelec.webshop.validator.SystemClassValidator">
-        <property name="springValidators">
-            <set>
-                <ref bean="systemClassUniqueKeyValidator"/>
-            </set>
-        </property>
-    </bean>
-    
     <bean id="userPasswordValidator" class="pl.pawelec.webshop.validator.UserPasswordValidator"/>
     <bean id="userLoginValidator" class="pl.pawelec.webshop.validator.UserLoginValidator"/> 
     <bean id="userInfoValidator" class="pl.pawelec.webshop.validator.UserInfoValidator">
@@ -58,6 +49,15 @@
             <set>
                 <ref bean="userPasswordValidator"/>
                 <ref bean="userLoginValidator"/>
+            </set>
+        </property>
+    </bean>
+    
+    <bean id="appParameterKeyValidator" class="pl.pawelec.webshop.validator.AppParameterKeyValidator"/> 
+    <bean id="appParameterValidator" class="pl.pawelec.webshop.validator.AppParameterValidator">
+        <property name="springValidators">
+            <set>
+                <ref bean="appParameterKeyValidator"/>
             </set>
         </property>
     </bean>
