@@ -9,7 +9,14 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<spring:message code="collectShippingDetails.currency.label" var="currencyLbl"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.headerPart1.info" var="headerPart1Info"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.headerPart2.info" var="headerPart2Info"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.validationError.message" var="validationErrorMsg"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.paymentMethod.label" var="paymentMethodLbl"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.delivaryMethod.label" var="delivaryMethodLbl"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.cancel.button.label" var="cancelBtnLbl"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.back.button.label" var="backBtnLbl"/>
+<spring:message code="customerOrderFlow.collectShippingDetails.forward.button.label" var="forwardBtnLbl"/>
 
         <jsp:include page="../../views/fragments/header.jsp" />
         
@@ -18,8 +25,8 @@
                 
                 <div class="row">
                     <div class="well text-left">
-                        <h3> Dostaw i płatność </h3>
-                        <p> Wybierz sposób dostawy i metodę płatności </p>
+                        <h2> ${headerPart1Info} </h2>
+                        <p> ${headerPart2Info} </p>
                     </div>
                 </div>
                 
@@ -28,7 +35,7 @@
                         <c:if test="${status.error}">
                             <div class="alert alert-danger alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4> Popraw zaznaczone pola. </h4>
+                                <h4> ${validationErrorMsg} </h4>
                             </div>
                         </c:if>
                     </spring:bind>
@@ -38,11 +45,11 @@
                             <spring:bind path="paymentMethod">
                                 <div class="form-group ${status.error ? 'has-error' : ''}">
                                     <div class="hidden-xs col-sm-3 col-md-3 col-lg-offset-1 col-lg-2 text-right">
-                                        <label class="control-label" for="paymentMethod"> metody płatności </label>
+                                        <label class="control-label" for="paymentMethod"> ${paymentMethodLbl} </label>
                                     </div>
 
                                     <div class="visible-xs col-xs-offset-1 col-xs-11 text-left">
-                                        <label class="control-label" for="paymentMethod"> metody płatności </label>
+                                        <label class="control-label" for="paymentMethod"> ${paymentMethodLbl} </label>
                                     </div>
 
                                     <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
@@ -64,11 +71,11 @@
                             <spring:bind path="deliveryMethod">
                                 <div class="form-group ${status.error ? 'has-error' : ''}">
                                     <div class="hidden-xs col-sm-3 col-md-3 col-lg-offset-1 col-lg-2 text-right">
-                                        <label class="control-label" for="deliveryMethod"> sposób dostawy </label>
+                                        <label class="control-label" for="deliveryMethod"> ${delivaryMethodLbl} </label>
                                     </div>
 
                                     <div class="visible-xs col-xs-offset-1 col-xs-11 text-left">
-                                        <label class="control-label" for="deliveryMethod"> sposób dostawy </label>
+                                        <label class="control-label" for="deliveryMethod"> ${delivaryMethodLbl} </label>
                                     </div>
 
                                     <div class="col-xs-offset-1 col-xs-11 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
@@ -89,9 +96,9 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="row">
                             <div class="form-group">
-                                <button class="btn btn-primary" name="_eventId_backToCollectCustomerInfo"><span class="glyphicon glyphicon-menu-left"></span> Wróć </button>
-                                <button name="_eventId_cancel" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Anuluj </button>
-                                <button type="submit" class="btn btn-primary" name="_eventId_goToOrderConfirmation"> Dalej <span class="glyphicon glyphicon-menu-right"></span></button>
+                                <button class="btn btn-primary" name="_eventId_backToCollectCustomerInfo"><span class="glyphicon glyphicon-menu-left"></span> ${backBtnLbl} </button>
+                                <button name="_eventId_cancel" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> ${cancelBtnLbl} </button>
+                                <button type="submit" class="btn btn-primary" name="_eventId_goToOrderConfirmation"> ${forwardBtnLbl} <span class="glyphicon glyphicon-menu-right"></span></button>
                             </div>
                         </div>
                     </fildset>

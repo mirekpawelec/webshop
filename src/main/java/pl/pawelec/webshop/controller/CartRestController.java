@@ -55,6 +55,7 @@ public class CartRestController {
         try{
             cart = cartService.getBySessionId(sessionId).stream().filter(ci->ci.getStatus().equals(CartStatus.RE.name()))
                 .sorted((o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate())).findFirst().orElse(new Cart(sessionId));
+            cart.updateCostOfAllItems();
         }catch(CartNotFoundException cnfe){
             logger.info("No found cart for sessionId=" + sessionId);
         }

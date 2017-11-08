@@ -21,8 +21,8 @@
         </on-render>
         <transition on="keepGoing" to="collectShippingDetails">
             <evaluate expression="orderServiceImpl.fillInCustomerAndShippingAddressInOrder(order, customer)"/>
-            <evaluate expression="systemClassServiceImpl.getBySymbol('payment_method')" result="flowScope.paymentMethod"/>
-            <evaluate expression="systemClassServiceImpl.getBySymbol('delivery_method')" result="flowScope.deliveryMethod"/>
+            <evaluate expression="appParameterServiceImpl.getBySymbol('payment_method')" result="flowScope.paymentMethod"/>
+            <evaluate expression="appParameterServiceImpl.getBySymbol('delivery_method')" result="flowScope.deliveryMethod"/>
         </transition>
     </view-state>
     

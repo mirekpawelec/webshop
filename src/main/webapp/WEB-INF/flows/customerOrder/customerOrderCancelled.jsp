@@ -6,24 +6,24 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-        <jsp:include page="../../views/fragments/header.jsp" />
-        
-        <spring:url value="/home" var="homeUrl" />
-        <spring:message code="customerOrderCancelled.button.backToShop.label" var="backToShopLbl" />
-        
-        <section class="main">
-            <div class="container pull-down">
-                <div class="jumbotron">
-                    <div class="row">
-                        <h3> Składanie zamówienia anulowano. </h1></h3>
-                    </div>
-                </div>
+<spring:url value="/home" var="homeUrl" />
+<spring:message code="customerOrderFlow.customerOrderCancelled.validationError.message" var="canceledOrderMsg"/>
+<spring:message code="customerOrderFlow.customerOrderCancelled.button.backToShop.label" var="backToShopLbl" />
+
+<jsp:include page="../../views/fragments/header.jsp" />
+    <section class="main">
+        <div class="container pull-down">
+            <div class="jumbotron">
                 <div class="row">
-                    <a href="${homeUrl}" class="btn btn-primary"> ${backToShopLbl} </a>
+                    <h3> ${canceledOrderMsg} </h3>
                 </div>
             </div>
-        </section>
-    
-        <jsp:include page="../../views/fragments/footer.jsp" />
+            <div class="row">
+                <a href="${homeUrl}" class="btn btn-primary"> ${backToShopLbl} </a>
+            </div>
+        </div>
+    </section>
+
+    <jsp:include page="../../views/fragments/footer.jsp" />
     </body>
 </html>
