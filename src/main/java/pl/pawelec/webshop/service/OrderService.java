@@ -32,4 +32,7 @@ public interface OrderService {
     void fillInShippingAddressInOrder(Order order, ShippingAddress shippingAddress);
     Order saveCustomerOrder(Order order);
     void setFlowModelAttribute(RequestContext context);
+    void checkUserAndFillInCustomer(Order order, Customer customer);
+    void associateUserWithCustomer(Order order);
+    List<Order> getByUserLogin(String login);
 }

@@ -107,147 +107,171 @@
             <!--</a>-->
         </div>
         <br>
-        <div class="container min-width">
-            <div class="row">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                    
-    <!--SEARCH PANEL-->
-                    <div class="panel panel-primary panel-min-height">
-                        <div class="panel-heading">
-                            <h6 class="panel-title"> ${browsingOptionsLbl} </h6>
-                        </div>
-                        
-                        <div class="panel-body">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <form:form modelAttribute="filterProducts" class="form-horizontal">
-                                    <fieldset>
-                                        <div class="form-group form-group-sm">
-                                            <label class="control-label">${manufacturerLbl}</label>
+        
+    <!--MAIN PANEL-->
+        <c:choose>
+            <c:when test="${not empty faq}">
+                
+                <jsp:include page="./fragments/faq.jsp">
+                    <jsp:param name="faq" value="${faq}"/>
+                </jsp:include>
+                
+            </c:when>
+            <c:when test="${not empty contentRule}">
+                
+                <jsp:include page="./fragments/rules.jsp">
+                    <jsp:param name="contentRule" value="${contentRule}"/>
+                </jsp:include>
+                
+            </c:when>
+            <c:otherwise>
+                
+                <div class="container min-width">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
-                                            <form:select id="manufacturer" path="manufacturer" class="form-control">
-                                                <form:option value="NONE" label="---------------"/>
-                                                <form:options items="${manufacturers}" />
-                                            </form:select>
-                                        </div>
+                        <!--SEARCH PANEL-->
+                            <div class="panel panel-primary panel-min-height">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> ${browsingOptionsLbl} </h6>
+                                </div>
 
-                                        <div class="form-group form-group-sm">
-                                            <label class="control-label">${categoryLbl}</label>
+                                <div class="panel-body">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <form:form modelAttribute="filterProducts" class="form-horizontal">
+                                            <fieldset>
+                                                <div class="form-group form-group-sm">
+                                                    <label class="control-label">${manufacturerLbl}</label>
 
-                                            <form:select id="category" path="category" class="form-control">
-                                                <form:option value="NONE" label="---------------"/>
-                                                <form:options items="${categories}" />
-                                            </form:select>
-                                        </div>
-
-                                        <div class="form-group form-group-sm">
-                                            <label class="control-label">${priceLbl}</label>
-
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                                    <label class="control-label">${priceFromLbl}</label>
-                                                    <form:input type="number" id="minUnitPrice" path="minUnitPrice" class="form-control"/>
+                                                    <form:select id="manufacturer" path="manufacturer" class="form-control">
+                                                        <form:option value="NONE" label="---------------"/>
+                                                        <form:options items="${manufacturers}" />
+                                                    </form:select>
                                                 </div>
 
-                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                                    <label class="control-label">${priceToLbl}</label>
-                                                    <form:input type="number" id="maxUnitPrice" path="maxUnitPrice" class="form-control"/>
+                                                <div class="form-group form-group-sm">
+                                                    <label class="control-label">${categoryLbl}</label>
+
+                                                    <form:select id="category" path="category" class="form-control">
+                                                        <form:option value="NONE" label="---------------"/>
+                                                        <form:options items="${categories}" />
+                                                    </form:select>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="form-group form-group-sm">
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6">
-                                                    <label class="control-label">${inStockLbl}</label>
+                                                <div class="form-group form-group-sm">
+                                                    <label class="control-label">${priceLbl}</label>
+
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                            <label class="control-label">${priceFromLbl}</label>
+                                                            <form:input type="number" id="minUnitPrice" path="minUnitPrice" class="form-control"/>
+                                                        </div>
+
+                                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                            <label class="control-label">${priceToLbl}</label>
+                                                            <form:input type="number" id="maxUnitPrice" path="maxUnitPrice" class="form-control"/>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                
-                                                <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
-                                                    <form:checkbox path="inStock" class="form-control"/>
+
+                                                <div class="form-group form-group-sm">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6">
+                                                            <label class="control-label">${inStockLbl}</label>
+                                                        </div>
+
+                                                        <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
+                                                            <form:checkbox path="inStock" class="form-control"/>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+
+                                                <div class="form-group">
+                                                    <input id="btnSubmit" type="submit" value="${buttonFilterLbl}" class="btn btn-primary btn-block btn-xs"/>
+                                                    <input id="btnReset" type="reset" value="${buttonResetLbl}" class="btn btn-primary btn-block btn-xs"/>
                                                 </div>
-                                            </div>
-                                        </div> 
-
-                                        <div class="form-group">
-                                            <input id="btnSubmit" type="submit" value="${buttonFilterLbl}" class="btn btn-primary btn-block btn-xs"/>
-                                            <input id="btnReset" type="reset" value="${buttonResetLbl}" class="btn btn-primary btn-block btn-xs"/>
-                                        </div>
-                                    </fieldset>
-                                </form:form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                   
-    <!--PRODUCTS-->
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" ng-controller="cartController" ng-init="refreshCart('${sessionId}')">    
-                    <c:forEach items="${allProducts}" var="product">
-                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                                
-
-                            <c:set value="${fn:length(product.repositorySet)}" var="repositorySetSize" />
-                            <spring:url value="/resource/img/${product.productNo}.jpg" var="imageUrl"/>
-                            <spring:url value="/home/product?productNo=${product.productNo}" var="detailsUrl"/>
-
-                            <div class="thumbnail">
-                                <a href="${detailsUrl}">
-                                    <div class="visible-sm visible-lg">
-                                        <div class="box-img-lg">
-                                            <img src="${imageUrl}" alt="image">
-                                        </div>
-                                    </div> 
-
-                                    <div class="visible-xs visible-md">
-                                        <div class="box-img-md">
-                                            <img src="${imageUrl}" alt="image">
-                                        </div>
-                                    </div> 
-                                </a>
-                                        
-                                <div class="caption">
-                                    <div class="caption-box">
-                                        <h3> 
-                                            ${product.manufacturer} 
-                                            <small>${product.name}</small> 
-                                        </h3>
-                                    </div>
-                                        
-                                    <div class="price-box">
-                                        <p>
-                                            <span style="font-size: 20px; font-weight: bold"> ${product.unitPrice} </span> ${currencyLabel}
-                                            <c:choose>
-                                                <c:when test="${repositorySetSize > 0}">
-                                                    <span class="label label-success"> InStock </span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="label label-danger"> OutStock </span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </p>
-                                    </div>
-                                            
-                                    <br>
-                                    
-                                    <div class="btn-group btn-group btn-group-sm">
-                                        <a href="${detailsUrl}" class="btn btn-default"> ${detailsLabel} 
-                                            <span class="glyphicon glyphicon-chevron-right"></span> </a>
-                                        <a class="btn btn-primary ${repositorySetSize==0?'disabled':''}" ng-click="addItemToCart('${product.productId}')"> ${addToCartLabel} 
-                                            <span class="glyphicon glyphicon-shopping-cart"></span> </a>
+                                            </fieldset>
+                                        </form:form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </c:forEach> 
-                </div>
-            </div>
-                    
-    <!--OUR LOCATION - MAP-->        
-            <div class="row">
-                <div class="page-header text-left">
-                        <h2> ${headerMapOneLbl} <small> ${headerMapTwoLbl} </small></h2>
-                </div>
-            </div>        
-        </div>
-    </section>
 
+                    <!--PRODUCTS-->
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" ng-controller="cartController" ng-init="refreshCart('${sessionId}')">    
+                            <c:forEach items="${allProducts}" var="product">
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">                                
+
+                                    <c:set value="${fn:length(product.repositorySet)}" var="repositorySetSize" />
+                                    <spring:url value="/resource/img/${product.productNo}.jpg" var="imageUrl"/>
+                                    <spring:url value="/home/product?productNo=${product.productNo}" var="detailsUrl"/>
+
+                                    <div class="thumbnail">
+                                        <a href="${detailsUrl}">
+                                            <div class="visible-sm visible-lg">
+                                                <div class="box-img-lg">
+                                                    <img src="${imageUrl}" alt="image">
+                                                </div>
+                                            </div> 
+
+                                            <div class="visible-xs visible-md">
+                                                <div class="box-img-md">
+                                                    <img src="${imageUrl}" alt="image">
+                                                </div>
+                                            </div> 
+                                        </a>
+
+                                        <div class="caption">
+                                            <div class="caption-box">
+                                                <h3> 
+                                                    ${product.manufacturer} 
+                                                    <small>${product.name}</small> 
+                                                </h3>
+                                            </div>
+
+                                            <div class="price-box">
+                                                <p>
+                                                    <span style="font-size: 20px; font-weight: bold"> ${product.unitPrice} </span> ${currencyLabel}
+                                                    <c:choose>
+                                                        <c:when test="${repositorySetSize > 0}">
+                                                            <span class="label label-success"> InStock </span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="label label-danger"> OutStock </span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </p>
+                                            </div>
+
+                                            <br>
+
+                                            <div class="btn-group btn-group btn-group-sm">
+                                                <a href="${detailsUrl}" class="btn btn-default"> ${detailsLabel} 
+                                                    <span class="glyphicon glyphicon-chevron-right"></span> </a>
+                                                <a class="btn btn-primary ${repositorySetSize==0?'disabled':''}" ng-click="addItemToCart('${product.productId}')"> ${addToCartLabel} 
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span> </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach> 
+                        </div>
+                    </div>      
+                </div>     
+                            
+            </c:otherwise>
+        </c:choose>
+    </section>
+                    
+    <!--OUR LOCATION - MAP--> 
+    <div class="container">
+        <div class="row">
+            <div class="page-header text-left">
+                    <h2> ${headerMapOneLbl} <small> ${headerMapTwoLbl} </small></h2>
+            </div>
+        </div>  
+    </div>
+    
     <div class="container-fluid">
         <div class="embed-responsive embed-responsive-map">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2470.020527413678!2d18.065658115949617!3d51.75094820068725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ac5f2cc3fd67b%3A0x8892487ababd10c2!2sAleja+Wojska+Polskiego%2C+Kalisz!5e0!3m2!1spl!2spl!4v1509458640432" frameborder="0" style="border:0" allowfullscreen></iframe>

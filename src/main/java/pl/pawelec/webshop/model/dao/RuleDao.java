@@ -5,14 +5,12 @@
  */
 package pl.pawelec.webshop.model.dao;
 
-import java.util.List;
-import pl.pawelec.webshop.model.Order;
+import pl.pawelec.webshop.model.Rule;
 
 /**
  *
  * @author mirek
  */
-public interface OrderDao extends Dao<Order>{
-    Order createAndReturn(Order order);
-    List<Order> getByUserLogin(String login);
+public interface RuleDao extends Dao<Rule>{
+    Long createAndGetId(Rule rule);
 }

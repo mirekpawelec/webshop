@@ -12,7 +12,9 @@
     <action-state id="createOrder">
         <evaluate expression="cartServiceImpl.getOneById(requestParameters.cartId)" result="order.cart"/>
         <transition to="invalidCustomerOrderWarning" on-exception="pl.pawelec.webshop.exception.InvalidCustomerOrderException"/>
-        <transition to="collectCustomerInfo"/>
+        <transition to="collectCustomerInfo">
+            <evaluate expression="orderServiceImpl.checkUserAndFillInCustomer(order, customer)" />
+        </transition>
     </action-state>
     
     <view-state id="collectCustomerInfo" model="customer">
@@ -50,6 +52,9 @@
     <action-state id="saveCustomerOrder">
         <evaluate expression="orderServiceImpl.saveCustomerOrder(order)" result="order"/>
         <transition to="thankCustomer"/>
+        <on-exit>
+            <evaluate expression="orderServiceImpl.associateUserWithCustomer(order)"/>
+        </on-exit>
     </action-state>
     
     <view-state id="thankCustomer" model="order">

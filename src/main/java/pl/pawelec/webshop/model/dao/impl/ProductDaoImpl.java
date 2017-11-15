@@ -35,7 +35,7 @@ public class ProductDaoImpl extends AbstrDao<Product> implements ProductDao, Ser
         EntityManager em = getEntityManager();
         Product product = em.find(Product.class, entity.getProductId());
         if(product==null) 
-           throw new RuntimeException("Operazja zakończyła się niepowodzeniem. Brak danych!");
+           throw new RuntimeException("The process has been finished unsuccessfull. No data found!");
         em.remove(product);
     }
 

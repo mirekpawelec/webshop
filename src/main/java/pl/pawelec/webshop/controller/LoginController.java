@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +20,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pawelec.webshop.model.UserDetailsAdapter;
 import pl.pawelec.webshop.model.UserInfo;
-import pl.pawelec.webshop.model.enum_.RoleUser;
+import pl.pawelec.webshop.model.enum_.UserRole;
 import pl.pawelec.webshop.model.enum_.UserStatus;
 import pl.pawelec.webshop.service.UserInfoService;
 import pl.pawelec.webshop.utils.AtributesModel;
@@ -106,6 +106,12 @@ public class LoginController {
         }
     }
     
+    @RequestMapping("/user/edit/{login}")
+    public String updateUser(@PathVariable("login") String userLogin, final RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("cameFromUserPanel", true);
+        return "redirect:/admin/users/"+userInfoService.getByLogin(userLogin).getUserId()+"/update";
+    }
+    
     @InitBinder(value = "modelUser")
     public void createProductBinder(WebDataBinder webDataBinder){
         webDataBinder.setAllowedFields("login", "password", "repeatPassword", "firstName", "lastName", "email", "status", "role");
@@ -113,7 +119,7 @@ public class LoginController {
     }
     
     private Model addLocalAtributesToModel(Model model){
-        model.addAttribute("roles", Arrays.asList(RoleUser.values()));
+        model.addAttribute("roles", Arrays.asList(UserRole.values()));
         model.addAttribute("statuses", Arrays.asList(UserStatus.values()));
         return model;
     }

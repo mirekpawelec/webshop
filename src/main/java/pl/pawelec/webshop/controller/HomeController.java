@@ -57,17 +57,18 @@ public class HomeController {
                                  @ModelAttribute("filterProducts") ProductFilter filterOfProducts, 
                                  Model model, 
                                  HttpServletRequest request){
-        
         if(result.hasErrors() && !message.isNew()){
             AtributesModel.addGlobalAtributeToModel(model, request);
             addLocalAtributesToModel(model, request, "homepage");
             model.addAttribute("validationError", "danger");
             return "homepage";
         }
+        
         if(result.getSuppressedFields().length > 0){
             throw new RuntimeException("Próba wiązania niedozwolonych pól: " 
                             + StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
         }
+        
         if(!message.isNew()){
             String selectedSubjectMessage = systemClassService.getBySymbol(SYMBOL_SUBJECT_CLIENT_MESSAGE).stream()
                                                         .filter(sc->sc.getValue().equals(message.getSubject()))
@@ -76,6 +77,7 @@ public class HomeController {
             model.addAttribute("messageForm", new ClientMessage());
             model.addAttribute("successMsgSent", "success");
         }
+        
         List<Product> afterFilteringProducts = productService.getByStatus(ProductStatus.OK.name()).parallelStream()
                 .filter( (product) -> { if( filterOfProducts.isInStock() )
                                             return product.getRepositorySet().size() > 0;

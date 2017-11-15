@@ -5,6 +5,7 @@
  */
 package pl.pawelec.webshop.model.dao.impl;
 
+import java.util.List;
 import org.springframework.stereotype.Repository;
 import pl.pawelec.webshop.model.Order;
 import pl.pawelec.webshop.model.dao.AbstrDao;
@@ -19,5 +20,9 @@ public class OrderDaoImpl extends AbstrDao<Order> implements OrderDao{
     public Order createAndReturn(Order order) {
         getEntityManager().persist(order);
         return order;
+    }
+
+    public List<Order> getByUserLogin(String login) {
+        return getEntityManager().createQuery("from Order WHERE cart.user.login = :login").setParameter("login", login).getResultList();
     }
 }

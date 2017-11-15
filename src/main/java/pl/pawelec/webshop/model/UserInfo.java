@@ -7,14 +7,20 @@ package pl.pawelec.webshop.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
@@ -54,7 +60,11 @@ public class UserInfo implements Serializable{
     
     @Column(nullable = false, length = 50)
     private String role;
-
+    
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
+    @OneToOne(fetch = FetchType.EAGER, optional = true)
+    private Customer customer;
+            
     @Column(length = 2)
     private String status;
 
@@ -69,6 +79,9 @@ public class UserInfo implements Serializable{
     @Convert(converter = TimestampToLocalDateTimeConverter.class)
     @Column(name = "c_date")
     private LocalDateTime createDate;
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Cart> cartSet = new HashSet<Cart>();
     
     
     
@@ -173,6 +186,14 @@ public class UserInfo implements Serializable{
         this.role = role;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -203,6 +224,14 @@ public class UserInfo implements Serializable{
 
     public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
+    }
+
+    public Set<Cart> getCartSet() {
+        return cartSet;
+    }
+
+    public void setCartSet(Set<Cart> cartSet) {
+        this.cartSet = cartSet;
     }
 
     
@@ -265,6 +294,7 @@ public class UserInfo implements Serializable{
                 + ", lastName=" + lastName 
                 + ", email=" + email 
                 + ", role=" + role 
+                + ", customer=" + customer 
                 + ", status=" + status 
                 + ", lastLoginDate=" + lastLoginDate 
                 + ", lastModificationDate=" + lastModificationDate 

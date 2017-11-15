@@ -15,6 +15,7 @@
 <spring:url value="/admin/users" var="usersUrl"/>
 <spring:url value="/user/add" var="addUserUrl"/>
 <spring:url value="/admin/users/update" var="updateUserUrl"/>
+<spring:url value="/orders/user/" var="userOrdersListUrl"/>
 <spring:message code="addUpdateUser.pageHeader.create.anonymous.label" var="headerCreateUserAnonymousLbl"/>
 <spring:message code="addUpdateUser.pageHeader.create.admin.label" var="headerCreateUserAdminLbl"/>
 <spring:message code="addUpdateUser.pageHeader.update.admin.label" arguments="${modelUser.login}" var="headerUpdateUserAdminLbl"/>
@@ -27,10 +28,11 @@
 <spring:message code="addUpdateUser.form.email.label" var="emailLbl"/>
 <spring:message code="addUpdateUser.form.role.label" var="roleLbl"/>
 <spring:message code="addUpdateUser.form.status.label" var="statusLbl"/>
-<spring:message code="addUpdateUser.linkToHomepage.button.label" var="backToHomeLbl"/>
-<spring:message code="addUpdateUser.linkToUsers.button.label" var="backToUsersLbl"/>
-<spring:message code="addUpdateUser.form.submitForm.button.create.label" var="submitFormCreateLbl" />
-<spring:message code="addUpdateUser.form.submitForm.button.update.label" var="submitFormUpdateLbl" />
+<spring:message code="addUpdateUser.linkToHomepage.button.label" var="backToHomeBtnLbl"/>
+<spring:message code="addUpdateUser.back.button.label" var="backBtnLbl"/>
+<spring:message code="addUpdateUser.linkToUsers.button.label" var="backToUsersBtnLbl"/>
+<spring:message code="addUpdateUser.form.submitForm.button.create.label" var="submitFormCreateBtnLbl" />
+<spring:message code="addUpdateUser.form.submitForm.button.update.label" var="submitFormUpdateBtnLbl" />
 
 
 <jsp:include page="./fragments/header.jsp" /> 
@@ -54,7 +56,8 @@
                 </div>
                     
                 <form:form modelAttribute="modelUser" action="${modelUser['new']?addUserUrl:updateUserUrl}" method="post" class="form-horizontal">
-                    <fildset>                 
+                    <fildset>    
+                        <form:errors path="*"/>
                         <spring:bind path="*">
                             <c:if test="${status.error}">
                                 <div class="alert alert-danger alert-dismissible" role="alert">
@@ -146,7 +149,8 @@
                                 <form:hidden path="userId"/>
                                 <form:hidden path="login"/> 
                                 <form:hidden path="lastLoginDate"/>
-                                <form:hidden path="createDate"/>                           
+                                <form:hidden path="createDate"/>     
+                                <form:hidden path="customer.customerId"/> 
                             </c:otherwise>
                         </c:choose>
                         
@@ -186,33 +190,36 @@
                             </spring:bind>
                         </div>
                         
-                        <div class="row">
-                            <spring:bind path="role">
-                                <div class="form-group ${status.error?'has-error':''}">
-                                    <div class="hidden-xs col-sm-3 col-md-3 col-lg-3 text-right">
-                                        <label for="role" class="control-label"> ${roleLbl}  </label>
-                                    </div>
+                        <security:authorize access="isAnonymous() or hasRole('CLIENT')">
+                            <form:hidden path="role" value="ROLE_CLIENT"/>
+                            <form:hidden path="status"/>
+                        </security:authorize>
 
-                                    <div class="visible-xs col-xs-offset-1 col-xs-10 text-left">
-                                        <label for="login" class="control-label"> ${roleLbl} </label>
-                                    </div>
-
-                                    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
-                                        <security:authorize access="isAnonymous() or hasRole('USER')">
-                                            <form:select id="role" path="role" class="form-control">
-                                                <option value="ROLE_USER">User</option>
-                                            </form:select>
-                                        </security:authorize>
-                                        <security:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                                            <form:select id="role" path="role" class="form-control" items="${roles}" itemValue="name" itemLabel="description"/>
-                                        </security:authorize>
-                                        <form:errors path="role" class="text-danger"/>
-                                    </div>
-                                </div>  
-                            </spring:bind>
-                        </div>
+                        <security:authorize access="hasRole('USER')">
+                            <form:hidden path="role"/>
+                            <form:hidden path="status"/>
+                        </security:authorize>
                         
-                        <security:authorize access="isAuthenticated()">
+                        <security:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                            <div class="row">
+                                <spring:bind path="role">
+                                    <div class="form-group ${status.error?'has-error':''}">
+                                        <div class="hidden-xs col-sm-3 col-md-3 col-lg-3 text-right">
+                                            <label for="role" class="control-label"> ${roleLbl}  </label>
+                                        </div>
+
+                                        <div class="visible-xs col-xs-offset-1 col-xs-10 text-left">
+                                            <label for="role" class="control-label"> ${roleLbl} </label>
+                                        </div>
+
+                                        <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
+                                            <form:select id="role" path="role" class="form-control" items="${roles}" itemValue="name" itemLabel="description"/>
+                                            <form:errors path="role" class="text-danger"/>
+                                        </div>
+                                    </div>  
+                                </spring:bind>
+                            </div>
+                        
                             <div class="row">
                                 <spring:bind path="status">
                                     <div class="form-group ${status.error?'has-error':''}">
@@ -238,12 +245,25 @@
                         <div class="row">
                             <div class="col-xs-11 col-sm-11 col-md-9 col-lg-9 text-right">
                                 <security:authorize access="isAnonymous()">
-                                    <a href="${homeUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${backToHomeLbl} </a>
+                                    <a href="${homeUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${backToHomeBtnLbl} </a>
                                 </security:authorize>
-                                <security:authorize access="isAuthenticated()">
-                                    <a href="${usersUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${backToUsersLbl} </a>
-                                </security:authorize>
-                                    <button type="submit" class="btn btn-primary"> ${modelUser['new']?submitFormCreateLbl:submitFormUpdateLbl} </button>
+
+                                <c:choose>
+                                    <c:when test="${cameFromUserPanel}">
+                                        <security:authorize access="hasRole('CLIENT') or hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')">
+                                            <a href="${userOrdersListUrl}<security:authentication property="principal.username"/>" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-hand-left"></span> ${backBtnLbl} 
+                                            </a>
+                                        </security:authorize>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <security:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                                            <a href="${usersUrl}" class="btn btn-default"><span class="glyphicon glyphicon-hand-left"></span> ${backToUsersBtnLbl} </a>
+                                        </security:authorize>
+                                    </c:otherwise>
+                                </c:choose>  
+                                            
+                                <button type="submit" class="btn btn-primary"> ${modelUser['new']?submitFormCreateBtnLbl:submitFormUpdateBtnLbl} </button>
                             </div>
                         </div>
                     </fildset>
@@ -254,3 +274,7 @@
     <jsp:include page="./fragments/footer.jsp"/>
     </body>
 </html>
+<!--
+    isAnonymous() isAuthenticated()
+    hasRole('CLIENT') or hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')
+-->

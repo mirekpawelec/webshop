@@ -75,6 +75,7 @@
                <bean class="pl.pawelec.webshop.converter.RepositoryConverter"/>
                <bean class="pl.pawelec.webshop.converter.ProductIdToProductConverter"/>
                <bean class="pl.pawelec.webshop.converter.DeliveryIdToDeliveryConverter"/>
+               <bean class="pl.pawelec.webshop.converter.CustomerIdToCustomerConverter"/> 
             </list>
         </property>
     </bean>

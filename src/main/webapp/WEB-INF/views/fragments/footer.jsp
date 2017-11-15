@@ -12,9 +12,12 @@
 <spring:url value="/resource/js/table_sorting.js" var="tableSortingJs" />
 <spring:url value="/resource/js/jquery.min.js" var="jQueryJs" />
 <spring:url value="/resource/js/bootstrap.min.js" var="bootstrapJs" />
+<spring:url value="/faq" var="faqUrl"/>
+<spring:url value="/rule" var="ruleUrl"/>  
 <spring:message code="footer.footer.copyright.label" var="copyrightLbl"/>
 <spring:message code="footer.contact.contactetails.label" var="contactDetailLbl"/>
 <spring:message code="footer.contact.links.label" var="linksLbl"/>
+<spring:message code="footer.contact.rulesOfProcedure.label" var="rulesOfProcedureLbl"/>
 
 <footer>
     <div id="contact" class="container">
@@ -38,8 +41,8 @@
                 <h4> ${linksLbl} </h4>
 
                 <ul class="list-unstyled">
-                    <li><a href="">FAQ</a></li>
-                    <li><a href="">Regulamin</a></li>
+                    <li><a href="${faqUrl}">FAQ</a></li>
+                    <li><a href="${ruleUrl}">${rulesOfProcedureLbl}</a></li>
                 </ul>
             </div>
         </div>

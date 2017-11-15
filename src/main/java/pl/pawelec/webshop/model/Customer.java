@@ -67,6 +67,9 @@ public class Customer implements Serializable{
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private Set<Order> orderSet = new HashSet<Order>(); 
     
+    @OneToOne(mappedBy = "customer", fetch = FetchType.EAGER)
+    private UserInfo user; 
+    
     
     
     public Customer() {
@@ -82,6 +85,17 @@ public class Customer implements Serializable{
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    public Customer(Builder builder) {
+        this.customerId = builder.customerId;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.phoneNumber = builder.phoneNumber;
+        this.email = builder.email;
+        this.address = builder.address;
+        this.status = builder.status;
+        this.createDate = builder.createDate;
     }
 
     
@@ -167,9 +181,17 @@ public class Customer implements Serializable{
     public void setOrderSet(Set<Order> orderSet) {
         this.orderSet = orderSet;
     }
+
+    public UserInfo getUser() {
+        return user;
+    }
+
+    public void setUser(UserInfo user) {
+        this.user = user;
+    }
     
 
-
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -210,5 +232,54 @@ public class Customer implements Serializable{
                     + ", createDate=" + createDate
                     + '}';
     } 
+    
+    
+    
+    public static class Builder{
+        private Long customerId;
+        private String firstName;
+        private String lastName;
+        private String phoneNumber;
+        private String email;
+        private Address address; 
+        private String status;
+        private LocalDateTime createDate;
+        
+        public Builder withCustomerId(Long customerId){
+            this.customerId=customerId;
+            return this;
+        }
+        public Builder withFirstName(String firstName){
+            this.firstName=firstName;
+            return this;
+        }
+        public Builder withLastName(String lastName){
+            this.lastName=lastName;
+            return this;
+        }
+        public Builder withPhoneNumber(String phoneNumber){
+            this.phoneNumber=phoneNumber;
+            return this;
+        }
+        public Builder withEmail(String email){
+            this.email=email;
+            return this;
+        }
+        public Builder withAddress(Address address){
+            this.address=address;
+            return this;
+        }
+        public Builder withStatus(String status){
+            this.status=status;
+            return this;
+        }
+        public Builder withCreateDate(LocalDateTime createDate){
+            this.createDate=createDate;
+            return this;
+        }
+        public Customer build(){
+            return new Customer(this);
+        }
+    }
     
 }

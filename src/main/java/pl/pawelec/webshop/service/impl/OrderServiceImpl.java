@@ -20,7 +20,9 @@ import pl.pawelec.webshop.model.Customer;
 import pl.pawelec.webshop.model.Order;
 import pl.pawelec.webshop.model.ShippingAddress;
 import pl.pawelec.webshop.model.ShippingDetails;
+import pl.pawelec.webshop.model.UserInfo;
 import pl.pawelec.webshop.model.dao.AddressDao;
+import pl.pawelec.webshop.model.dao.AppParameterDao;
 import pl.pawelec.webshop.model.dao.CartDao;
 import pl.pawelec.webshop.model.dao.CartItemDao;
 import pl.pawelec.webshop.model.dao.CustomerDao;
@@ -29,7 +31,10 @@ import pl.pawelec.webshop.model.enum_.CartStatus;
 import pl.pawelec.webshop.service.OrderService;
 import pl.pawelec.webshop.model.dao.ShippingAddressDao;
 import pl.pawelec.webshop.model.dao.ShippingDetailsDao;
+import pl.pawelec.webshop.model.dao.UserInfoDao;
+import pl.pawelec.webshop.model.enum_.OrderStatus;
 import pl.pawelec.webshop.service.AppParameterService;
+import pl.pawelec.webshop.service.UserInfoService;
 
 /**
  *
@@ -38,31 +43,25 @@ import pl.pawelec.webshop.service.AppParameterService;
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService{
-    
     @Autowired
     private OrderDao orderDao;
-    
     @Autowired
     private CartDao cartDao;
-    
     @Autowired
     private CartItemDao cartItemDao;
-    
     @Autowired
     private AddressDao addressDao;
-    
     @Autowired
     private CustomerDao customerDao;
-    
     @Autowired
     private ShippingAddressDao shippingAddressDao;
-    
     @Autowired
     private ShippingDetailsDao shippingDetailsDao;
-    
     @Autowired
-    private AppParameterService systemClassService;
-    
+    private AppParameterDao appParameterDao;
+    @Autowired
+    private UserInfoDao userInfoDao;
+   
     private final static String DELIVERY_METHOD_SYMBOL_CLASS = "delivery_method";
     private final static String PAYMENT_METHOD_SYMBOL_CLASS = "payment_method";
     
@@ -122,15 +121,12 @@ public class OrderServiceImpl implements OrderService{
         }
     }
     
-    @Override
     public void fillInShippingDetailsInOrder(Order order, ShippingDetails shippingDetails) {
         order.getShippingDetails().setDeliveryMethod(shippingDetails.getDeliveryMethod());
-        order.getShippingDetails().setDeliveryCost( 
-                new BigDecimal(systemClassService.getByUniqueKey(DELIVERY_METHOD_SYMBOL_CLASS, shippingDetails.getDeliveryMethod()).getValue())
+        order.getShippingDetails().setDeliveryCost(new BigDecimal(appParameterDao.getByUniqueKey(DELIVERY_METHOD_SYMBOL_CLASS, shippingDetails.getDeliveryMethod()).getValue())
         );
         order.getShippingDetails().setPaymentMethod(shippingDetails.getPaymentMethod());
-        order.getShippingDetails().setPaymentCost(
-                new BigDecimal(systemClassService.getByUniqueKey(PAYMENT_METHOD_SYMBOL_CLASS, shippingDetails.getPaymentMethod()).getValue())
+        order.getShippingDetails().setPaymentCost(new BigDecimal(appParameterDao.getByUniqueKey(PAYMENT_METHOD_SYMBOL_CLASS, shippingDetails.getPaymentMethod()).getValue())
         );
         order.getShippingDetails().updateTotalCost();
     }
@@ -146,7 +142,6 @@ public class OrderServiceImpl implements OrderService{
         order.getShippingAddress().getAddress().setCountry(shippingAddress.getAddress().getCountry());
     }
 
-    @Override
     public Order saveCustomerOrder(Order order) {
 //        System.out.println("order=" + order 
 //                       +"\n order.cart=" + order.getCart()
@@ -183,6 +178,7 @@ public class OrderServiceImpl implements OrderService{
         shippingDetails = shippingDetailsDao.createAndReturn(shippingDetails);
         
         Order orderToSave = createAndReturn(new Order(order.getCart(), customer, shippingAddress, shippingDetails));
+        orderToSave.setStatus(OrderStatus.WT.name());
         return orderToSave;
     }
     
@@ -192,5 +188,39 @@ public class OrderServiceImpl implements OrderService{
         url = url.substring(url.indexOf("/", 1), url.length()) + "&";
 //        System.out.println(url);
         req.getSession().setAttribute("lastRequestUrl", url);
+    }
+
+    public void checkUserAndFillInCustomer(Order order, Customer customer){
+        UserInfo user = Optional.ofNullable(order.getCart().getUser()).orElse(new UserInfo());
+        if(Optional.ofNullable(user.getLogin()).isPresent()){
+            if(Optional.ofNullable(user.getCustomer()).isPresent()){
+                customer.setFirstName(user.getCustomer().getFirstName());
+                customer.setLastName(user.getCustomer().getLastName());
+                customer.setEmail(user.getCustomer().getEmail());
+                customer.setPhoneNumber(user.getCustomer().getPhoneNumber());
+                customer.getAddress().setDoorNo(user.getCustomer().getAddress().getDoorNo());
+                customer.getAddress().setStreetName(user.getCustomer().getAddress().getStreetName());
+                customer.getAddress().setZipCode(user.getCustomer().getAddress().getZipCode());
+                customer.getAddress().setAreaName(user.getCustomer().getAddress().getAreaName());
+                customer.getAddress().setState(user.getCustomer().getAddress().getState());
+                customer.getAddress().setCountry(user.getCustomer().getAddress().getCountry());
+            }else{
+                customer.setFirstName(user.getFirstName());
+                customer.setLastName(user.getLastName());
+                customer.setEmail(user.getEmail());
+            }
+        }
+    }
+    
+    public void associateUserWithCustomer(Order order){
+        UserInfo user = Optional.ofNullable(order.getCart().getUser()).orElse(new UserInfo());
+        if(Optional.ofNullable(user.getLogin()).isPresent()){
+            user.setCustomer(order.getCustomer());
+            userInfoDao.update(user); 
+        }
+    }
+
+    public List<Order> getByUserLogin(String login) {
+        return orderDao.getByUserLogin(login);
     }
 }

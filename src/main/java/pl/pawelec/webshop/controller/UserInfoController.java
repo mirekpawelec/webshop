@@ -8,6 +8,7 @@ package pl.pawelec.webshop.controller;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pawelec.webshop.model.UserInfo;
-import pl.pawelec.webshop.model.enum_.RoleUser;
+import pl.pawelec.webshop.model.enum_.UserRole;
 import pl.pawelec.webshop.model.enum_.UserStatus;
 import pl.pawelec.webshop.service.UserInfoService;
 import pl.pawelec.webshop.utils.AtributesModel;
@@ -76,22 +77,36 @@ public class UserInfoController {
             addLocalAtributesToModel(model);
             return "addUpdateUser";
         }
+        
         String[] suppresedFields = result.getSuppressedFields();
         if(suppresedFields.length > 0){
             throw new RuntimeException("It has occurred an attempt bind the illegal fields: " 
                                 + StringUtils.arrayToCommaDelimitedString(suppresedFields));
         }
+        
         if(!userInfoToBeUpdate.getPassword().isEmpty()){
             BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
             userInfoToBeUpdate.setPassword(encrypt.encode(userInfoToBeUpdate.getPassword()));
         } else {
             userInfoToBeUpdate.setPassword(userInfoService.getOneById(userInfoToBeUpdate.getUserId()).getPassword());
         }
+        
+        if(userInfoToBeUpdate.getCustomer().getCustomerId()==null){
+            userInfoToBeUpdate.setCustomer(null);
+        }
+        
+        String privilegesLevelPersonChangingData = Optional.ofNullable(userInfoService.getByLogin(request.getRemoteUser()).getRole()).orElse("");
+        
         logger.info("Save user... ["+userInfoToBeUpdate+']'); 
         userInfoService.update(userInfoToBeUpdate);
         redirectAttributes.addFlashAttribute("updateInfo", userInfoToBeUpdate.getFirstName()+" "+userInfoToBeUpdate.getLastName());
         redirectAttributes.addFlashAttribute("cssUpdate", "success");
-        return "redirect:/admin/users"; 
+        
+        if(privilegesLevelPersonChangingData.equals(UserRole.ROLE_CLIENT.name()) || privilegesLevelPersonChangingData.equals(UserRole.ROLE_USER.name())){
+            return "redirect:/orders/user/"+userInfoToBeUpdate.getLogin(); 
+        }else{
+            return "redirect:/admin/users"; 
+        }
     }
     
     @InitBinder(value = "modelUser")
@@ -101,7 +116,7 @@ public class UserInfoController {
     }
     
     private Model addLocalAtributesToModel(Model model){
-        model.addAttribute("roles", Arrays.asList(RoleUser.values()));
+        model.addAttribute("roles", Arrays.asList(UserRole.values()));
         model.addAttribute("statuses", Arrays.asList(UserStatus.values()));
         return model;
     }

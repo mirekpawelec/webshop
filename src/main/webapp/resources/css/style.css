@@ -163,3 +163,66 @@ footer{
 .form-group-sm #szukaj{
     margin-top: 25px;
 }
+
+
+/*#####################################################################################################################*/
+/* order.jsp */
+/*#####################################################################################################################*/
+.order-col-no-1 .table tr{
+    height: 50px;
+}
+.order-col-no-1 .table tr > td{
+    vertical-align: middle;
+}
+.order-col-no-1 .table tr > td > a{
+    color: #000000;
+    text-decoration: none;
+}
+.order-col-no-1 h2{
+    padding-bottom: 30px;
+}
+.text-bold{
+    font-weight: bold;
+}
+.color-date{
+    color: #999999;
+}
+.order-col-no-2{
+    margin-left: 10px;
+    padding-left: 25px;
+}
+.customer-name{
+    font-size: 18px;
+}
+.status{
+    background-color: #5ccaa0;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 2px 15px;
+}
+
+
+/*#####################################################################################################################*/
+/* questionFaq.jsp */
+/*#####################################################################################################################*/
+.faq .table tr td.but-col-min-width{
+    min-width: 220px;
+}
+.faq .table tr td.date-col-min-width{
+    min-width: 145px;
+}
+.faq .table tr.row-min-height{
+    height: 50px;
+    vertical-align: middle;
+}
+.faq .table tr td{
+    vertical-align: middle;
+}
+body .modal-info{
+    top: 12%;
+    right: 15%
+}
+body .modal-delete{
+    top: 20%;
+}

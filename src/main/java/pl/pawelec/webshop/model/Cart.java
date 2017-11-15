@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +21,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -46,8 +47,9 @@ public class Cart implements Serializable{
     @Column(name = "session_id", nullable = false, length = 100)
     private String sessionId;
     
-    @Column(name = "user_id")
-    private Long userId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    private UserInfo user;
     
     @Column(length = 2)
     private String status;
@@ -73,15 +75,26 @@ public class Cart implements Serializable{
     
     public Cart() {
         this.status = CartStatus.RE.name();
-        this.costOfAllItems = new BigDecimal(0);
+        this.costOfAllItems = cartItemSet.stream()
+                .map( c -> c.getTotalPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    
         this.lastModificationDate = LocalDateTime.now();
         this.createDate = LocalDateTime.now();
+//        updateCostOfAllItems();
     }
 
     public Cart(String sessiontId) {
         this();
         this.sessionId = sessiontId;
     }   
+
+    public Cart(String sessionId, UserInfo user) {
+        this();
+        this.sessionId = sessionId;
+        this.user = user;
+    }
+    
 
     
     
@@ -102,12 +115,12 @@ public class Cart implements Serializable{
     }
     
     @JsonIgnore
-    public Long getUserId() {
-        return userId;
+    public UserInfo getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserInfo user) {
+        this.user = user;
     }
 
     public String getStatus() {
@@ -157,12 +170,10 @@ public class Cart implements Serializable{
         this.order = order;
     }
     
-    
-    
     public void updateCostOfAllItems() {
         costOfAllItems = new BigDecimal(0);
-        // map przekazuje dalej tylko cene, a reduce ją sumuje
-        costOfAllItems = cartItemSet.stream().map( c -> c.getTotalPrice())
+        costOfAllItems = cartItemSet.stream()
+                .map( c -> c.getTotalPrice())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
@@ -172,7 +183,7 @@ public class Cart implements Serializable{
     public int hashCode() {
         int hash = 3;
         hash = 29 * hash + Objects.hashCode(this.sessionId);
-        hash = 29 * hash + Objects.hashCode(this.userId);
+        hash = 29 * hash + Objects.hashCode(this.user);
         hash = 29 * hash + Objects.hashCode(this.status);
         hash = 29 * hash + Objects.hashCode(this.costOfAllItems);
         return hash;
@@ -196,7 +207,7 @@ public class Cart implements Serializable{
         if (!Objects.equals(this.status, other.status)) {
             return false;
         }
-        if (!Objects.equals(this.userId, other.userId)) {
+        if (!Objects.equals(this.user, other.user)) {
             return false;
         }
         if (!Objects.equals(this.costOfAllItems, other.costOfAllItems)) {
@@ -218,7 +229,7 @@ public class Cart implements Serializable{
         return "Cart{"
                  + " cartId=" + cartId 
                  + ", sessionId=" + sessionId 
-                 + ", userId=" + userId 
+                 + ", user=" + user 
                  + ", status=" + status 
                  + ", lastModificationDate=" + lastModificationDate 
                  + ", createDate=" + createDate 

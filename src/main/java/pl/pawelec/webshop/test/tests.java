@@ -381,5 +381,9 @@ public class tests {
 //        System.out.println( uis.getByLogin("mirekk") );
 
 //        rs.getByOwnCriteria("from Repository WHERE loadunitNo = '1010166665'", "", "").forEach(System.out::println);
+//        os.getByUserLogin("tomek").forEach(System.out::println);
+        
+        cs.getAll().forEach(System.out::println);
+
     }
 }

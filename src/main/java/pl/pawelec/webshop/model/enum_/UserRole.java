@@ -8,15 +8,15 @@ package pl.pawelec.webshop.model.enum_;
  *
  * @author mirek
  */
-public enum RoleUser {
-
+public enum UserRole {
+    ROLE_CLIENT("Client"),
     ROLE_USER("User"),
     ROLE_ADMIN("Manager"),
     ROLE_DBA("Admin");
     
     private String description;
 
-    private RoleUser(String description) {
+    private UserRole(String description) {
         this.description = description;
     }
 

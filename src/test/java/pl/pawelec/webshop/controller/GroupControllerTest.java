@@ -17,6 +17,4 @@ import org.junit.runners.Suite;
                     HomeControllerTest.class, LoginControllerTest.class, 
                     ProductControllerTest.class, RepositoryControllerTest.class, 
                     AppParameterControllerTest.class, CartRestControllerTest.class})
-public class GroupControllerTest {
-    
-}
+public class GroupControllerTest {}

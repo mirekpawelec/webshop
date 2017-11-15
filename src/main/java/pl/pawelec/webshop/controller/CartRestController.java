@@ -26,6 +26,7 @@ import pl.pawelec.webshop.model.enum_.CartStatus;
 import pl.pawelec.webshop.service.CartItemService;
 import pl.pawelec.webshop.service.CartService;
 import pl.pawelec.webshop.service.ProductService;
+import pl.pawelec.webshop.service.UserInfoService;
 
 /**
  *
@@ -42,6 +43,9 @@ public class CartRestController {
     private CartService cartService;
     @Autowired    
     private CartItemService cartItemService;
+    @Autowired
+    private UserInfoService userInfoService;
+    
     
     
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.POST)
@@ -78,7 +82,11 @@ public class CartRestController {
         if(cartService.existsBySessionId(sessionId, CartStatus.RE.name())){
             cart = getCurrentCart(sessionId, CartStatus.RE.name());
         } else {
-            cart = cartService.createAndGetCart(new Cart(sessionId));
+            if(request.getRemoteUser()!=null){
+                cart = cartService.createAndGetCart(new Cart(sessionId, userInfoService.getByLogin(request.getRemoteUser())));
+            }else{
+                cart = cartService.createAndGetCart(new Cart(sessionId));
+            }
         }
         try{
             addingProduct = productService.getOneById(Long.valueOf(productId));

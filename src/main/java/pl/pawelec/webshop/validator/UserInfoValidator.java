@@ -31,18 +31,15 @@ public class UserInfoValidator implements Validator{
     }
     @Override
     public boolean supports(Class<?> type) {
-        System.out.println("UserInfoValidator:supports=" + type);
         return UserInfo.class.equals(type);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        System.out.println("UserInfoValidator:supports");
         Set<ConstraintViolation<Object>> constraintViolations = beanValidator.validate(target);
         for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
             String propertyPath = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();
-            System.out.println("propertyPath="+propertyPath+ " , message="+message);
             errors.rejectValue(propertyPath, "", message);
         }
 

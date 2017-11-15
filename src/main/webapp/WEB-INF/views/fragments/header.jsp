@@ -14,6 +14,7 @@
 <spring:url value="/home" var="homePage"/>
 <spring:url value="#contact" var="contact" />
 <spring:url value="/cart" var="cartUrl"/>
+<spring:url value="/orders/user/" var="userOrdersUrl" />
 <spring:url value="/login" var="logInUrl"/>
 <spring:url value="/logout" var="logOutUrl"/>
 <spring:url value="${lastRequestUrl}language=pl" var="polishLanguageUrl"/>
@@ -76,10 +77,10 @@
                             
                         <security:authorize access="isAuthenticated()"> 
                             <li>
-                                <a>
+                                <a href="${userOrdersUrl}<security:authentication property='principal.username'/>">
                                     <span class="glyphicon glyphicon-user nav-sign"></span> 
                                     <span class="badge nav-text"> 
-                                        <security:authentication property="principal.fullName" />
+                                        <security:authentication property="principal.fullName"/> 
                                     </span> 
                                 </a>
                             </li>

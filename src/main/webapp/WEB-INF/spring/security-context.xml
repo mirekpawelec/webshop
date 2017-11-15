@@ -8,11 +8,14 @@
         <intercept-url pattern="/" access="permitAll" /> 
         <!--<intercept-url pattern="/" access="denyAll" /> hasIpAddress(adrIP) "hasAnyRole('ROLE_ADMIN','ROLE_USER')"--> 
         <!--<intercept-url pattern="/user/add" access="isAnonymous() or hasRole('DBA') or hasRole('ADMIN')"/>-->
+        <intercept-url pattern="/orders*" access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')" />
         <intercept-url pattern="/admin/delivery*" access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')" />
         <intercept-url pattern="/admin/deliveries*" access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')" />
         <intercept-url pattern="/admin/repository" access="hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')"/>
         <intercept-url pattern="/admin/parameters/*" access="hasRole('DBA')" />
         <intercept-url pattern="/admin/parameters*" access="hasRole('DBA')" />
+        <intercept-url pattern="/admin/users/*/update" access="hasRole('CLIENT') or hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')" />
+        <intercept-url pattern="/admin/users/update" method="POST" access="hasRole('CLIENT') or hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')" />
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN') or hasRole('DBA')" />
         <form-login login-page="/login"
                     authentication-failure-url="/login?error"   
