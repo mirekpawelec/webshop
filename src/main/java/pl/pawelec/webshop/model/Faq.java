@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 import pl.pawelec.webshop.converter.TimestampToLocalDateTimeConverter;
 import pl.pawelec.webshop.model.enum_.FaqStatus;
 
@@ -77,6 +79,8 @@ public class Faq {
         this.faqId = faqId;
     }
 
+    @NotEmpty(message = "{NotEmpty.Faq.question.validation}")
+    @Size(max = 250, message = "{Size.Faq.question.validation}")
     public String getQuestion() {
         return question;
     }
@@ -85,6 +89,7 @@ public class Faq {
         this.question = question;
     }
 
+    @NotEmpty(message = "{NotEmpty.Faq.answer.validation}")
     public String getAnswer() {
         return answer;
     }

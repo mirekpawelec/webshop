@@ -9,11 +9,14 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,7 @@ import pl.pawelec.webshop.model.Faq;
 import pl.pawelec.webshop.model.enum_.FaqStatus;
 import pl.pawelec.webshop.service.FaqService;
 import pl.pawelec.webshop.utils.AtributesModel;
+import pl.pawelec.webshop.validator.FaqValidator;
 
 /**
  *
@@ -32,6 +36,8 @@ import pl.pawelec.webshop.utils.AtributesModel;
 public class FaqController {
     @Autowired
     private FaqService faqService;
+    @Autowired
+    private FaqValidator faqValidator; 
     Logger logger = Logger.getLogger(FaqController.class);
     
     @RequestMapping("/faq")
@@ -70,7 +76,7 @@ public class FaqController {
     }
     
     @RequestMapping(value = "/admin/faq/save", method = RequestMethod.POST)
-    public String processSaveQuestionForm(@ModelAttribute("modelFaq") Faq modelFaqToBeAdd, BindingResult result, Model model, 
+    public String processSaveQuestionForm(@ModelAttribute("modelFaq") @Valid Faq modelFaqToBeAdd, BindingResult result, Model model, 
                                          HttpServletRequest request, final RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
             AtributesModel.addGlobalAtributeToModel(model, request);
@@ -100,6 +106,11 @@ public class FaqController {
         redirectAttributes.addFlashAttribute("cssDelete", "danger");
         redirectAttributes.addFlashAttribute("deleteInfo", faqId);
         return "redirect:/admin/faq";
+    }
+    
+    @InitBinder
+    public void processBinder(WebDataBinder dataBinder){
+        dataBinder.setValidator(faqValidator);
     }
     
     private Model addLocalAttributesToModel(Model model){

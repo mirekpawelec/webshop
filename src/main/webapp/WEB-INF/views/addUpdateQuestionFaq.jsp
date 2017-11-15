@@ -14,7 +14,6 @@
 
 <spring:url value="/admin/faq" var="questionListUrl"/>
 <spring:url value="/admin/faq/save" var="saveQuestionUrl"/>
-<%--<spring:url value="/admin/faq/update" var="updateQuestionUrl"/>--%>
 
 <spring:message code="addUpdateQuestionFaq.pageHeader.create.label" var="headerCreateQuestionLbl"/>
 <spring:message code="addUpdateQuestionFaq.pageHeader.update.label" var="headerUpdateQuestionLbl"/>
@@ -46,8 +45,7 @@
                 </div>
                     <!--action="$ {modelFaq['new']? addQuestionUrl : updaterQuestionUrl}"-->
                 <form:form modelAttribute="modelFaq" action="${saveQuestionUrl}" method="post" class="form-horizontal">
-                    <fildset>    
-                        <form:errors path="*"/>
+                    <fildset>
                         <spring:bind path="*">
                             <c:if test="${status.error}">
                                 <div class="alert alert-danger alert-dismissible" role="alert">
@@ -112,7 +110,6 @@
 
                                     <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-8 col-md-6 col-lg-6">
                                         <form:select id="status" path="status" class="form-control">
-                                                <option value="----------"></option>
                                             <c:forEach items="${statuses}" var="item">
                                                 <option value="${item.name}" ${item.name==modelFaq.status?'selected':''}>
                                                     <c:choose>

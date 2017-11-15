@@ -62,6 +62,24 @@
         </property>
     </bean>
     
+    <bean id="questionFaqValidator" class="pl.pawelec.webshop.validator.QuestionFaqValidator"/> 
+    <bean id="faqValidator" class="pl.pawelec.webshop.validator.FaqValidator">
+        <property name="springValidators">
+            <set>
+                <ref bean="questionFaqValidator"/>
+            </set>
+        </property>
+    </bean>
+    
+    <bean id="ruleNameValidator" class="pl.pawelec.webshop.validator.RuleNameValidator"/> 
+    <bean id="ruleValidator" class="pl.pawelec.webshop.validator.RuleValidator">
+        <property name="springValidators">
+            <set>
+                <ref bean="ruleNameValidator"/>
+            </set>
+        </property>
+    </bean>
+    
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" p:defaultLocale="pl" />
     
     <mvc:interceptors>

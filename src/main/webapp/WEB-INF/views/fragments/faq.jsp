@@ -8,7 +8,13 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<div class="container">                    
+
+<spring:message code="faq.header.message" var="headerFaqMsg"/>
+
+
+<div class="container">     
+    <h3> ${headerFaqMsg} </h3>
+    
     <div class="panel-group" id="accordion">
         <c:forEach items="${faq}" var="item" varStatus="counter">
             <div class="panel panel-primary text-left">

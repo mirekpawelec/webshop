@@ -14,11 +14,8 @@
 
 <div class="container">                    
     <div class="row">
-        <div class="page-header">
-            <h3> ${headerRuleMsg} </h3>
-        </div>
-    </div>
-    <div class="row">
+        <h3> ${headerRuleMsg} </h3>
+        
         <div class="well-lg">
             ${contentRule}
         </div>

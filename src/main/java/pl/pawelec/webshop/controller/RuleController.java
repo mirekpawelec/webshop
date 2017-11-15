@@ -9,22 +9,25 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.pawelec.webshop.model.Faq;
 import pl.pawelec.webshop.model.Rule;
 import pl.pawelec.webshop.model.enum_.FaqStatus;
 import pl.pawelec.webshop.model.enum_.RuleStatus;
 import pl.pawelec.webshop.service.RuleService;
 import pl.pawelec.webshop.utils.AtributesModel;
+import pl.pawelec.webshop.validator.RuleValidator;
 
 /**
  *
@@ -34,6 +37,8 @@ import pl.pawelec.webshop.utils.AtributesModel;
 public class RuleController {
     @Autowired
     private RuleService ruleService;
+    @Autowired
+    private RuleValidator ruleValidator;
     Logger logger = Logger.getLogger(RuleController.class);
     
     @RequestMapping("/rule")
@@ -71,7 +76,7 @@ public class RuleController {
     }
     
     @RequestMapping(value = "/admin/rule/save", method = RequestMethod.POST)
-    public String processSaveRuleForm(@ModelAttribute("modelRule") Rule modelRuleToBeAdd, BindingResult result, Model model, 
+    public String processSaveRuleForm(@ModelAttribute("modelRule") @Valid Rule modelRuleToBeAdd, BindingResult result, Model model, 
                                          HttpServletRequest request, final RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
             AtributesModel.addGlobalAtributeToModel(model, request);
@@ -100,6 +105,11 @@ public class RuleController {
         redirectAttributes.addFlashAttribute("cssDelete", "danger");
         redirectAttributes.addFlashAttribute("deleteInfo", ruleId);
         return "redirect:/admin/rules";
+    }
+    
+    @InitBinder
+    public void processBinder(WebDataBinder dataBinder){
+        dataBinder.setValidator(ruleValidator);
     }
     
     private Model addLocalAttributesToModel(Model model){

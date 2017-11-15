@@ -47,7 +47,6 @@
                     
                 <form:form modelAttribute="modelRule" action="${saveRuleUrl}" method="post" class="form-horizontal">
                     <fildset>    
-                        <form:errors path="*"/>
                         <spring:bind path="*">
                             <c:if test="${status.error}">
                                 <div class="alert alert-danger alert-dismissible" role="alert">
@@ -131,7 +130,6 @@
 
                                     <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-9">
                                         <form:select id="status" path="status" class="form-control">
-                                                <option value="----------"></option>
                                             <c:forEach items="${statuses}" var="item">
                                                 <option value="${item.name}" ${item.name==modelRule.status?'selected':''}>
                                                     <c:choose>
