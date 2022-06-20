@@ -18,7 +18,7 @@
         <spring.webflow.version>2.4.2.RELEASE</spring.webflow.version>
         <spring.security.version>4.0.4.RELEASE</spring.security.version>
         <spring.aspect.version>4.3.0.RELEASE</spring.aspect.version>
-        <mysql.version>5.1.23</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <hibernate.version>5.1.10.Final</hibernate.version>
         <hibernate.validator.version>5.1.0.Final</hibernate.validator.version>
         <log4j.version>1.2.12</log4j.version>
