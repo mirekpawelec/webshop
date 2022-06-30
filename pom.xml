@@ -15,7 +15,7 @@
         <jstl.version>1.2</jstl.version>
         <javax.servle.version>3.1.0</javax.servle.version>
         <spring.version>4.3.18.RELEASE</spring.version>
-        <spring.webflow.version>2.4.2.RELEASE</spring.webflow.version>
+        <spring.webflow.version>2.4.6.RELEASE</spring.webflow.version>
         <spring.security.version>4.0.4.RELEASE</spring.security.version>
         <spring.aspect.version>4.3.0.RELEASE</spring.aspect.version>
         <mysql.version>5.1.23</mysql.version>
